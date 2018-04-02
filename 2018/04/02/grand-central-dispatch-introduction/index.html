@@ -117,11 +117,12 @@
 <meta property="og:url" content="http://simplecodesky.com/2018/04/02/grand-central-dispatch-introduction/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://simplecodesky.com/images/cpp-project-new-learning/1-1406291220161Z.jpeg">
 <meta property="og:image" content="http://simplecodesky.com/images/cpp-project-new-learning/dispatch_queue.jpeg">
-<meta property="og:updated_time" content="2018-04-02T12:15:15.606Z">
+<meta property="og:updated_time" content="2018-04-02T12:20:55.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出 GCD 线程使用">
-<meta name="twitter:image" content="http://simplecodesky.com/images/cpp-project-new-learning/dispatch_queue.jpeg">
+<meta name="twitter:image" content="http://simplecodesky.com/images/cpp-project-new-learning/1-1406291220161Z.jpeg">
 
 
 
@@ -331,7 +332,7 @@
       
 
       
-        <p><img src="/images/cpp-project-new-learning/dispatch_queue.jpeg" alt=""><br><a id="more"></a></p>
+        <p><img src="/images/cpp-project-new-learning/1-1406291220161Z.jpeg" alt=""><br><a id="more"></a></p>
 <h4 id="串行与并行"><a href="#串行与并行" class="headerlink" title="串行与并行"></a>串行与并行</h4><p>同步和异步针对的是<strong>线程队列</strong>，所谓的线程队列可以理解为一组线程的数组。</p>
 <p><strong>串行队列：</strong><br>队列中是事件有序执行，遵循 FIFO（first in first out）的原则，先进入队列的事件先执行。</p>
 <p>串行队列创建：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_queue_create(<span class="string">"com.queue.serial"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">dispatch_get_main_queue() <span class="comment">// 主队列，也是串行队列</span></span><br></pre></td></tr></table></figure></p>
@@ -342,6 +343,7 @@
 <p>同步线程创建：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_sync</span>(queue, block);</span><br></pre></td></tr></table></figure></p>
 <p><strong>异步线程：</strong><br>不阻塞当前线程，等当前线程完成时间片（完成当前事件）切换后再执行异步线程。</p>
 <p>异步线程创建：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_async</span>(queue, block);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/cpp-project-new-learning/dispatch_queue.jpeg" alt=""></p>
 <h4 id="线程问题"><a href="#线程问题" class="headerlink" title="线程问题"></a>线程问题</h4><h5 id="主线程中的死锁"><a href="#主线程中的死锁" class="headerlink" title="主线程中的死锁"></a>主线程中的死锁</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSLog(@&quot;1&quot;);</span><br><span class="line">dispatch_sync(dispatch_get_main_queue(), ^()&#123;</span><br><span class="line">	NSLog(@&quot;2&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">NSLog(@&quot;3&quot;);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>输出：1</p>
