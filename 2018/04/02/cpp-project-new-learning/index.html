@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="将 string 类型，转换为模板类型123456template &amp;lt;typename P0&amp;gt; bool FromString(const std::string&amp;amp; s, P0* p) &amp;#123;   std::istringstream iss(s);   iss &amp;gt;&amp;gt; std::boolalpha &amp;gt;&amp;gt; *p;   return !iss.fail">
+<meta name="description" content="浏览 C++ 项目中收集到的代码学习片段">
 <meta name="keywords" content="C++, 代码片段">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++项目中遇到的一些方法归纳(持续更新)">
 <meta property="og:url" content="http://simplecodesky.com/2018/04/02/cpp-project-new-learning/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="将 string 类型，转换为模板类型123456template &amp;lt;typename P0&amp;gt; bool FromString(const std::string&amp;amp; s, P0* p) &amp;#123;   std::istringstream iss(s);   iss &amp;gt;&amp;gt; std::boolalpha &amp;gt;&amp;gt; *p;   return !iss.fail">
+<meta property="og:description" content="浏览 C++ 项目中收集到的代码学习片段">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-02T10:27:04.430Z">
+<meta property="og:updated_time" content="2018-04-02T10:35:40.427Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++项目中遇到的一些方法归纳(持续更新)">
-<meta name="twitter:description" content="将 string 类型，转换为模板类型123456template &amp;lt;typename P0&amp;gt; bool FromString(const std::string&amp;amp; s, P0* p) &amp;#123;   std::istringstream iss(s);   iss &amp;gt;&amp;gt; std::boolalpha &amp;gt;&amp;gt; *p;   return !iss.fail">
+<meta name="twitter:description" content="浏览 C++ 项目中收集到的代码学习片段">
 
 
 
@@ -332,7 +332,8 @@
       
 
       
-        <h2 id="将-string-类型，转换为模板类型"><a href="#将-string-类型，转换为模板类型" class="headerlink" title="将 string 类型，转换为模板类型"></a>将 string 类型，转换为模板类型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> P0&gt;</span><br><span class="line"> <span class="function"><span class="keyword">bool</span> <span class="title">FromString</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s, P0* p)</span> </span>&#123;</span><br><span class="line">   <span class="built_in">std</span>::<span class="function"><span class="built_in">istringstream</span> <span class="title">iss</span><span class="params">(s)</span></span>;</span><br><span class="line">   iss &gt;&gt; <span class="built_in">std</span>::boolalpha &gt;&gt; *p;</span><br><span class="line">   <span class="keyword">return</span> !iss.fail();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+        <p>浏览 C++ 项目中收集到的代码学习片段<br><a id="more"></a></p>
+<h2 id="将-string-类型，转换为模板类型"><a href="#将-string-类型，转换为模板类型" class="headerlink" title="将 string 类型，转换为模板类型"></a>将 string 类型，转换为模板类型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> P0&gt;</span><br><span class="line"> <span class="function"><span class="keyword">bool</span> <span class="title">FromString</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s, P0* p)</span> </span>&#123;</span><br><span class="line">   <span class="built_in">std</span>::<span class="function"><span class="built_in">istringstream</span> <span class="title">iss</span><span class="params">(s)</span></span>;</span><br><span class="line">   iss &gt;&gt; <span class="built_in">std</span>::boolalpha &gt;&gt; *p;</span><br><span class="line">   <span class="keyword">return</span> !iss.fail();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="将模板类型-，转换为string-类型"><a href="#将模板类型-，转换为string-类型" class="headerlink" title="将模板类型 ，转换为string 类型"></a>将模板类型 ，转换为string 类型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">static</span> <span class="title">bool</span> <span class="title">ToString</span>(<span class="title">const</span> <span class="title">T</span> &amp;<span class="title">t</span>, <span class="title">std</span>:</span>:<span class="built_in">string</span>* s) &#123;</span><br><span class="line">  RTC_DCHECK(s);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">ostringstream</span> oss;</span><br><span class="line">  oss &lt;&lt; <span class="built_in">std</span>::boolalpha &lt;&lt; t;</span><br><span class="line">  *s = oss.str();</span><br><span class="line">  <span class="keyword">return</span> !oss.fail();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Mach内核获得Cpu使用率百分比"><a href="#Mach内核获得Cpu使用率百分比" class="headerlink" title="Mach内核获得Cpu使用率百分比"></a>Mach内核获得Cpu使用率百分比</h2><pre><code class="cpp"><span class="function">NSInteger <span class="title">ARDGetCpuUsagePercentage</span><span class="params">()</span> </span>{
   <span class="comment">// Create an array of thread ports for the current task.</span>
