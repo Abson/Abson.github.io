@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Monaco:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="源码分析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
+<meta name="keywords" content="源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAC 源码分析(一)">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/02/rac-source-analyze/index.html">
+<meta property="og:site_name" content="Simple Code Sky">
+<meta property="og:description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://simplecodesky.com/images/rac-source-analyze/logo.png">
+<meta property="og:updated_time" content="2018-04-02T09:21:12.482Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RAC 源码分析(一)">
+<meta name="twitter:description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
+<meta name="twitter:image" content="http://simplecodesky.com/images/rac-source-analyze/logo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/02/rac-source-analyze/"/>
+
+
+
+
+
+  <title>RAC 源码分析(一) | Simple Code Sky</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simple Code Sky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Any truth is better than indefinite doubt.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/02/rac-source-analyze/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Abson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simple Code Sky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RAC 源码分析(一)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T15:26:25+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 <code>rac_signalForSelector:</code> 该方法的实现，观摩一下 RAC 是如何监听方法回调的.</p>
+</blockquote>
+<p><img src="/images/rac-source-analyze/logo.png" alt=""><br><a id="more"></a></p>
+<ol>
+<li><code>SEL aliasSelector = RACAliasForSelector(selector);</code> 这个方法得到了字符串拼接 <code>rac_alias_ + @selector</code> 后的方法 <code>aliasSelector</code> 用于后面替换原方法，实现方法监听。</li>
+<li><code>RACSubject *subject</code> 为热信号，检测是否已经在监听改方法，如果有，把信号返回。</li>
+<li><a href="#####static Class RACSwizzleClass(NSObject *self">RACSwizzleClass</a>) 动态创建好这个类的 RAC 关联类，为 <code>class + _RACSelectorSignal</code> 并把这个映射类的符号添加到 OC 动态类符号当中，然后将 RAC 关联类中的方法转发 <code>forwardInvocation:</code> 、方法响应 <code>respondsToSelector:</code></li>
+<li>创建热信号 <code>RACSubject</code></li>
+<li>先查看一下对象 object 是否存在被监听的实例方法，如果不存在而查看被监听方法是否一个协议方法.</li>
+<li><code>class_replaceMethod</code> 方法把参数 <code>selector</code> 方法替换成 OC消息转发方法<code>_objc_msgForward</code>，这样的话所有被监听的方法都会调用 <code>forwardInvocation:</code> 方法了<br><strong>结合NSObject文档可以知道，_objc_msgForward 消息转发做了如下几件事：</strong><blockquote>
+<p>1.调用resolveInstanceMethod:方法，允许用户在此时为该Class动态添加实现。如果有实现了，则调用并返回。如果仍没实现，继续下面的动作。<br>2.调用forwardingTargetForSelector:方法，尝试找到一个能响应该消息的对象。如果获取到，则直接转发给它。如果返回了nil，继续下面的动作。<br>3.调用methodSignatureForSelector:方法，尝试获得一个方法签名。如果获取不到，则直接调用doesNotRecognizeSelector抛出异常。<br>4.调用forwardInvocation:方法，将地3步获取到的方法签名包装成Invocation传入，如何处理就在这里面了。</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="static-Class-RACSwizzleClass-NSObject-self"><a href="#static-Class-RACSwizzleClass-NSObject-self" class="headerlink" title="static Class RACSwizzleClass(NSObject *self)"></a>static Class RACSwizzleClass(NSObject *self)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Class RACSwizzleClass(<span class="built_in">NSObject</span> *<span class="keyword">self</span>) </span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 1.</span></span><br><span class="line">  Class statedClass = <span class="keyword">self</span>.class;</span><br><span class="line">  Class baseClass = object_getClass(<span class="keyword">self</span>);</span><br><span class="line"></span><br><span class="line">  Class knownDynamicSubclass = objc_getAssociatedObject(<span class="keyword">self</span>, RACSubclassAssociationKey);</span><br><span class="line">  <span class="keyword">if</span> (knownDynamicSubclass != Nil) <span class="keyword">return</span> knownDynamicSubclass;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">NSString</span> *className = <span class="built_in">NSStringFromClass</span>(baseClass);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (statedClass != baseClass) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">@synchronized</span> (swizzledClasses()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (![swizzledClasses() containsObject:className]) &#123;</span><br><span class="line">        RACSwizzleForwardInvocation(baseClass);</span><br><span class="line">        RACSwizzleRespondsToSelector(baseClass);</span><br><span class="line">        RACSwizzleGetClass(baseClass, statedClass);</span><br><span class="line">        RACSwizzleGetClass(object_getClass(baseClass), statedClass);</span><br><span class="line">        RACSwizzleMethodSignatureForSelector(baseClass);</span><br><span class="line">        [swizzledClasses() addObject:className];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> baseClass;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *subclassName = [className stringByAppendingString:RACSubclassSuffix].UTF8String;</span><br><span class="line">  Class subclass = objc_getClass(subclassName);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (subclass == <span class="literal">nil</span>) &#123;</span><br><span class="line">    subclass = [RACObjCRuntime createClass:subclassName inheritingFromClass:baseClass];</span><br><span class="line">    <span class="keyword">if</span> (subclass == <span class="literal">nil</span>) <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line"></span><br><span class="line">    RACSwizzleForwardInvocation(subclass);</span><br><span class="line">    RACSwizzleRespondsToSelector(subclass);</span><br><span class="line"></span><br><span class="line">    RACSwizzleGetClass(subclass, statedClass);</span><br><span class="line">    RACSwizzleGetClass(object_getClass(subclass), statedClass);</span><br><span class="line"></span><br><span class="line">    RACSwizzleMethodSignatureForSelector(subclass);</span><br><span class="line"></span><br><span class="line">    objc_registerClassPair(subclass);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  object_setClass(<span class="keyword">self</span>, subclass);</span><br><span class="line">  objc_setAssociatedObject(<span class="keyword">self</span>, RACSubclassAssociationKey, subclass, OBJC_ASSOCIATION_ASSIGN);</span><br><span class="line">  <span class="keyword">return</span> subclass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>object.class</code> 由于KVO重写了class 方法，所以不能准确的找到类.<br><code>object_getClass()</code> 方法可以准确的找到 isa 指针.<br><code>object.class</code> 与 <code>object_getClass(object)</code> 进行判断 来防止KVO导致的AOP无效.<br>为什么会发生这种情况？<br>因为当你使用 KVO 的时候，系统会帮你重写类的 class 方法，生成 <code>NSKVONotifying_ + Class</code>。例如如下代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[self.view addObserver:self forKeyPath:@&quot;frame&quot; options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line"></span><br><span class="line">- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary&lt;NSKeyValueChangeKey, id&gt; *)change context:(nullable void *)context &#123;</span><br><span class="line">  Class statedClass = self.view.class;</span><br><span class="line">  Class baseClass = object_getClass(self.view);</span><br><span class="line"></span><br><span class="line">  NSLog(@&quot;%@  %@&quot;, NSStringFromClass(statedClass), NSStringFromClass(baseClass));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>得到的 log 如下：<br><code>RACLearning[3657:478602] UIView  NSKVONotifying_UIView</code></p>
+<ol start="2">
+<li><code>swizzledClasses()</code> 专门用来存储 isa 被修改过的类，这些类不用重新生成为 RAC 的类.</li>
+<li>重新生成 RAC 的类 <code>Class + _RACSelectorSignal</code>，如果类符号中不存在，则利用运行时粗行家改类符号，并继承  Class。</li>
+<li><a href="#####  static void RACSwizzleForwardInvocation(Class class">RACSwizzleForwardInvocation</a>) 利用运行时替换消息转发的方法<br><code>forwardInvocation:</code> ，由 <a href="##### static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol">NSObjectRACSignalForSelector</a>) 代码中可以看到，所传入的方法参数 <code>selector</code> 都被换成了 <code>_objc_msgForward</code> 方法，所以，当方法 <code>selector</code> 调用是，自然就会调用 <code>forwardInvocation:</code> 方法了。</li>
+</ol>
+<h5 id="static-void-RACSwizzleForwardInvocation-Class-class"><a href="#static-void-RACSwizzleForwardInvocation-Class-class" class="headerlink" title="static void RACSwizzleForwardInvocation(Class class)"></a>static void RACSwizzleForwardInvocation(Class class)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> RACSwizzleForwardInvocation(Class <span class="keyword">class</span>) &#123;</span><br><span class="line">  SEL forwardInvocationSEL = <span class="keyword">@selector</span>(forwardInvocation:);</span><br><span class="line">  Method forwardInvocationMethod = class_getInstanceMethod(<span class="keyword">class</span>, forwardInvocationSEL);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Preserve any existing implementation of -forwardInvocation:.</span></span><br><span class="line">  <span class="keyword">void</span> (*originalForwardInvocation)(<span class="keyword">id</span>, SEL, <span class="built_in">NSInvocation</span> *) = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="keyword">if</span> (forwardInvocationMethod != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    originalForwardInvocation = (__typeof__(originalForwardInvocation))method_getImplementation(forwardInvocationMethod);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">id</span> newForwardInvocation = ^(<span class="keyword">id</span> <span class="keyword">self</span>, <span class="built_in">NSInvocation</span> *invocation) &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> matched = RACForwardInvocation(<span class="keyword">self</span>, invocation);</span><br><span class="line">    <span class="keyword">if</span> (matched) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (originalForwardInvocation == <span class="literal">NULL</span>) &#123;</span><br><span class="line">      [<span class="keyword">self</span> doesNotRecognizeSelector:invocation.selector];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      originalForwardInvocation(<span class="keyword">self</span>, forwardInvocationSEL, invocation);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  class_replaceMethod(<span class="keyword">class</span>, forwardInvocationSEL, imp_implementationWithBlock(newForwardInvocation), <span class="string">"v@:@"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>定义 IMP 函数指针指针 <code>originalForwardInvocation</code> ，指向  <code>class</code> 类的 <code>forwardInvocation</code> 内部函数实现，</li>
+<li>然后创建新的  <code>forwardInvocation:</code> block 函数 <code>newForwardInvocation</code>, block 函数内部先调用 <a href="##### static BOOL RACForwardInvocation(id self, NSInvocation *invocation">RACForwardInvocation</a>) 函数，以调用映射过后的 <code>rac_alias_ + @selector</code>  函数(实际上是 <code>@selector</code>的复制体)，然后给热信号 <code>subject</code>发送信号 Next 以调用订阅 block <code>nexblock</code>.</li>
+<li>利用 <code>class_replaceMethod</code> 方法替换了 class 的对象方法 <code>forwardInvocation:</code> 为新的 <code>newForwardInvocation</code> block 函数.</li>
+</ol>
+<h5 id="static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation"><a href="#static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation" class="headerlink" title="static BOOL RACForwardInvocation(id self, NSInvocation *invocation)"></a>static BOOL RACForwardInvocation(id self, NSInvocation *invocation)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">BOOL</span> RACForwardInvocation(<span class="keyword">id</span> <span class="keyword">self</span>, <span class="built_in">NSInvocation</span> *invocation) &#123;</span><br><span class="line">  SEL aliasSelector = RACAliasForSelector(invocation.selector);</span><br><span class="line">  RACSubject *subject = objc_getAssociatedObject(<span class="keyword">self</span>, aliasSelector);</span><br><span class="line"></span><br><span class="line">  Class <span class="keyword">class</span> = object_getClass(invocation.target);</span><br><span class="line">  <span class="built_in">BOOL</span> respondsToAlias = [<span class="keyword">class</span> instancesRespondToSelector:aliasSelector];</span><br><span class="line">  <span class="keyword">if</span> (respondsToAlias) &#123;</span><br><span class="line">    invocation.selector = aliasSelector;</span><br><span class="line">    [invocation invoke];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (subject == <span class="literal">nil</span>) <span class="keyword">return</span> respondsToAlias;</span><br><span class="line"></span><br><span class="line">  [subject sendNext:invocation.rac_argumentsTuple];</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由 <a href="##### static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol">NSObjectRACSignalForSelector</a>) 中知道，热信号 subject 已经被创建了， 而且利用了 <code>class_addMethod</code> 方法完成了被监听方法 <code>@selector</code> 的复制体 <code>rac_alias_ + @selector</code> 方法，所以这里直接利用  <code>[invocation invoke]</code>调用  <code>rac_alias_ + @selector</code> 方法，然后再像热信号 <code>subject</code> 发送 <code>next</code> 信号并且带上 <code>rac_alias_ + @selector</code> 方法的参数数组<code>rac_argumentsTuple</code>以调用 nextblock.</p>
+<h5 id="RACTuple-rac-argumentsTuple"><a href="#RACTuple-rac-argumentsTuple" class="headerlink" title="- (RACTuple *)rac_argumentsTuple"></a>- (RACTuple *)rac_argumentsTuple</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (RACTuple *)rac_argumentsTuple &#123;</span><br><span class="line">  <span class="built_in">NSUInteger</span> numberOfArguments = <span class="keyword">self</span>.methodSignature.numberOfArguments;</span><br><span class="line">  <span class="built_in">NSMutableArray</span> *argumentsArray = [<span class="built_in">NSMutableArray</span> arrayWithCapacity:numberOfArguments - <span class="number">2</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> index = <span class="number">2</span>; index &lt; numberOfArguments; index++) &#123;</span><br><span class="line">    [argumentsArray addObject:[<span class="keyword">self</span> rac_argumentAtIndex:index] ?: RACTupleNil.tupleNil];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> [RACTuple tupleWithObjectsFromArray:argumentsArray];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数个数 <code>methodSignature.numberOfArguments</code> 默认有一个 _cmd 一个 target 所以要 -2</li>
+<li>获取该方法的参数 ，<code>rac_argumentAtIndex</code> 函数内通过 methodSignature 的  <code>getArgumentTypeAtIndex</code> 方法来判断获取 OC 对象或 基础类型(如 int，char，bool 等)转成的 NSNumber 对象。</li>
+<li><code>?:</code> 新写法，如果有则添加返回的 OC 对象，没有就把  <code>RACTupleNil.tupleNil</code> 单例对象添加进去（为什么添加单例对象？可以节省内存！）</li>
+<li>利用  <code>RACTuple</code> 对象吧参数数组包装一下返回。<br>i</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/源码分析/" rel="tag"># 源码分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Abson" />
+            
+              <p class="site-author-name" itemprop="name">Abson</p>
+              <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#static-Class-RACSwizzleClass-NSObject-self"><span class="nav-number">1.</span> <span class="nav-text">static Class RACSwizzleClass(NSObject *self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#static-void-RACSwizzleForwardInvocation-Class-class"><span class="nav-number">2.</span> <span class="nav-text">static void RACSwizzleForwardInvocation(Class class)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation"><span class="nav-number">3.</span> <span class="nav-text">static BOOL RACForwardInvocation(id self, NSInvocation *invocation)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RACTuple-rac-argumentsTuple"><span class="nav-number">4.</span> <span class="nav-text">- (RACTuple *)rac_argumentsTuple</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
