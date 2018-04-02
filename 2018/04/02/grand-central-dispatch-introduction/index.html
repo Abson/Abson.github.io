@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -111,18 +111,17 @@
 
 
 
-<meta name="description" content="串行与并行同步和异步针对的是线程队列，所谓的线程队列可以理解为一组线程的数组。 串行队列：队列中是事件有序执行，遵循 FIFO（first in first out）的原则，先进入队列的事件先执行。 串行队列创建：123dispatch_queue_t queue = dispatch_queue_create(&quot;com.queue.serial&quot;, DISPATCH_QUEUE_SERIAL);">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入浅出 GCD 线程使用">
 <meta property="og:url" content="http://simplecodesky.com/2018/04/02/grand-central-dispatch-introduction/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="串行与并行同步和异步针对的是线程队列，所谓的线程队列可以理解为一组线程的数组。 串行队列：队列中是事件有序执行，遵循 FIFO（first in first out）的原则，先进入队列的事件先执行。 串行队列创建：123dispatch_queue_t queue = dispatch_queue_create(&quot;com.queue.serial&quot;, DISPATCH_QUEUE_SERIAL);">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-02T11:52:38.439Z">
+<meta property="og:image" content="http://simplecodesky.com/images/cpp-project-new-learning/dispatch_queue.jpeg">
+<meta property="og:updated_time" content="2018-04-02T12:15:15.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出 GCD 线程使用">
-<meta name="twitter:description" content="串行与并行同步和异步针对的是线程队列，所谓的线程队列可以理解为一组线程的数组。 串行队列：队列中是事件有序执行，遵循 FIFO（first in first out）的原则，先进入队列的事件先执行。 串行队列创建：123dispatch_queue_t queue = dispatch_queue_create(&quot;com.queue.serial&quot;, DISPATCH_QUEUE_SERIAL);">
+<meta name="twitter:image" content="http://simplecodesky.com/images/cpp-project-new-learning/dispatch_queue.jpeg">
 
 
 
@@ -130,7 +129,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     version: '5.1.4',
     sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -332,7 +331,8 @@
       
 
       
-        <h4 id="串行与并行"><a href="#串行与并行" class="headerlink" title="串行与并行"></a>串行与并行</h4><p>同步和异步针对的是<strong>线程队列</strong>，所谓的线程队列可以理解为一组线程的数组。</p>
+        <p><img src="/images/cpp-project-new-learning/dispatch_queue.jpeg" alt=""><br><a id="more"></a></p>
+<h4 id="串行与并行"><a href="#串行与并行" class="headerlink" title="串行与并行"></a>串行与并行</h4><p>同步和异步针对的是<strong>线程队列</strong>，所谓的线程队列可以理解为一组线程的数组。</p>
 <p><strong>串行队列：</strong><br>队列中是事件有序执行，遵循 FIFO（first in first out）的原则，先进入队列的事件先执行。</p>
 <p>串行队列创建：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_queue_create(<span class="string">"com.queue.serial"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">dispatch_get_main_queue() <span class="comment">// 主队列，也是串行队列</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>并行队列</strong><br>并行队列中的事件在逻辑上是一起执行的，但是这是要根据机器 CPU 的情况而定，在 C++ 线程库中，<code>std::thread::hardware_concurrency()</code> 能获取到当前机器最大能并发的线程数量，iPhone6P 中为 2，也就是说最大同时能处理两个并发线程任务，其他后面添加的任务都得等待两个任务中的其中一个执行完了，才可以执行。</p>
@@ -588,7 +588,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
 
 
 
@@ -687,13 +687,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
