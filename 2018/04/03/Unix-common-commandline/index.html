@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="源码分析," />
+  <meta name="keywords" content="Unix/Linux," />
 
 
 
@@ -111,20 +111,21 @@
 
 
 
-<meta name="description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
-<meta name="keywords" content="源码分析">
+<meta name="description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
+<meta name="keywords" content="Unix&#x2F;Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RAC 源码分析(一)">
-<meta property="og:url" content="http://simplecodesky.com/2018/04/02/rac-source-analyze/index.html">
+<meta property="og:title" content="Unix 常用工具命令笔记">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
+<meta property="og:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/rac-source-analyze/logo.png">
-<meta property="og:updated_time" content="2018-04-02T09:21:12.482Z">
+<meta property="og:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
+<meta property="og:image" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/1497953914890.png">
+<meta property="og:updated_time" content="2018-04-03T04:08:26.519Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RAC 源码分析(一)">
-<meta name="twitter:description" content="RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 rac_signalForSelector: 该方法的实现，观摩一下 RAC 是如何监听方法回调的.">
-<meta name="twitter:image" content="http://simplecodesky.com/images/rac-source-analyze/logo.png">
+<meta name="twitter:title" content="Unix 常用工具命令笔记">
+<meta name="twitter:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
+<meta name="twitter:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
 
 
 
@@ -154,13 +155,13 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/2018/04/02/rac-source-analyze/"/>
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/"/>
 
 
 
 
 
-  <title>RAC 源码分析(一) | Simple Code Sky</title>
+  <title>Unix 常用工具命令笔记 | Simple Code Sky</title>
   
 
 
@@ -301,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/02/rac-source-analyze/">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Abson">
@@ -318,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RAC 源码分析(一)</h1>
+          <h1 class="post-title" itemprop="name headline">Unix 常用工具命令笔记</h1>
         
 
         <div class="post-meta">
@@ -330,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T15:26:25+08:00">
-                2018-04-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T12:04:19+08:00">
+                2018-04-03
               </time>
             
 
@@ -368,47 +369,93 @@
       
 
       
-        <blockquote>
-<p>RecativeCoCoa objectivec 版本的分析，第一部分主要阐述 <code>rac_signalForSelector:</code> 该方法的实现，观摩一下 RAC 是如何监听方法回调的.</p>
+        <p><img src="/images/Unix-common-commandline/1280px-Unix_history-simple.png" alt=""></p>
+<p>一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…</p>
+<a id="more"></a>
+<h5 id="gnu套装工具"><a href="#gnu套装工具" class="headerlink" title="gnu套装工具"></a>gnu套装工具</h5><h6 id="gcc-编译器"><a href="#gcc-编译器" class="headerlink" title="gcc 编译器"></a>gcc 编译器</h6><p><strong>生成目标文件 （二进制机器代码）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c</span><br></pre></td></tr></table></figure></p>
+<p><strong>生成可执行文件 （链接器重定位）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o</span><br></pre></td></tr></table></figure></p>
+<p><strong>打开gcc所有警告</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall</span><br></pre></td></tr></table></figure></p>
+<h6 id="ld-链接器"><a href="#ld-链接器" class="headerlink" title="ld 链接器"></a>ld 链接器</h6><p><strong>将多个目标文件合并成一个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld -r</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="cat-文本文件查看和连接工具"><a href="#cat-文本文件查看和连接工具" class="headerlink" title="cat (文本文件查看和连接工具)"></a>cat (文本文件查看和连接工具)</h5><p><strong>一次显示整个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名</span><br></pre></td></tr></table></figure></p>
+<p><strong>创建一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; 文件名</span><br></pre></td></tr></table></figure></p>
+<p><strong>将几个文件合并成一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名1 文件名2 &gt; 文件名3</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/perfy/archive/2012/07/23/2605550.html" target="_blank" rel="noopener">更多的使用参考</a></p>
 </blockquote>
-<p><img src="/images/rac-source-analyze/logo.png" alt=""><br><a id="more"></a></p>
-<ol>
-<li><code>SEL aliasSelector = RACAliasForSelector(selector);</code> 这个方法得到了字符串拼接 <code>rac_alias_ + @selector</code> 后的方法 <code>aliasSelector</code> 用于后面替换原方法，实现方法监听。</li>
-<li><code>RACSubject *subject</code> 为热信号，检测是否已经在监听改方法，如果有，把信号返回。</li>
-<li><a href="#####static Class RACSwizzleClass(NSObject *self">RACSwizzleClass</a>) 动态创建好这个类的 RAC 关联类，为 <code>class + _RACSelectorSignal</code> 并把这个映射类的符号添加到 OC 动态类符号当中，然后将 RAC 关联类中的方法转发 <code>forwardInvocation:</code> 、方法响应 <code>respondsToSelector:</code></li>
-<li>创建热信号 <code>RACSubject</code></li>
-<li>先查看一下对象 object 是否存在被监听的实例方法，如果不存在而查看被监听方法是否一个协议方法.</li>
-<li><code>class_replaceMethod</code> 方法把参数 <code>selector</code> 方法替换成 OC消息转发方法<code>_objc_msgForward</code>，这样的话所有被监听的方法都会调用 <code>forwardInvocation:</code> 方法了<br><strong>结合NSObject文档可以知道，_objc_msgForward 消息转发做了如下几件事：</strong><blockquote>
-<p>1.调用resolveInstanceMethod:方法，允许用户在此时为该Class动态添加实现。如果有实现了，则调用并返回。如果仍没实现，继续下面的动作。<br>2.调用forwardingTargetForSelector:方法，尝试找到一个能响应该消息的对象。如果获取到，则直接转发给它。如果返回了nil，继续下面的动作。<br>3.调用methodSignatureForSelector:方法，尝试获得一个方法签名。如果获取不到，则直接调用doesNotRecognizeSelector抛出异常。<br>4.调用forwardInvocation:方法，将地3步获取到的方法签名包装成Invocation传入，如何处理就在这里面了。</p>
+<hr>
+<h5 id="ar-压缩工具——用于静态库"><a href="#ar-压缩工具——用于静态库" class="headerlink" title="ar (压缩工具——用于静态库)"></a>ar (压缩工具——用于静态库)</h5><p><strong>查看静态库文件包含了那些目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -t libc.a</span><br></pre></td></tr></table></figure></p>
+<p><strong>解压静态库文件，得到对目标文件进行编号和索引的 __.SYMDEF文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -x libc.a</span><br></pre></td></tr></table></figure></p>
+<p><strong>将目标文件打包成静态链接库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar crv libmylib.a  my_print.o my_match.o</span><br></pre></td></tr></table></figure></p>
+<p><strong>删除静态链接库中的某个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -d lib.a my_print.o</span><br></pre></td></tr></table></figure></p>
+<p><strong>要替换或添加新成员到库中</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -v -r lib.a strlen.o strcat.o</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v :	将建立新库的详细的逐个文件的描述写至标准输出。当和 -t 标志一起使用时，它给出类似于 ls -l 命令给出的长列表。当和 -x 标志一起使用时，它在每个文件前加一个名称。当和 -h 标志一起使用，它列出成员名称和更新的修改时间。</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="grep-文本搜索工具"><a href="#grep-文本搜索工具" class="headerlink" title="grep (文本搜索工具)"></a>grep (文本搜索工具)</h5><p><strong>搜索 services 文件内的 telnet 字段</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep telnet /etc/services</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="netstat-内核中访问网络及相关信息的程序"><a href="#netstat-内核中访问网络及相关信息的程序" class="headerlink" title="netstat (内核中访问网络及相关信息的程序)"></a>netstat (内核中访问网络及相关信息的程序)</h5><p><strong>查看本机的路由表</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nr</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示所有socket，包括正在监听的</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -a</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示协议名查看某协议使用情况 netstat -p 协议名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -p tcp</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="arp"><a href="#arp" class="headerlink" title="arp"></a>arp</h5><p><strong>用于查看高速缓存中的所有项目</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -a</span><br></pre></td></tr></table></figure></p>
+<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -g</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h5><blockquote>
+<p>查看DNS服务器地址</p>
 </blockquote>
-</li>
-</ol>
-<h5 id="static-Class-RACSwizzleClass-NSObject-self"><a href="#static-Class-RACSwizzleClass-NSObject-self" class="headerlink" title="static Class RACSwizzleClass(NSObject *self)"></a>static Class RACSwizzleClass(NSObject *self)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Class RACSwizzleClass(<span class="built_in">NSObject</span> *<span class="keyword">self</span>) </span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 1.</span></span><br><span class="line">  Class statedClass = <span class="keyword">self</span>.class;</span><br><span class="line">  Class baseClass = object_getClass(<span class="keyword">self</span>);</span><br><span class="line"></span><br><span class="line">  Class knownDynamicSubclass = objc_getAssociatedObject(<span class="keyword">self</span>, RACSubclassAssociationKey);</span><br><span class="line">  <span class="keyword">if</span> (knownDynamicSubclass != Nil) <span class="keyword">return</span> knownDynamicSubclass;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">NSString</span> *className = <span class="built_in">NSStringFromClass</span>(baseClass);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (statedClass != baseClass) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">@synchronized</span> (swizzledClasses()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (![swizzledClasses() containsObject:className]) &#123;</span><br><span class="line">        RACSwizzleForwardInvocation(baseClass);</span><br><span class="line">        RACSwizzleRespondsToSelector(baseClass);</span><br><span class="line">        RACSwizzleGetClass(baseClass, statedClass);</span><br><span class="line">        RACSwizzleGetClass(object_getClass(baseClass), statedClass);</span><br><span class="line">        RACSwizzleMethodSignatureForSelector(baseClass);</span><br><span class="line">        [swizzledClasses() addObject:className];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> baseClass;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *subclassName = [className stringByAppendingString:RACSubclassSuffix].UTF8String;</span><br><span class="line">  Class subclass = objc_getClass(subclassName);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (subclass == <span class="literal">nil</span>) &#123;</span><br><span class="line">    subclass = [RACObjCRuntime createClass:subclassName inheritingFromClass:baseClass];</span><br><span class="line">    <span class="keyword">if</span> (subclass == <span class="literal">nil</span>) <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line"></span><br><span class="line">    RACSwizzleForwardInvocation(subclass);</span><br><span class="line">    RACSwizzleRespondsToSelector(subclass);</span><br><span class="line"></span><br><span class="line">    RACSwizzleGetClass(subclass, statedClass);</span><br><span class="line">    RACSwizzleGetClass(object_getClass(subclass), statedClass);</span><br><span class="line"></span><br><span class="line">    RACSwizzleMethodSignatureForSelector(subclass);</span><br><span class="line"></span><br><span class="line">    objc_registerClassPair(subclass);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  object_setClass(<span class="keyword">self</span>, subclass);</span><br><span class="line">  objc_setAssociatedObject(<span class="keyword">self</span>, RACSubclassAssociationKey, subclass, OBJC_ASSOCIATION_ASSIGN);</span><br><span class="line">  <span class="keyword">return</span> subclass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li><code>object.class</code> 由于KVO重写了class 方法，所以不能准确的找到类.<br><code>object_getClass()</code> 方法可以准确的找到 isa 指针.<br><code>object.class</code> 与 <code>object_getClass(object)</code> 进行判断 来防止KVO导致的AOP无效.<br>为什么会发生这种情况？<br>因为当你使用 KVO 的时候，系统会帮你重写类的 class 方法，生成 <code>NSKVONotifying_ + Class</code>。例如如下代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[self.view addObserver:self forKeyPath:@&quot;frame&quot; options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line"></span><br><span class="line">- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary&lt;NSKeyValueChangeKey, id&gt; *)change context:(nullable void *)context &#123;</span><br><span class="line">  Class statedClass = self.view.class;</span><br><span class="line">  Class baseClass = object_getClass(self.view);</span><br><span class="line"></span><br><span class="line">  NSLog(@&quot;%@  %@&quot;, NSStringFromClass(statedClass), NSStringFromClass(baseClass));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>得到的 log 如下：<br><code>RACLearning[3657:478602] UIView  NSKVONotifying_UIView</code></p>
-<ol start="2">
-<li><code>swizzledClasses()</code> 专门用来存储 isa 被修改过的类，这些类不用重新生成为 RAC 的类.</li>
-<li>重新生成 RAC 的类 <code>Class + _RACSelectorSignal</code>，如果类符号中不存在，则利用运行时粗行家改类符号，并继承  Class。</li>
-<li><a href="#####  static void RACSwizzleForwardInvocation(Class class">RACSwizzleForwardInvocation</a>) 利用运行时替换消息转发的方法<br><code>forwardInvocation:</code> ，由 <a href="##### static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol">NSObjectRACSignalForSelector</a>) 代码中可以看到，所传入的方法参数 <code>selector</code> 都被换成了 <code>_objc_msgForward</code> 方法，所以，当方法 <code>selector</code> 调用是，自然就会调用 <code>forwardInvocation:</code> 方法了。</li>
-</ol>
-<h5 id="static-void-RACSwizzleForwardInvocation-Class-class"><a href="#static-void-RACSwizzleForwardInvocation-Class-class" class="headerlink" title="static void RACSwizzleForwardInvocation(Class class)"></a>static void RACSwizzleForwardInvocation(Class class)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> RACSwizzleForwardInvocation(Class <span class="keyword">class</span>) &#123;</span><br><span class="line">  SEL forwardInvocationSEL = <span class="keyword">@selector</span>(forwardInvocation:);</span><br><span class="line">  Method forwardInvocationMethod = class_getInstanceMethod(<span class="keyword">class</span>, forwardInvocationSEL);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Preserve any existing implementation of -forwardInvocation:.</span></span><br><span class="line">  <span class="keyword">void</span> (*originalForwardInvocation)(<span class="keyword">id</span>, SEL, <span class="built_in">NSInvocation</span> *) = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="keyword">if</span> (forwardInvocationMethod != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    originalForwardInvocation = (__typeof__(originalForwardInvocation))method_getImplementation(forwardInvocationMethod);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">id</span> newForwardInvocation = ^(<span class="keyword">id</span> <span class="keyword">self</span>, <span class="built_in">NSInvocation</span> *invocation) &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> matched = RACForwardInvocation(<span class="keyword">self</span>, invocation);</span><br><span class="line">    <span class="keyword">if</span> (matched) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (originalForwardInvocation == <span class="literal">NULL</span>) &#123;</span><br><span class="line">      [<span class="keyword">self</span> doesNotRecognizeSelector:invocation.selector];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      originalForwardInvocation(<span class="keyword">self</span>, forwardInvocationSEL, invocation);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  class_replaceMethod(<span class="keyword">class</span>, forwardInvocationSEL, imp_implementationWithBlock(newForwardInvocation), <span class="string">"v@:@"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>定义 IMP 函数指针指针 <code>originalForwardInvocation</code> ，指向  <code>class</code> 类的 <code>forwardInvocation</code> 内部函数实现，</li>
-<li>然后创建新的  <code>forwardInvocation:</code> block 函数 <code>newForwardInvocation</code>, block 函数内部先调用 <a href="##### static BOOL RACForwardInvocation(id self, NSInvocation *invocation">RACForwardInvocation</a>) 函数，以调用映射过后的 <code>rac_alias_ + @selector</code>  函数(实际上是 <code>@selector</code>的复制体)，然后给热信号 <code>subject</code>发送信号 Next 以调用订阅 block <code>nexblock</code>.</li>
-<li>利用 <code>class_replaceMethod</code> 方法替换了 class 的对象方法 <code>forwardInvocation:</code> 为新的 <code>newForwardInvocation</code> block 函数.</li>
-</ol>
-<h5 id="static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation"><a href="#static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation" class="headerlink" title="static BOOL RACForwardInvocation(id self, NSInvocation *invocation)"></a>static BOOL RACForwardInvocation(id self, NSInvocation *invocation)</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">BOOL</span> RACForwardInvocation(<span class="keyword">id</span> <span class="keyword">self</span>, <span class="built_in">NSInvocation</span> *invocation) &#123;</span><br><span class="line">  SEL aliasSelector = RACAliasForSelector(invocation.selector);</span><br><span class="line">  RACSubject *subject = objc_getAssociatedObject(<span class="keyword">self</span>, aliasSelector);</span><br><span class="line"></span><br><span class="line">  Class <span class="keyword">class</span> = object_getClass(invocation.target);</span><br><span class="line">  <span class="built_in">BOOL</span> respondsToAlias = [<span class="keyword">class</span> instancesRespondToSelector:aliasSelector];</span><br><span class="line">  <span class="keyword">if</span> (respondsToAlias) &#123;</span><br><span class="line">    invocation.selector = aliasSelector;</span><br><span class="line">    [invocation invoke];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (subject == <span class="literal">nil</span>) <span class="keyword">return</span> respondsToAlias;</span><br><span class="line"></span><br><span class="line">  [subject sendNext:invocation.rac_argumentsTuple];</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由 <a href="##### static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol">NSObjectRACSignalForSelector</a>) 中知道，热信号 subject 已经被创建了， 而且利用了 <code>class_addMethod</code> 方法完成了被监听方法 <code>@selector</code> 的复制体 <code>rac_alias_ + @selector</code> 方法，所以这里直接利用  <code>[invocation invoke]</code>调用  <code>rac_alias_ + @selector</code> 方法，然后再像热信号 <code>subject</code> 发送 <code>next</code> 信号并且带上 <code>rac_alias_ + @selector</code> 方法的参数数组<code>rac_argumentsTuple</code>以调用 nextblock.</p>
-<h5 id="RACTuple-rac-argumentsTuple"><a href="#RACTuple-rac-argumentsTuple" class="headerlink" title="- (RACTuple *)rac_argumentsTuple"></a>- (RACTuple *)rac_argumentsTuple</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (RACTuple *)rac_argumentsTuple &#123;</span><br><span class="line">  <span class="built_in">NSUInteger</span> numberOfArguments = <span class="keyword">self</span>.methodSignature.numberOfArguments;</span><br><span class="line">  <span class="built_in">NSMutableArray</span> *argumentsArray = [<span class="built_in">NSMutableArray</span> arrayWithCapacity:numberOfArguments - <span class="number">2</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> index = <span class="number">2</span>; index &lt; numberOfArguments; index++) &#123;</span><br><span class="line">    [argumentsArray addObject:[<span class="keyword">self</span> rac_argumentAtIndex:index] ?: RACTupleNil.tupleNil];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> [RACTuple tupleWithObjectsFromArray:argumentsArray];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>参数个数 <code>methodSignature.numberOfArguments</code> 默认有一个 _cmd 一个 target 所以要 -2</li>
-<li>获取该方法的参数 ，<code>rac_argumentAtIndex</code> 函数内通过 methodSignature 的  <code>getArgumentTypeAtIndex</code> 方法来判断获取 OC 对象或 基础类型(如 int，char，bool 等)转成的 NSNumber 对象。</li>
-<li><code>?:</code> 新写法，如果有则添加返回的 OC 对象，没有就把  <code>RACTupleNil.tupleNil</code> 单例对象添加进去（为什么添加单例对象？可以节省内存！）</li>
-<li>利用  <code>RACTuple</code> 对象吧参数数组包装一下返回。<br>i</li>
-</ol>
+<p><strong>这个文件内存放DNS服务器的IP地址</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/resolv.conf</span><br></pre></td></tr></table></figure></p>
+<p><img src="./1497953914890.png" alt="Alt text"></p>
+<blockquote>
+<p>其中的两个IP地址分别是首选DNS服务器地址和备选DNS服务器地址。文件中的注释语句“Generated by Network Manager”告诉我们，这两个DNS服务器地址是由网络管理程序写入的。</p>
+</blockquote>
+<p><strong>将查询传递给DNS服务器，并显示返回的结果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host baidu.com</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h5><hr>
+<h5 id="lipo"><a href="#lipo" class="headerlink" title="lipo"></a>lipo</h5><blockquote>
+<p>因为苹果在 mac 上使用的静态库都是一些通过多个不同架构的静态库合成的压缩文件格式，所有有了 lipo 工具来操作这个压缩文件 </p>
+</blockquote>
+<p><strong>查看 mac os系统中静态库中包含了那些架构</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info lib.a</span><br></pre></td></tr></table></figure></p>
+<p><strong>解压出指定架构的静态库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo lib.a -thin armv7 -output lib-armv7.a</span><br></pre></td></tr></table></figure></p>
+<p><strong>合并模拟器库文件和真机库文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create -output lib.a lib-armv6.a lib-i386.a</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="dwarfdump-用于查看-dSYM-符号集合文件"><a href="#dwarfdump-用于查看-dSYM-符号集合文件" class="headerlink" title="dwarfdump (用于查看 dSYM 符号集合文件)"></a>dwarfdump (用于查看 dSYM 符号集合文件)</h5><blockquote>
+<p>* 为文件名</p>
+</blockquote>
+<p><strong>查看 .dSYM 符号文件中的所有符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump SocialDevApp.app.dSYM &gt; text</span><br></pre></td></tr></table></figure></p>
+<p><strong>查看地址为 0x0024d6a5  所对应的符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump  --lookup=0x0024d6a5 SocialDevApp.app.dSYM :</span><br></pre></td></tr></table></figure></p>
+<p><strong> 查看 .dSYM 文件 UUID 是否跟 .crash 文件是否一致</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump --uuid /*.app.dSYM</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="symbolicatecrash-符号化-crash-文件"><a href="#symbolicatecrash-符号化-crash-文件" class="headerlink" title="symbolicatecrash 符号化 .crash 文件"></a>symbolicatecrash 符号化 .crash 文件</h5><p>首先要找到 symbolicatec 这个 shell 在哪里，进入 xcode.app, 使用如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name symbolicatecrash</span><br></pre></td></tr></table></figure></p>
+<p><strong>符号化 .crash </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./symbolicatecrash /*.crash /*.app.dSYM &gt; /*.crash</span><br></pre></td></tr></table></figure></p>
+<p>如果发生错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.</span><br></pre></td></tr></table></figure></p>
+<p>使用如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer</span><br></pre></td></tr></table></figure></p>
+<p>xcode 中所有 dSYM 文件的位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Developer/Xcode/Archives</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a>objdump</h5><blockquote>
+<p>用于查看 目标文件(.o) 或 可 执行的目标文件(.out) 构成的 GCC 工具</p>
+</blockquote>
+<p><strong>反汇编目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d main.o &gt; text</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示符号表入口</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -t main.o</span><br></pre></td></tr></table></figure></p>
+<p><strong>尽可能反汇编出源代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -S main.o</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="file"><a href="#file" class="headerlink" title="file"></a>file</h5><p>用于查看文件编码的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file info.plist</span><br><span class="line">输出：info.plist: Apple binary property list</span><br><span class="line"></span><br><span class="line">file SsjjCoreSdk</span><br><span class="line">输出：</span><br><span class="line">SsjjCoreSdk: Mach-O universal binary with 2 architectures: [arm_v7: current ar archive] [arm64]</span><br><span class="line">SsjjCoreSdk (for architecture armv7):	current ar archive</span><br><span class="line">SsjjCoreSdk (for architecture arm64):	current ar archive</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="lsof-一切皆文件"><a href="#lsof-一切皆文件" class="headerlink" title="lsof (一切皆文件)"></a>lsof (一切皆文件)</h5><blockquote>
+<p>lsof（list open files）是一个查看当前系统文件的工具。在Unix 环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。</p>
+</blockquote>
+<p><strong>查看系统中端口占用情况</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i</span><br></pre></td></tr></table></figure></p>
+<p><strong>查看某一端口的占用情况：lsof -i:端口号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:21</span><br></pre></td></tr></table></figure></p>
+<p><strong>查找某个文件相关的进程：lsof 文件名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof /bin/bash</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/lsof.html" target="_blank" rel="noopener">更多使用</a></p>
+</blockquote>
+<h5 id="ps-查看进程"><a href="#ps-查看进程" class="headerlink" title="ps (查看进程)"></a>ps (查看进程)</h5><p><strong>显示所有进程信息</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A</span><br></pre></td></tr></table></figure></p>
+<p><strong>ps 与grep 组合使用，查找特定进程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep ssh</span><br></pre></td></tr></table></figure></p>
+<p><strong>列出目前所有的正在内存中的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="otool-Mac上的objdump"><a href="#otool-Mac上的objdump" class="headerlink" title="otool (Mac上的objdump)"></a>otool (Mac上的objdump)</h5><p>反汇编 mach-o 目标文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otool -tV main.out</span><br></pre></td></tr></table></figure></p>
+<hr>
 
       
     </div>
@@ -426,7 +473,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/源码分析/" rel="tag"># 源码分析</a>
+            <a href="/tags/Unix-Linux/" rel="tag"># Unix/Linux</a>
           
         </div>
       
@@ -439,15 +486,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/04/02/grand-central-dispatch-introduction/" rel="next" title="深入浅出 GCD 线程使用">
+                <i class="fa fa-chevron-left"></i> 深入浅出 GCD 线程使用
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/02/asynchronous-io-introduction/" rel="prev" title="异步iO的演变历程">
-                异步iO的演变历程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -574,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#static-Class-RACSwizzleClass-NSObject-self"><span class="nav-number">1.</span> <span class="nav-text">static Class RACSwizzleClass(NSObject *self)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#static-void-RACSwizzleForwardInvocation-Class-class"><span class="nav-number">2.</span> <span class="nav-text">static void RACSwizzleForwardInvocation(Class class)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#static-BOOL-RACForwardInvocation-id-self-NSInvocation-invocation"><span class="nav-number">3.</span> <span class="nav-text">static BOOL RACForwardInvocation(id self, NSInvocation *invocation)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RACTuple-rac-argumentsTuple"><span class="nav-number">4.</span> <span class="nav-text">- (RACTuple *)rac_argumentsTuple</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#gnu套装工具"><span class="nav-number">1.</span> <span class="nav-text">gnu套装工具</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#gcc-编译器"><span class="nav-number">1.1.</span> <span class="nav-text">gcc 编译器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ld-链接器"><span class="nav-number">1.2.</span> <span class="nav-text">ld 链接器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cat-文本文件查看和连接工具"><span class="nav-number">2.</span> <span class="nav-text">cat (文本文件查看和连接工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ar-压缩工具——用于静态库"><span class="nav-number">3.</span> <span class="nav-text">ar (压缩工具——用于静态库)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#grep-文本搜索工具"><span class="nav-number">4.</span> <span class="nav-text">grep (文本搜索工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#netstat-内核中访问网络及相关信息的程序"><span class="nav-number">5.</span> <span class="nav-text">netstat (内核中访问网络及相关信息的程序)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arp"><span class="nav-number">6.</span> <span class="nav-text">arp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dns"><span class="nav-number">7.</span> <span class="nav-text">dns</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tcpdump"><span class="nav-number">8.</span> <span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lipo"><span class="nav-number">9.</span> <span class="nav-text">lipo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dwarfdump-用于查看-dSYM-符号集合文件"><span class="nav-number">10.</span> <span class="nav-text">dwarfdump (用于查看 dSYM 符号集合文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#symbolicatecrash-符号化-crash-文件"><span class="nav-number">11.</span> <span class="nav-text">symbolicatecrash 符号化 .crash 文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#objdump"><span class="nav-number">12.</span> <span class="nav-text">objdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#file"><span class="nav-number">13.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lsof-一切皆文件"><span class="nav-number">14.</span> <span class="nav-text">lsof (一切皆文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ps-查看进程"><span class="nav-number">15.</span> <span class="nav-text">ps (查看进程)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#otool-Mac上的objdump"><span class="nav-number">16.</span> <span class="nav-text">otool (Mac上的objdump)</span></a></li></ol></div>
             
 
           </div>
