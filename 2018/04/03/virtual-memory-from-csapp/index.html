@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Unix/Linux," />
+  <meta name="keywords" content="笔记," />
 
 
 
@@ -111,21 +111,26 @@
 
 
 
-<meta name="description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
-<meta name="keywords" content="Unix&#x2F;Linux">
+<meta name="description" content="未完待续…">
+<meta name="keywords" content="笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unix 常用工具命令笔记">
-<meta property="og:url" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/index.html">
+<meta property="og:title" content="阅读CSAPP——虚拟内存篇">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
+<meta property="og:description" content="未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
-<meta property="og:image" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/1497953914890.png">
-<meta property="og:updated_time" content="2018-04-03T04:08:26.519Z">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750734673.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750829762.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750854143.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750870793.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750894245.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750909427.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750928874.jpg">
+<meta property="og:updated_time" content="2018-04-03T10:29:56.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unix 常用工具命令笔记">
-<meta name="twitter:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
-<meta name="twitter:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
+<meta name="twitter:title" content="阅读CSAPP——虚拟内存篇">
+<meta name="twitter:description" content="未完待续…">
+<meta name="twitter:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750734673.jpg">
 
 
 
@@ -155,13 +160,13 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/"/>
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/"/>
 
 
 
 
 
-  <title>Unix 常用工具命令笔记 | Simple Code Sky</title>
+  <title>阅读CSAPP——虚拟内存篇 | Simple Code Sky</title>
   
 
 
@@ -302,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Abson">
@@ -319,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Unix 常用工具命令笔记</h1>
+          <h1 class="post-title" itemprop="name headline">阅读CSAPP——虚拟内存篇</h1>
         
 
         <div class="post-meta">
@@ -331,7 +336,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T12:04:19+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T18:17:07+08:00">
                 2018-04-03
               </time>
             
@@ -369,93 +374,161 @@
       
 
       
-        <p><img src="/images/Unix-common-commandline/1280px-Unix_history-simple.png" alt=""></p>
-<p>一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…</p>
+        <p>未完待续…</p>
 <a id="more"></a>
-<h5 id="gnu套装工具"><a href="#gnu套装工具" class="headerlink" title="gnu套装工具"></a>gnu套装工具</h5><h6 id="gcc-编译器"><a href="#gcc-编译器" class="headerlink" title="gcc 编译器"></a>gcc 编译器</h6><p><strong>生成目标文件 （二进制机器代码）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c</span><br></pre></td></tr></table></figure></p>
-<p><strong>生成可执行文件 （链接器重定位）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o</span><br></pre></td></tr></table></figure></p>
-<p><strong>打开gcc所有警告</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall</span><br></pre></td></tr></table></figure></p>
-<h6 id="ld-链接器"><a href="#ld-链接器" class="headerlink" title="ld 链接器"></a>ld 链接器</h6><p><strong>将多个目标文件合并成一个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld -r</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="cat-文本文件查看和连接工具"><a href="#cat-文本文件查看和连接工具" class="headerlink" title="cat (文本文件查看和连接工具)"></a>cat (文本文件查看和连接工具)</h5><p><strong>一次显示整个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名</span><br></pre></td></tr></table></figure></p>
-<p><strong>创建一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; 文件名</span><br></pre></td></tr></table></figure></p>
-<p><strong>将几个文件合并成一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名1 文件名2 &gt; 文件名3</span><br></pre></td></tr></table></figure></p>
+<h6 id="为什么内存要分页？"><a href="#为什么内存要分页？" class="headerlink" title="为什么内存要分页？"></a>为什么内存要分页？</h6><blockquote>
+<p>假设内存是连续分配的（也就是程序在物理内存上是连续的）</p>
+</blockquote>
 <blockquote>
-<p><a href="http://www.cnblogs.com/perfy/archive/2012/07/23/2605550.html" target="_blank" rel="noopener">更多的使用参考</a></p>
+<ol>
+<li>进程A进来，向os申请了200的内存空间，于是os把0~199分配给A </li>
+<li>进程B进来，向os申请了5的内存空间，os把200~204分配给它 </li>
+<li>进程C进来，向os申请了100的内存空间，os把205~304分配给它 </li>
+<li>这个时候进程B运行完了，把200~204还给os</li>
+</ol>
 </blockquote>
-<hr>
-<h5 id="ar-压缩工具——用于静态库"><a href="#ar-压缩工具——用于静态库" class="headerlink" title="ar (压缩工具——用于静态库)"></a>ar (压缩工具——用于静态库)</h5><p><strong>查看静态库文件包含了那些目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -t libc.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>解压静态库文件，得到对目标文件进行编号和索引的 __.SYMDEF文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -x libc.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>将目标文件打包成静态链接库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar crv libmylib.a  my_print.o my_match.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>删除静态链接库中的某个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -d lib.a my_print.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>要替换或添加新成员到库中</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -v -r lib.a strlen.o strcat.o</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v :	将建立新库的详细的逐个文件的描述写至标准输出。当和 -t 标志一起使用时，它给出类似于 ls -l 命令给出的长列表。当和 -x 标志一起使用时，它在每个文件前加一个名称。当和 -h 标志一起使用，它列出成员名称和更新的修改时间。</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="grep-文本搜索工具"><a href="#grep-文本搜索工具" class="headerlink" title="grep (文本搜索工具)"></a>grep (文本搜索工具)</h5><p><strong>搜索 services 文件内的 telnet 字段</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep telnet /etc/services</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="netstat-内核中访问网络及相关信息的程序"><a href="#netstat-内核中访问网络及相关信息的程序" class="headerlink" title="netstat (内核中访问网络及相关信息的程序)"></a>netstat (内核中访问网络及相关信息的程序)</h5><p><strong>查看本机的路由表</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nr</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示所有socket，包括正在监听的</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -a</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示协议名查看某协议使用情况 netstat -p 协议名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -p tcp</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="arp"><a href="#arp" class="headerlink" title="arp"></a>arp</h5><p><strong>用于查看高速缓存中的所有项目</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -a</span><br></pre></td></tr></table></figure></p>
-<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -g</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h5><blockquote>
-<p>查看DNS服务器地址</p>
-</blockquote>
-<p><strong>这个文件内存放DNS服务器的IP地址</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/resolv.conf</span><br></pre></td></tr></table></figure></p>
-<p><img src="./1497953914890.png" alt="Alt text"></p>
 <blockquote>
-<p>其中的两个IP地址分别是首选DNS服务器地址和备选DNS服务器地址。文件中的注释语句“Generated by Network Manager”告诉我们，这两个DNS服务器地址是由网络管理程序写入的。</p>
+<p>但是很长时间以后，只要系统中的出现的进程的大小&gt;5的话，200~204这段空间都不会被分配出去（只要A和C不退出）。</p>
 </blockquote>
-<p><strong>将查询传递给DNS服务器，并显示返回的结果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host baidu.com</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h5><hr>
-<h5 id="lipo"><a href="#lipo" class="headerlink" title="lipo"></a>lipo</h5><blockquote>
-<p>因为苹果在 mac 上使用的静态库都是一些通过多个不同架构的静态库合成的压缩文件格式，所有有了 lipo 工具来操作这个压缩文件 </p>
-</blockquote>
-<p><strong>查看 mac os系统中静态库中包含了那些架构</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info lib.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>解压出指定架构的静态库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo lib.a -thin armv7 -output lib-armv7.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>合并模拟器库文件和真机库文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create -output lib.a lib-armv6.a lib-i386.a</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="dwarfdump-用于查看-dSYM-符号集合文件"><a href="#dwarfdump-用于查看-dSYM-符号集合文件" class="headerlink" title="dwarfdump (用于查看 dSYM 符号集合文件)"></a>dwarfdump (用于查看 dSYM 符号集合文件)</h5><blockquote>
-<p>* 为文件名</p>
-</blockquote>
-<p><strong>查看 .dSYM 符号文件中的所有符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump SocialDevApp.app.dSYM &gt; text</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看地址为 0x0024d6a5  所对应的符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump  --lookup=0x0024d6a5 SocialDevApp.app.dSYM :</span><br></pre></td></tr></table></figure></p>
-<p><strong> 查看 .dSYM 文件 UUID 是否跟 .crash 文件是否一致</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump --uuid /*.app.dSYM</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="symbolicatecrash-符号化-crash-文件"><a href="#symbolicatecrash-符号化-crash-文件" class="headerlink" title="symbolicatecrash 符号化 .crash 文件"></a>symbolicatecrash 符号化 .crash 文件</h5><p>首先要找到 symbolicatec 这个 shell 在哪里，进入 xcode.app, 使用如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name symbolicatecrash</span><br></pre></td></tr></table></figure></p>
-<p><strong>符号化 .crash </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./symbolicatecrash /*.crash /*.app.dSYM &gt; /*.crash</span><br></pre></td></tr></table></figure></p>
-<p>如果发生错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.</span><br></pre></td></tr></table></figure></p>
-<p>使用如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer</span><br></pre></td></tr></table></figure></p>
-<p>xcode 中所有 dSYM 文件的位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Developer/Xcode/Archives</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a>objdump</h5><blockquote>
-<p>用于查看 目标文件(.o) 或 可 执行的目标文件(.out) 构成的 GCC 工具</p>
-</blockquote>
-<p><strong>反汇编目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d main.o &gt; text</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示符号表入口</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -t main.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>尽可能反汇编出源代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -S main.o</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="file"><a href="#file" class="headerlink" title="file"></a>file</h5><p>用于查看文件编码的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file info.plist</span><br><span class="line">输出：info.plist: Apple binary property list</span><br><span class="line"></span><br><span class="line">file SsjjCoreSdk</span><br><span class="line">输出：</span><br><span class="line">SsjjCoreSdk: Mach-O universal binary with 2 architectures: [arm_v7: current ar archive] [arm64]</span><br><span class="line">SsjjCoreSdk (for architecture armv7):	current ar archive</span><br><span class="line">SsjjCoreSdk (for architecture arm64):	current ar archive</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="lsof-一切皆文件"><a href="#lsof-一切皆文件" class="headerlink" title="lsof (一切皆文件)"></a>lsof (一切皆文件)</h5><blockquote>
-<p>lsof（list open files）是一个查看当前系统文件的工具。在Unix 环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。</p>
-</blockquote>
-<p><strong>查看系统中端口占用情况</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看某一端口的占用情况：lsof -i:端口号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:21</span><br></pre></td></tr></table></figure></p>
-<p><strong>查找某个文件相关的进程：lsof 文件名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof /bin/bash</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p><a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/lsof.html" target="_blank" rel="noopener">更多使用</a></p>
+<p>过了一段更长的时间，内存中就会出现许许多多200~204这样不能被利用的碎片……</p>
 </blockquote>
-<h5 id="ps-查看进程"><a href="#ps-查看进程" class="headerlink" title="ps (查看进程)"></a>ps (查看进程)</h5><p><strong>显示所有进程信息</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A</span><br></pre></td></tr></table></figure></p>
-<p><strong>ps 与grep 组合使用，查找特定进程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep ssh</span><br></pre></td></tr></table></figure></p>
-<p><strong>列出目前所有的正在内存中的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>而分页机制让程序可以在逻辑上连续、物理上离散。也就是说在一段连续的物理内存上，可能0~4（这个值取决于页面的大小）属于A，而5~9属于B，10~14属于C，<strong>从而保证任何一个“内存片段”都可以被分配出去</strong>。</p>
+</blockquote>
 <hr>
-<h5 id="otool-Mac上的objdump"><a href="#otool-Mac上的objdump" class="headerlink" title="otool (Mac上的objdump)"></a>otool (Mac上的objdump)</h5><p>反汇编 mach-o 目标文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otool -tV main.out</span><br></pre></td></tr></table></figure></p>
+<h6 id="虚拟内存、虚拟页、虚拟地址"><a href="#虚拟内存、虚拟页、虚拟地址" class="headerlink" title="虚拟内存、虚拟页、虚拟地址"></a>虚拟内存、虚拟页、虚拟地址</h6><blockquote>
+<p>虚拟内存大小要看计算机系统的位数。</p>
+</blockquote>
+<blockquote>
+<p>虚拟页大小是可以设置的，在Unix上一般大小为 4kb。</p>
+</blockquote>
+<blockquote>
+<p>虚拟地址的数量是根据虚拟页大小和虚拟内存大小确定的，因为一个虚拟地址对应一个虚拟页，虚拟地址分为两部分 VPN + VPO ，虚拟页号 + 虚拟页偏移量，虚拟页号也就是每个页特有的编号，就像一个背包的商品编号9527一样; 虚拟页偏移量也就是页大小, 标识这这个页到底装了多少“有效数据”，就像这个9527的背包能装多少重量的物品一样。</p>
+</blockquote>
 <hr>
+<h6 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h6><blockquote>
+<p>Linux 通过将一个虚拟内存区域与一个磁盘上的对象(object)关联起来，以初始化这个虚拟内存区域的内容，这个过程称为内存映射(memory mapping).</p>
+</blockquote>
+<p><img src="/images/virtual-memory-from-csapp/1522750734673.jpg" alt=""></p>
+<blockquote>
+<p>虚拟内存区域可以映射到两种类型的对象中的一种：</p>
+<ol>
+<li>Linux 文件系统中的普通文件</li>
+<li>匿名文件</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>区别：<br>普通文件是磁盘上的一个文件，被分成页大小的片，每一片包含一个虚拟内存页面的初始内容，这些页面是按需调度到物理内存当中的。</p>
+</blockquote>
+<blockquote>
+<p>匿名文件由内核创建，存在于物理内存当中，并不存在于磁盘。</p>
+</blockquote>
+<hr>
+<h6 id="页命中和缺页"><a href="#页命中和缺页" class="headerlink" title="页命中和缺页"></a>页命中和缺页</h6><blockquote>
+<p>同任何缓存一样，虚拟内存系统必须有某种方法判断一个虚拟页是否缓存在DRAM中的某个地方。如果是，系统必须确定这个虚拟页放在哪个物理页中。如果不命中，系统必须判断这个虚拟页放在磁盘哪个位置上，在物理内存中选择一个牺牲页，并将虚拟页从磁盘复制到 DRAM 中，替换这个牺牲页。</p>
+</blockquote>
+<blockquote>
+<p>页表（PTE）：上面这些判断缓存的功能是由软硬联合提供的，包括操作系统软件，MMU（内存管理单元）中的地址复议硬件和一个存放在物理内存中叫做页面的数据结构，页表将许你夜映射到物理页。</p>
+</blockquote>
+<blockquote>
+<p>每次地址翻译硬件将一个虚拟地址转换成物理地址时，就会读取页表。操作系统负责维护页表的内存，以及磁盘与DRAM之间来回传输页。</p>
+</blockquote>
+<blockquote>
+<p><strong>页命中：</strong><br><img src="/images/virtual-memory-from-csapp/1522750829762.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p><strong>缺页：DRAM 缓存不命中</strong></p>
+</blockquote>
+<blockquote>
+<p><img src="/images/virtual-memory-from-csapp/1522750854143.jpg" alt=""></p>
+<p><img src="/images/virtual-memory-from-csapp/1522750870793.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p>上图流程中如果 VP4 已经被修改，那么内核将会将它复制回磁盘。</p>
+</blockquote>
+<h5 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h5><blockquote>
+<p><strong>地址翻译概念流程：</strong></p>
+</blockquote>
+<blockquote>
+<p><img src="/images/virtual-memory-from-csapp/1522750894245.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p>图中可以看出一项 PTE 是一个 有效位+物理页号/磁盘地址 的结构。</p>
+</blockquote>
+<blockquote>
+<p><strong>假设页命中：</strong>虚拟地址通过 PTE 得知有效位为1，得到了物理页号PPN，物理页偏移量  == 虚拟页偏移量，通过 物理页号+虚拟地址偏移量 = 物理地址了，通过物理地址可以直接到物理内存中（DRAM）读取字节块。<br><img src="/images/virtual-memory-from-csapp/1522750909427.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p><strong>假设页缺失：</strong>虚拟地址通过 PTE 得知有效位为0，得到了磁盘地址，然后触发页缺失异常，系统通过磁盘地址到磁盘中读取字节块，然后把字节块分页加载到物理内存当中，需要的时候选取物理内存中牺牲页交换，完成后，再次通知系统重新走虚拟地址获取物理页号的流程（跟上面页命中一样了）。<br>PS：页表中页命中的PTE带着物理页号，缺页的PTE带着磁盘地址。</p>
+</blockquote>
+<blockquote>
+<p><img src="/images/virtual-memory-from-csapp/1522750928874.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p>VA：虚拟地址 （virtual address）。<br>PTEA：页表条目地址（page table entry address）。<br>PTE：页表条目（page table entry）。<br>PA：物理地址（physics address）。</p>
+</blockquote>
+<h5 id="一个进程的虚拟内存布局"><a href="#一个进程的虚拟内存布局" class="headerlink" title="一个进程的虚拟内存布局"></a>一个进程的虚拟内存布局</h5><h6 id="mmap-umap-和-动态内存分配器"><a href="#mmap-umap-和-动态内存分配器" class="headerlink" title="mmap/umap 和 动态内存分配器"></a>mmap/umap 和 动态内存分配器</h6><blockquote>
+<p>mmap/umap 是创建/删除虚拟内存区域的函数。例如 .bbs、栈、堆 等等就是不同的虚拟内存区域。<br>动态内存分配器 malloc 函数是维护着一个进程的虚拟内存区域（堆）的内存分配。</p>
+</blockquote>
+<blockquote>
+<p>动态内存分配器有两种基本风格：</p>
+<ul>
+<li>显式内存分期器，手动分配/释放内存，例如C语言标准库 malloc/free 函数。</li>
+<li>隐式分配器，分配器主动检测已分配块何时不再被程序使用并进行释放，例如 Java 的</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>PS: 动态内存分配（Dynamic memory allocation）又称为堆内存分配</p>
+</blockquote>
+<hr>
+<h6 id="堆的内存碎片"><a href="#堆的内存碎片" class="headerlink" title="堆的内存碎片"></a>堆的内存碎片</h6><blockquote>
+<p>导致堆利用率很低的主要原因是一种称为碎片(fragmentation)的现象。<br>碎片分为两种：</p>
+<ul>
+<li>内部碎片</li>
+<li>外部碎片</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>内部碎片：这个跟分配器的实现有关，例如分配器可能要增加块的大小来满足内存对齐约束条件，就会产生额外的块。（这个额外的块就是碎片）</p>
+</blockquote>
+<blockquote>
+<p>外部碎片：这种情况发生在堆中没有一个独立的空闲块足够大来满足一个分配请求的时候发生，程序主动向内核请求额外的虚拟内存来满足这个请求。这样导致了许多分散的空闲块无法分配。（这些空闲块就是碎片）</p>
+</blockquote>
+<blockquote>
+<p><strong>如何提高内存利用率（减少内存碎片）</strong></p>
+</blockquote>
+<blockquote>
+<ul>
+<li>空闲块的处理：如何记录空闲块</li>
+<li>放置: 如何选择一个合适的空闲块放置一个新分配的块</li>
+<li>分割：将一个新分配的块放置到某个空闲块之后，如何处理空闲块中的剩余部分</li>
+<li>合并：如何处理一个刚刚释放的块</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>空闲块的处理</strong><br>使用隐式空闲链表这种数据结构。</p>
+</blockquote>
+<blockquote>
+<p><strong>放置</strong></p>
+<ul>
+<li>首次适配</li>
+<li>下一次适配</li>
+<li>最佳适配</li>
+</ul>
+</blockquote>
+<hr>
+<h6 id="分页跟分块的"><a href="#分页跟分块的" class="headerlink" title="分页跟分块的"></a>分页跟分块的</h6><blockquote>
+<p>分页：指的是内存分页，例如虚拟内存被分割成虚拟页、物理内存被分割成物理页，磁盘内存被分割成磁盘页。目的是为了减少物理内存的碎片产生，让程序逻辑上是连续的(虚拟内存)，物理上是离散的(物理内存)。</p>
+</blockquote>
+<blockquote>
+<p>分块：</p>
+</blockquote>
+<hr>
+<h6 id="堆块的格式"><a href="#堆块的格式" class="headerlink" title="堆块的格式"></a>堆块的格式</h6><hr>
+<h6 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h6><blockquote>
+<p>当分配器释放一个已分配的块时，分配器使用了空闲块的立即合并策略，也就是合并所有相邻的空闲块。这种模式导致了一个问题：如果有大量这些小内存块申请的请求和释放，块就会反复合并，然后马上分割，这样就产生了一种形式的抖动。</p>
+</blockquote>
 
       
     </div>
@@ -473,7 +546,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unix-Linux/" rel="tag"># Unix/Linux</a>
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
           
         </div>
       
@@ -486,8 +559,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/02/grand-central-dispatch-introduction/" rel="next" title="深入浅出 GCD 线程使用">
-                <i class="fa fa-chevron-left"></i> 深入浅出 GCD 线程使用
+              <a href="/2018/04/03/posix-producer-consumer-problem/" rel="next" title="Posix多线程之旅——生产者-消费者">
+                <i class="fa fa-chevron-left"></i> Posix多线程之旅——生产者-消费者
               </a>
             
           </div>
@@ -495,10 +568,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/03/posix-producer-consumer-problem/" rel="prev" title="Posix多线程之旅——生产者-消费者">
-                Posix多线程之旅——生产者-消费者 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -625,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#gnu套装工具"><span class="nav-number">1.</span> <span class="nav-text">gnu套装工具</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#gcc-编译器"><span class="nav-number">1.1.</span> <span class="nav-text">gcc 编译器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ld-链接器"><span class="nav-number">1.2.</span> <span class="nav-text">ld 链接器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cat-文本文件查看和连接工具"><span class="nav-number">2.</span> <span class="nav-text">cat (文本文件查看和连接工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ar-压缩工具——用于静态库"><span class="nav-number">3.</span> <span class="nav-text">ar (压缩工具——用于静态库)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#grep-文本搜索工具"><span class="nav-number">4.</span> <span class="nav-text">grep (文本搜索工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#netstat-内核中访问网络及相关信息的程序"><span class="nav-number">5.</span> <span class="nav-text">netstat (内核中访问网络及相关信息的程序)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arp"><span class="nav-number">6.</span> <span class="nav-text">arp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dns"><span class="nav-number">7.</span> <span class="nav-text">dns</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tcpdump"><span class="nav-number">8.</span> <span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lipo"><span class="nav-number">9.</span> <span class="nav-text">lipo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dwarfdump-用于查看-dSYM-符号集合文件"><span class="nav-number">10.</span> <span class="nav-text">dwarfdump (用于查看 dSYM 符号集合文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#symbolicatecrash-符号化-crash-文件"><span class="nav-number">11.</span> <span class="nav-text">symbolicatecrash 符号化 .crash 文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#objdump"><span class="nav-number">12.</span> <span class="nav-text">objdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#file"><span class="nav-number">13.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lsof-一切皆文件"><span class="nav-number">14.</span> <span class="nav-text">lsof (一切皆文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ps-查看进程"><span class="nav-number">15.</span> <span class="nav-text">ps (查看进程)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#otool-Mac上的objdump"><span class="nav-number">16.</span> <span class="nav-text">otool (Mac上的objdump)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#为什么内存要分页？"><span class="nav-number">1.</span> <span class="nav-text">为什么内存要分页？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#虚拟内存、虚拟页、虚拟地址"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存、虚拟页、虚拟地址</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存映射"><span class="nav-number">3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#页命中和缺页"><span class="nav-number">4.</span> <span class="nav-text">页命中和缺页</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#地址翻译"><span class="nav-number"></span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个进程的虚拟内存布局"><span class="nav-number"></span> <span class="nav-text">一个进程的虚拟内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#mmap-umap-和-动态内存分配器"><span class="nav-number">1.</span> <span class="nav-text">mmap/umap 和 动态内存分配器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#堆的内存碎片"><span class="nav-number">2.</span> <span class="nav-text">堆的内存碎片</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#分页跟分块的"><span class="nav-number">3.</span> <span class="nav-text">分页跟分块的</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#堆块的格式"><span class="nav-number">4.</span> <span class="nav-text">堆块的格式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存抖动"><span class="nav-number">5.</span> <span class="nav-text">内存抖动</span></a></li></ol></div>
             
 
           </div>
