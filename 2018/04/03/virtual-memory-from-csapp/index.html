@@ -126,7 +126,7 @@
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750894245.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750909427.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750928874.jpg">
-<meta property="og:updated_time" content="2018-04-03T10:29:56.357Z">
+<meta property="og:updated_time" content="2018-04-03T10:42:27.384Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阅读CSAPP——虚拟内存篇">
 <meta name="twitter:description" content="未完待续…">
@@ -376,7 +376,7 @@
       
         <p>未完待续…</p>
 <a id="more"></a>
-<h6 id="为什么内存要分页？"><a href="#为什么内存要分页？" class="headerlink" title="为什么内存要分页？"></a>为什么内存要分页？</h6><blockquote>
+<h5 id="为什么内存要分页？"><a href="#为什么内存要分页？" class="headerlink" title="为什么内存要分页？"></a>为什么内存要分页？</h5><blockquote>
 <p>假设内存是连续分配的（也就是程序在物理内存上是连续的）</p>
 </blockquote>
 <blockquote>
@@ -397,7 +397,7 @@
 <p>而分页机制让程序可以在逻辑上连续、物理上离散。也就是说在一段连续的物理内存上，可能0~4（这个值取决于页面的大小）属于A，而5~9属于B，10~14属于C，<strong>从而保证任何一个“内存片段”都可以被分配出去</strong>。</p>
 </blockquote>
 <hr>
-<h6 id="虚拟内存、虚拟页、虚拟地址"><a href="#虚拟内存、虚拟页、虚拟地址" class="headerlink" title="虚拟内存、虚拟页、虚拟地址"></a>虚拟内存、虚拟页、虚拟地址</h6><blockquote>
+<h5 id="虚拟内存、虚拟页、虚拟地址"><a href="#虚拟内存、虚拟页、虚拟地址" class="headerlink" title="虚拟内存、虚拟页、虚拟地址"></a>虚拟内存、虚拟页、虚拟地址</h5><blockquote>
 <p>虚拟内存大小要看计算机系统的位数。</p>
 </blockquote>
 <blockquote>
@@ -407,7 +407,7 @@
 <p>虚拟地址的数量是根据虚拟页大小和虚拟内存大小确定的，因为一个虚拟地址对应一个虚拟页，虚拟地址分为两部分 VPN + VPO ，虚拟页号 + 虚拟页偏移量，虚拟页号也就是每个页特有的编号，就像一个背包的商品编号9527一样; 虚拟页偏移量也就是页大小, 标识这这个页到底装了多少“有效数据”，就像这个9527的背包能装多少重量的物品一样。</p>
 </blockquote>
 <hr>
-<h6 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h6><blockquote>
+<h5 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h5><blockquote>
 <p>Linux 通过将一个虚拟内存区域与一个磁盘上的对象(object)关联起来，以初始化这个虚拟内存区域的内容，这个过程称为内存映射(memory mapping).</p>
 </blockquote>
 <p><img src="/images/virtual-memory-from-csapp/1522750734673.jpg" alt=""></p>
@@ -425,7 +425,7 @@
 <p>匿名文件由内核创建，存在于物理内存当中，并不存在于磁盘。</p>
 </blockquote>
 <hr>
-<h6 id="页命中和缺页"><a href="#页命中和缺页" class="headerlink" title="页命中和缺页"></a>页命中和缺页</h6><blockquote>
+<h5 id="页命中和缺页"><a href="#页命中和缺页" class="headerlink" title="页命中和缺页"></a>页命中和缺页</h5><blockquote>
 <p>同任何缓存一样，虚拟内存系统必须有某种方法判断一个虚拟页是否缓存在DRAM中的某个地方。如果是，系统必须确定这个虚拟页放在哪个物理页中。如果不命中，系统必须判断这个虚拟页放在磁盘哪个位置上，在物理内存中选择一个牺牲页，并将虚拟页从磁盘复制到 DRAM 中，替换这个牺牲页。</p>
 </blockquote>
 <blockquote>
@@ -468,7 +468,7 @@
 <blockquote>
 <p>VA：虚拟地址 （virtual address）。<br>PTEA：页表条目地址（page table entry address）。<br>PTE：页表条目（page table entry）。<br>PA：物理地址（physics address）。</p>
 </blockquote>
-<h5 id="一个进程的虚拟内存布局"><a href="#一个进程的虚拟内存布局" class="headerlink" title="一个进程的虚拟内存布局"></a>一个进程的虚拟内存布局</h5><h6 id="mmap-umap-和-动态内存分配器"><a href="#mmap-umap-和-动态内存分配器" class="headerlink" title="mmap/umap 和 动态内存分配器"></a>mmap/umap 和 动态内存分配器</h6><blockquote>
+<h5 id="一个进程的虚拟内存布局"><a href="#一个进程的虚拟内存布局" class="headerlink" title="一个进程的虚拟内存布局"></a>一个进程的虚拟内存布局</h5><h5 id="mmap-umap-和-动态内存分配器"><a href="#mmap-umap-和-动态内存分配器" class="headerlink" title="mmap/umap 和 动态内存分配器"></a>mmap/umap 和 动态内存分配器</h5><blockquote>
 <p>mmap/umap 是创建/删除虚拟内存区域的函数。例如 .bbs、栈、堆 等等就是不同的虚拟内存区域。<br>动态内存分配器 malloc 函数是维护着一个进程的虚拟内存区域（堆）的内存分配。</p>
 </blockquote>
 <blockquote>
@@ -482,7 +482,7 @@
 <p>PS: 动态内存分配（Dynamic memory allocation）又称为堆内存分配</p>
 </blockquote>
 <hr>
-<h6 id="堆的内存碎片"><a href="#堆的内存碎片" class="headerlink" title="堆的内存碎片"></a>堆的内存碎片</h6><blockquote>
+<h5 id="堆的内存碎片"><a href="#堆的内存碎片" class="headerlink" title="堆的内存碎片"></a>堆的内存碎片</h5><blockquote>
 <p>导致堆利用率很低的主要原因是一种称为碎片(fragmentation)的现象。<br>碎片分为两种：</p>
 <ul>
 <li>内部碎片</li>
@@ -518,15 +518,15 @@
 </ul>
 </blockquote>
 <hr>
-<h6 id="分页跟分块的"><a href="#分页跟分块的" class="headerlink" title="分页跟分块的"></a>分页跟分块的</h6><blockquote>
+<h5 id="分页跟分块的"><a href="#分页跟分块的" class="headerlink" title="分页跟分块的"></a>分页跟分块的</h5><blockquote>
 <p>分页：指的是内存分页，例如虚拟内存被分割成虚拟页、物理内存被分割成物理页，磁盘内存被分割成磁盘页。目的是为了减少物理内存的碎片产生，让程序逻辑上是连续的(虚拟内存)，物理上是离散的(物理内存)。</p>
 </blockquote>
 <blockquote>
 <p>分块：</p>
 </blockquote>
 <hr>
-<h6 id="堆块的格式"><a href="#堆块的格式" class="headerlink" title="堆块的格式"></a>堆块的格式</h6><hr>
-<h6 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h6><blockquote>
+<h5 id="堆块的格式"><a href="#堆块的格式" class="headerlink" title="堆块的格式"></a>堆块的格式</h5><hr>
+<h5 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h5><blockquote>
 <p>当分配器释放一个已分配的块时，分配器使用了空闲块的立即合并策略，也就是合并所有相邻的空闲块。这种模式导致了一个问题：如果有大量这些小内存块申请的请求和释放，块就会反复合并，然后马上分割，这样就产生了一种形式的抖动。</p>
 </blockquote>
 
@@ -694,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#为什么内存要分页？"><span class="nav-number">1.</span> <span class="nav-text">为什么内存要分页？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#虚拟内存、虚拟页、虚拟地址"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存、虚拟页、虚拟地址</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存映射"><span class="nav-number">3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#页命中和缺页"><span class="nav-number">4.</span> <span class="nav-text">页命中和缺页</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#地址翻译"><span class="nav-number"></span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个进程的虚拟内存布局"><span class="nav-number"></span> <span class="nav-text">一个进程的虚拟内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#mmap-umap-和-动态内存分配器"><span class="nav-number">1.</span> <span class="nav-text">mmap/umap 和 动态内存分配器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#堆的内存碎片"><span class="nav-number">2.</span> <span class="nav-text">堆的内存碎片</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#分页跟分块的"><span class="nav-number">3.</span> <span class="nav-text">分页跟分块的</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#堆块的格式"><span class="nav-number">4.</span> <span class="nav-text">堆块的格式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#内存抖动"><span class="nav-number">5.</span> <span class="nav-text">内存抖动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么内存要分页？"><span class="nav-number">1.</span> <span class="nav-text">为什么内存要分页？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟内存、虚拟页、虚拟地址"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存、虚拟页、虚拟地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存映射"><span class="nav-number">3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页命中和缺页"><span class="nav-number">4.</span> <span class="nav-text">页命中和缺页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#地址翻译"><span class="nav-number">5.</span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个进程的虚拟内存布局"><span class="nav-number">6.</span> <span class="nav-text">一个进程的虚拟内存布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mmap-umap-和-动态内存分配器"><span class="nav-number">7.</span> <span class="nav-text">mmap/umap 和 动态内存分配器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆的内存碎片"><span class="nav-number">8.</span> <span class="nav-text">堆的内存碎片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分页跟分块的"><span class="nav-number">9.</span> <span class="nav-text">分页跟分块的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆块的格式"><span class="nav-number">10.</span> <span class="nav-text">堆块的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存抖动"><span class="nav-number">11.</span> <span class="nav-text">内存抖动</span></a></li></ol></div>
             
 
           </div>
