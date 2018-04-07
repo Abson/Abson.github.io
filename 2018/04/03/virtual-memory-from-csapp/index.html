@@ -119,18 +119,18 @@
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750734673.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/918357-20171108185242341-1748889302.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750829762.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750854143.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750870793.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750894245.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750909427.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750928874.jpg">
-<meta property="og:updated_time" content="2018-04-03T10:42:27.384Z">
+<meta property="og:updated_time" content="2018-04-04T03:03:26.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阅读CSAPP——虚拟内存篇">
 <meta name="twitter:description" content="未完待续…">
-<meta name="twitter:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750734673.jpg">
+<meta name="twitter:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/918357-20171108185242341-1748889302.jpg">
 
 
 
@@ -376,6 +376,16 @@
       
         <p>未完待续…</p>
 <a id="more"></a>
+<p>学前疑问：</p>
+<ol>
+<li>什么是虚拟内存，为什么需要虚拟内存？</li>
+<li>虚拟内存与我们所熟悉的物理内存(主存, 高速缓存)有什么关系?</li>
+<li>一个虚拟内存地址是如何访问物理内存并获取所需的内存字节?</li>
+<li>程序的内存分布状态，为什么需要如此分布？</li>
+<li>什么是内存映射，内存映射能为我们带来什么好处(利用内存映射能做什么)?</li>
+<li>堆内存(动态内存)的的分配、分配所带来的问题和如何有效的利用动态内存？</li>
+</ol>
+<h3 id="为什么需要虚拟内为什么需要虚拟内存"><a href="#为什么需要虚拟内为什么需要虚拟内存" class="headerlink" title="为什么需要虚拟内为什么需要虚拟内存?"></a>为什么需要虚拟内为什么需要虚拟内存?</h3><p><img src="/images/virtual-memory-from-csapp/918357-20171108185242341-1748889302.jpg" alt=""></p>
 <h5 id="为什么内存要分页？"><a href="#为什么内存要分页？" class="headerlink" title="为什么内存要分页？"></a>为什么内存要分页？</h5><blockquote>
 <p>假设内存是连续分配的（也就是程序在物理内存上是连续的）</p>
 </blockquote>
@@ -410,20 +420,13 @@
 <h5 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h5><blockquote>
 <p>Linux 通过将一个虚拟内存区域与一个磁盘上的对象(object)关联起来，以初始化这个虚拟内存区域的内容，这个过程称为内存映射(memory mapping).</p>
 </blockquote>
-<p><img src="/images/virtual-memory-from-csapp/1522750734673.jpg" alt=""></p>
-<blockquote>
 <p>虚拟内存区域可以映射到两种类型的对象中的一种：</p>
 <ol>
 <li>Linux 文件系统中的普通文件</li>
 <li>匿名文件</li>
 </ol>
-</blockquote>
-<blockquote>
 <p>区别：<br>普通文件是磁盘上的一个文件，被分成页大小的片，每一片包含一个虚拟内存页面的初始内容，这些页面是按需调度到物理内存当中的。</p>
-</blockquote>
-<blockquote>
 <p>匿名文件由内核创建，存在于物理内存当中，并不存在于磁盘。</p>
-</blockquote>
 <hr>
 <h5 id="页命中和缺页"><a href="#页命中和缺页" class="headerlink" title="页命中和缺页"></a>页命中和缺页</h5><blockquote>
 <p>同任何缓存一样，虚拟内存系统必须有某种方法判断一个虚拟页是否缓存在DRAM中的某个地方。如果是，系统必须确定这个虚拟页放在哪个物理页中。如果不命中，系统必须判断这个虚拟页放在磁盘哪个位置上，在物理内存中选择一个牺牲页，并将虚拟页从磁盘复制到 DRAM 中，替换这个牺牲页。</p>
@@ -460,7 +463,7 @@
 <p><strong>假设页命中：</strong>虚拟地址通过 PTE 得知有效位为1，得到了物理页号PPN，物理页偏移量  == 虚拟页偏移量，通过 物理页号+虚拟地址偏移量 = 物理地址了，通过物理地址可以直接到物理内存中（DRAM）读取字节块。<br><img src="/images/virtual-memory-from-csapp/1522750909427.jpg" alt=""></p>
 </blockquote>
 <blockquote>
-<p><strong>假设页缺失：</strong>虚拟地址通过 PTE 得知有效位为0，得到了磁盘地址，然后触发页缺失异常，系统通过磁盘地址到磁盘中读取字节块，然后把字节块分页加载到物理内存当中，需要的时候选取物理内存中牺牲页交换，完成后，再次通知系统重新走虚拟地址获取物理页号的流程（跟上面页命中一样了）。<br>PS：页表中页命中的PTE带着物理页号，缺页的PTE带着磁盘地址。</p>
+<p><strong>假设页缺失：</strong>虚拟地址通过 PTE 得知有效位为0，得到了磁盘地址，然后触发页缺失异常，系统通过磁盘地址到磁盘中读取字节块，然后把字节块分页加载到物理内存当中，需要的时候选取物理内存中牺牲页交换，完成后，再次通知系统重新走虚拟地址获取物理页号的流程（跟上面页命中一样了）。<br>PS：页表中页命中的PTE带着物理页号，缺页的PTE带:着磁盘地址。</p>
 </blockquote>
 <blockquote>
 <p><img src="/images/virtual-memory-from-csapp/1522750928874.jpg" alt=""></p>
@@ -569,6 +572,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/04/03/process-from-csapp/" rel="prev" title="阅读CASPP——进程篇">
+                阅读CASPP——进程篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -648,7 +655,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -661,7 +668,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -694,7 +701,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么内存要分页？"><span class="nav-number">1.</span> <span class="nav-text">为什么内存要分页？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟内存、虚拟页、虚拟地址"><span class="nav-number">2.</span> <span class="nav-text">虚拟内存、虚拟页、虚拟地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存映射"><span class="nav-number">3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页命中和缺页"><span class="nav-number">4.</span> <span class="nav-text">页命中和缺页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#地址翻译"><span class="nav-number">5.</span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个进程的虚拟内存布局"><span class="nav-number">6.</span> <span class="nav-text">一个进程的虚拟内存布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mmap-umap-和-动态内存分配器"><span class="nav-number">7.</span> <span class="nav-text">mmap/umap 和 动态内存分配器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆的内存碎片"><span class="nav-number">8.</span> <span class="nav-text">堆的内存碎片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分页跟分块的"><span class="nav-number">9.</span> <span class="nav-text">分页跟分块的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆块的格式"><span class="nav-number">10.</span> <span class="nav-text">堆块的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存抖动"><span class="nav-number">11.</span> <span class="nav-text">内存抖动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要虚拟内为什么需要虚拟内存"><span class="nav-number">1.</span> <span class="nav-text">为什么需要虚拟内为什么需要虚拟内存?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么内存要分页？"><span class="nav-number">1.0.1.</span> <span class="nav-text">为什么内存要分页？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟内存、虚拟页、虚拟地址"><span class="nav-number">1.0.2.</span> <span class="nav-text">虚拟内存、虚拟页、虚拟地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存映射"><span class="nav-number">1.0.3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页命中和缺页"><span class="nav-number">1.0.4.</span> <span class="nav-text">页命中和缺页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#地址翻译"><span class="nav-number">1.0.5.</span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一个进程的虚拟内存布局"><span class="nav-number">1.0.6.</span> <span class="nav-text">一个进程的虚拟内存布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mmap-umap-和-动态内存分配器"><span class="nav-number">1.0.7.</span> <span class="nav-text">mmap/umap 和 动态内存分配器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆的内存碎片"><span class="nav-number">1.0.8.</span> <span class="nav-text">堆的内存碎片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分页跟分块的"><span class="nav-number">1.0.9.</span> <span class="nav-text">分页跟分块的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#堆块的格式"><span class="nav-number">1.0.10.</span> <span class="nav-text">堆块的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内存抖动"><span class="nav-number">1.0.11.</span> <span class="nav-text">内存抖动</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

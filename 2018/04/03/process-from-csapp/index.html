@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Unix/Linux," />
+  <meta name="keywords" content="笔记与理解," />
 
 
 
@@ -111,21 +111,23 @@
 
 
 
-<meta name="description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
-<meta name="keywords" content="Unix&#x2F;Linux">
+<meta name="description" content="在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。 未完待续…">
+<meta name="keywords" content="笔记与理解">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unix 常用工具命令笔记">
-<meta property="og:url" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/index.html">
+<meta property="og:title" content="阅读CASPP——进程篇">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/03/process-from-csapp/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
+<meta property="og:description" content="在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。 未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
-<meta property="og:image" content="http://simplecodesky.com/2018/04/03/Unix-common-commandline/1497953914890.png">
-<meta property="og:updated_time" content="2018-04-03T04:08:26.519Z">
+<meta property="og:image" content="http://simplecodesky.com/images/process-from-csapp/1438747148_9194.png">
+<meta property="og:image" content="http://simplecodesky.com/images/process-from-csapp/431521-20160523181544475-414696764.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/process-from-csapp/Linux_kernel_System_Call_Interface_and_glibc.png">
+<meta property="og:image" content="http://simplecodesky.com/images/process-from-csapp/1522851295053.jpg">
+<meta property="og:updated_time" content="2018-04-07T09:38:15.934Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unix 常用工具命令笔记">
-<meta name="twitter:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
-<meta name="twitter:image" content="http://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
+<meta name="twitter:title" content="阅读CASPP——进程篇">
+<meta name="twitter:description" content="在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。 未完待续…">
+<meta name="twitter:image" content="http://simplecodesky.com/images/process-from-csapp/1438747148_9194.png">
 
 
 
@@ -155,13 +157,13 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/"/>
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/03/process-from-csapp/"/>
 
 
 
 
 
-  <title>Unix 常用工具命令笔记 | Simple Code Sky</title>
+  <title>阅读CASPP——进程篇 | Simple Code Sky</title>
   
 
 
@@ -302,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/03/Unix-common-commandline/">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/03/process-from-csapp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Abson">
@@ -319,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Unix 常用工具命令笔记</h1>
+          <h1 class="post-title" itemprop="name headline">阅读CASPP——进程篇</h1>
         
 
         <div class="post-meta">
@@ -331,7 +333,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T12:04:19+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T21:22:22+08:00">
                 2018-04-03
               </time>
             
@@ -369,93 +371,69 @@
       
 
       
-        <p><img src="/images/Unix-common-commandline/1280px-Unix_history-simple.png" alt=""></p>
-<p>一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…</p>
+        <p>在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。</p>
+<p>未完待续…</p>
 <a id="more"></a>
-<h5 id="gnu套装工具"><a href="#gnu套装工具" class="headerlink" title="gnu套装工具"></a>gnu套装工具</h5><h6 id="gcc-编译器"><a href="#gcc-编译器" class="headerlink" title="gcc 编译器"></a>gcc 编译器</h6><p><strong>生成目标文件 （二进制机器代码）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c</span><br></pre></td></tr></table></figure></p>
-<p><strong>生成可执行文件 （链接器重定位）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o</span><br></pre></td></tr></table></figure></p>
-<p><strong>打开gcc所有警告</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall</span><br></pre></td></tr></table></figure></p>
-<h6 id="ld-链接器"><a href="#ld-链接器" class="headerlink" title="ld 链接器"></a>ld 链接器</h6><p><strong>将多个目标文件合并成一个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld -r</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="cat-文本文件查看和连接工具"><a href="#cat-文本文件查看和连接工具" class="headerlink" title="cat (文本文件查看和连接工具)"></a>cat (文本文件查看和连接工具)</h5><p><strong>一次显示整个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名</span><br></pre></td></tr></table></figure></p>
-<p><strong>创建一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; 文件名</span><br></pre></td></tr></table></figure></p>
-<p><strong>将几个文件合并成一个文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 文件名1 文件名2 &gt; 文件名3</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p><a href="http://www.cnblogs.com/perfy/archive/2012/07/23/2605550.html" target="_blank" rel="noopener">更多的使用参考</a></p>
-</blockquote>
-<hr>
-<h5 id="ar-压缩工具——用于静态库"><a href="#ar-压缩工具——用于静态库" class="headerlink" title="ar (压缩工具——用于静态库)"></a>ar (压缩工具——用于静态库)</h5><p><strong>查看静态库文件包含了那些目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -t libc.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>解压静态库文件，得到对目标文件进行编号和索引的 __.SYMDEF文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -x libc.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>将目标文件打包成静态链接库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar crv libmylib.a  my_print.o my_match.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>删除静态链接库中的某个目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -d lib.a my_print.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>要替换或添加新成员到库中</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -v -r lib.a strlen.o strcat.o</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v :	将建立新库的详细的逐个文件的描述写至标准输出。当和 -t 标志一起使用时，它给出类似于 ls -l 命令给出的长列表。当和 -x 标志一起使用时，它在每个文件前加一个名称。当和 -h 标志一起使用，它列出成员名称和更新的修改时间。</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="grep-文本搜索工具"><a href="#grep-文本搜索工具" class="headerlink" title="grep (文本搜索工具)"></a>grep (文本搜索工具)</h5><p><strong>搜索 services 文件内的 telnet 字段</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep telnet /etc/services</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="netstat-内核中访问网络及相关信息的程序"><a href="#netstat-内核中访问网络及相关信息的程序" class="headerlink" title="netstat (内核中访问网络及相关信息的程序)"></a>netstat (内核中访问网络及相关信息的程序)</h5><p><strong>查看本机的路由表</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nr</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示所有socket，包括正在监听的</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -a</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示协议名查看某协议使用情况 netstat -p 协议名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -p tcp</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="arp"><a href="#arp" class="headerlink" title="arp"></a>arp</h5><p><strong>用于查看高速缓存中的所有项目</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -a</span><br></pre></td></tr></table></figure></p>
-<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -g</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h5><blockquote>
-<p>查看DNS服务器地址</p>
-</blockquote>
-<p><strong>这个文件内存放DNS服务器的IP地址</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/resolv.conf</span><br></pre></td></tr></table></figure></p>
-<p><img src="./1497953914890.png" alt="Alt text"></p>
-<blockquote>
-<p>其中的两个IP地址分别是首选DNS服务器地址和备选DNS服务器地址。文件中的注释语句“Generated by Network Manager”告诉我们，这两个DNS服务器地址是由网络管理程序写入的。</p>
-</blockquote>
-<p><strong>将查询传递给DNS服务器，并显示返回的结果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host baidu.com</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h5><hr>
-<h5 id="lipo"><a href="#lipo" class="headerlink" title="lipo"></a>lipo</h5><blockquote>
-<p>因为苹果在 mac 上使用的静态库都是一些通过多个不同架构的静态库合成的压缩文件格式，所有有了 lipo 工具来操作这个压缩文件 </p>
-</blockquote>
-<p><strong>查看 mac os系统中静态库中包含了那些架构</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info lib.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>解压出指定架构的静态库</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo lib.a -thin armv7 -output lib-armv7.a</span><br></pre></td></tr></table></figure></p>
-<p><strong>合并模拟器库文件和真机库文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create -output lib.a lib-armv6.a lib-i386.a</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="dwarfdump-用于查看-dSYM-符号集合文件"><a href="#dwarfdump-用于查看-dSYM-符号集合文件" class="headerlink" title="dwarfdump (用于查看 dSYM 符号集合文件)"></a>dwarfdump (用于查看 dSYM 符号集合文件)</h5><blockquote>
-<p>* 为文件名</p>
-</blockquote>
-<p><strong>查看 .dSYM 符号文件中的所有符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump SocialDevApp.app.dSYM &gt; text</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看地址为 0x0024d6a5  所对应的符号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump  --lookup=0x0024d6a5 SocialDevApp.app.dSYM :</span><br></pre></td></tr></table></figure></p>
-<p><strong> 查看 .dSYM 文件 UUID 是否跟 .crash 文件是否一致</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dwarfdump --uuid /*.app.dSYM</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="symbolicatecrash-符号化-crash-文件"><a href="#symbolicatecrash-符号化-crash-文件" class="headerlink" title="symbolicatecrash 符号化 .crash 文件"></a>symbolicatecrash 符号化 .crash 文件</h5><p>首先要找到 symbolicatec 这个 shell 在哪里，进入 xcode.app, 使用如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name symbolicatecrash</span><br></pre></td></tr></table></figure></p>
-<p><strong>符号化 .crash </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./symbolicatecrash /*.crash /*.app.dSYM &gt; /*.crash</span><br></pre></td></tr></table></figure></p>
-<p>如果发生错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.</span><br></pre></td></tr></table></figure></p>
-<p>使用如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer</span><br></pre></td></tr></table></figure></p>
-<p>xcode 中所有 dSYM 文件的位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Developer/Xcode/Archives</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a>objdump</h5><blockquote>
-<p>用于查看 目标文件(.o) 或 可 执行的目标文件(.out) 构成的 GCC 工具</p>
-</blockquote>
-<p><strong>反汇编目标文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d main.o &gt; text</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示符号表入口</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -t main.o</span><br></pre></td></tr></table></figure></p>
-<p><strong>尽可能反汇编出源代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -S main.o</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="file"><a href="#file" class="headerlink" title="file"></a>file</h5><p>用于查看文件编码的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file info.plist</span><br><span class="line">输出：info.plist: Apple binary property list</span><br><span class="line"></span><br><span class="line">file SsjjCoreSdk</span><br><span class="line">输出：</span><br><span class="line">SsjjCoreSdk: Mach-O universal binary with 2 architectures: [arm_v7: current ar archive] [arm64]</span><br><span class="line">SsjjCoreSdk (for architecture armv7):	current ar archive</span><br><span class="line">SsjjCoreSdk (for architecture arm64):	current ar archive</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="lsof-一切皆文件"><a href="#lsof-一切皆文件" class="headerlink" title="lsof (一切皆文件)"></a>lsof (一切皆文件)</h5><blockquote>
-<p>lsof（list open files）是一个查看当前系统文件的工具。在Unix 环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。</p>
-</blockquote>
-<p><strong>查看系统中端口占用情况</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看某一端口的占用情况：lsof -i:端口号</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:21</span><br></pre></td></tr></table></figure></p>
-<p><strong>查找某个文件相关的进程：lsof 文件名</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof /bin/bash</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p><a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/lsof.html" target="_blank" rel="noopener">更多使用</a></p>
-</blockquote>
-<h5 id="ps-查看进程"><a href="#ps-查看进程" class="headerlink" title="ps (查看进程)"></a>ps (查看进程)</h5><p><strong>显示所有进程信息</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A</span><br></pre></td></tr></table></figure></p>
-<p><strong>ps 与grep 组合使用，查找特定进程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep ssh</span><br></pre></td></tr></table></figure></p>
-<p><strong>列出目前所有的正在内存中的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h5 id="otool-Mac上的objdump"><a href="#otool-Mac上的objdump" class="headerlink" title="otool (Mac上的objdump)"></a>otool (Mac上的objdump)</h5><p>反汇编 mach-o 目标文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otool -tV main.out</span><br></pre></td></tr></table></figure></p>
-<hr>
+<p>学前疑问:</p>
+<ol>
+<li>什么是进程？为什么需要进程？</li>
+<li>进程的组成部分？</li>
+<li>什么是进程的上下文？</li>
+<li>什么是上下文切换，为什么需要上下文切换?</li>
+<li>模式切换？上下文切换？</li>
+<li>什么是 I/O 操操?</li>
+<li>进程的切换的详细过程.</li>
+</ol>
+<h3 id="什么是进程"><a href="#什么是进程" class="headerlink" title="什么是进程?"></a>什么是进程?</h3><p>进程的经典定义就是一个执行中程序的实例。当我们使用 shell 输入命令行 ‘./helloWorld.out’ 以运行 helloWorld 可执行文件的时候，shell 就会创建一个新的进程，然后再这个新进程的上下文中运行这个可执行文件。<br>也可以说进程、线程、异常处理程序等是一个逻辑。</p>
+<h3 id="进程的地址空间"><a href="#进程的地址空间" class="headerlink" title="进程的地址空间"></a>进程的地址空间</h3><p>进程为每个程序提供给它自己的私有空间，这就制造了进程独占地使用系统地址空间。<br><img src="/images/process-from-csapp/1438747148_9194.png" alt="进程地址空间"></p>
+<p>上图展示了程序的地址空间分配图，在 Linux 下，一个进程的地址空间一般为4GB(内核地址空间1G，用户地址空间3GB)，这里所说的地址空间都为虚拟内存地址(关于什么是虚拟内存，查看<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/"><span style="color:red">阅读CSAPP——虚拟内存篇</span></a>)。<br>可以看出一个程序的内存空间分了<strong>内核空间</strong>和<strong>用户空间</strong>，而用户空间是无法访问内核空间的地址的。如果一个用户进程必须通过系统调用接口(例如read，write 函数)间接地访问内核代码和数据。</p>
+<p><strong>系统调用</strong><br>系统调用在类Unix系统中指的是活跃的进程对内核所提供的服务进行请求。例如输入/输出(I/O和进程创建)。</p>
+<p><strong>I/O 操作</strong><br>I/O 可以被定义为任何信息流入或流出 CPU 与主内存（RAM）。也就是说，一台电脑的 CPU和内存与该电脑的用户（通过键盘或鼠标）、存储设备（硬盘或磁盘驱动）还有其他电脑的任何交流都是 I/O。</p>
+<h3 id="进程的上下文"><a href="#进程的上下文" class="headerlink" title="进程的上下文"></a>进程的上下文</h3><p>内核为每个进程维持着一个上下文，上下文由一些对象的值组成，这些对象包括通用目的的寄存器，浮点寄存器，程序计数器、用户栈、状态寄存器、内核栈和各种内核数据结构(比如描述地址空间的页表，包含有关当前进程信息进程表，以及包含进程已打开文件的信息的文件表)。<br>简而言之，进程的上下文就是保存了进程的状态和堆栈内存的数据结构等等。</p>
+<h3 id="进程的上下文切换"><a href="#进程的上下文切换" class="headerlink" title="进程的上下文切换"></a>进程的上下文切换</h3><p>当某些时刻，例如读写文件等操作时进程发生了阻塞的行为，内核中的调度器(代码实现, 也就是说上下文切换只能发生在内核模式中),会让当前进程A休眠，切换到另外一个进程B，这个时候就会发生以下三步操作：</p>
+<ul>
+<li>保存进程A的所有状体，也就是进程的上下文。</li>
+<li>恢复进程B被保存上下文。</li>
+<li>将控制传递给进程B。</li>
+</ul>
+<p>这三个步骤就称为<strong>上下文切换</strong>,也可以说是进程切换,。当然，即使是系统调用没有发生阻塞时，内核也可以决定执行上下文切换。例如中断行为，系统会有一个周期性的中断定时器，每隔一段时间当定时器发生中断时，内核就能判断当前进程运行的时间足够长，并切换到一个新的进程。(这也是多任务并发的思想，叫做时间分片)。</p>
+<h3 id="用户模式和内核模式"><a href="#用户模式和内核模式" class="headerlink" title="用户模式和内核模式"></a>用户模式和内核模式</h3><p><strong>进程切换必须在操作系统内核模式下完成，这就需要模式切换，模式切换又称为CPU状体切换</strong>。<br>用户模式和内核模式一般被称为<strong>用户态</strong>和<strong>内核态</strong>。是 CPU 提供给的一种机制，是 CPU 的一种模式状态,用于限制一个应用可以执行的指令以及它可以访问的地址空间范围。</p>
+<ul>
+<li><strong>用户态</strong>这样做可以将每个用户进程都能独立开来,使其无法更改属于其他应用程序的数据。每个应用程序都孤立运行，如果一个应用程序损坏，则损坏会限制到该应用程序。其他应用程序和操作系统不会受该损坏的影响。</li>
+<li><strong>内核态</strong>下运行的所有代码都共享单个虚拟地址空间, 进程可以执行指令集中的任何指令，并且可以访问系统中的任何内存位置。但这表示内核态进程未从其他进程和操作系统自身独立开来，如果内核态进程意外写入错误的虚拟地址，则属于操作系统或其他驱动程序的数据可能会受到损坏。<p><span style="color:red">注意：这是一种模式切换，而不是上下文切换，因为它不一定引起进程状态的转换，在大多数情况下，也不一定引起进程切换。例如，运行一个进程时间片，让进程停止运行一段时间后恢复。这种状态下进程只是引发了中断后 CPU 进入内核模式并执行处理程序，时间片过后处理程序就恢复被进程的状态信息，CPU 重新进入用户模式。</span></p>
+
+</li>
+</ul>
+<p>整个操作系统分为两层：<strong>用户态</strong>和<strong>内核态</strong>，这种分层的架构极大地提高了资源管理的可扩展性和灵活性，而且方便用户对资源的调用和集中式的管理，带来一定的安全性。比如说我们应用程序要使用打印机打印文字，如果在没有内核模式管理的情况下，每个应用程序都可以争抢打印资源，那么打印出来的顺序就是乱的了，所以这些共享资源就必须通过内核模式的统一管理，以下这幅图详尽的分析了内核所做的事情:</p>
+<p><img src="/images/process-from-csapp/431521-20160523181544475-414696764.jpg" alt=""><br><img src="/images/process-from-csapp/Linux_kernel_System_Call_Interface_and_glibc.png" alt=""></p>
+<p>很多程序开始时运行于<strong>用户态</strong>，但在执行的过程中，一些操作需要在内核权限下才能执行，这就涉及到一个从<strong>用户态</strong>切换到<strong>内核态</strong>的过程。比如C函数库中的内存分配函数<code>malloc()</code>，它具体是使用<code>sbrk()</code>系统调用来分配内存，当<code>malloc</code>调用<code>sbrk()</code>的时候就涉及一次从<strong>用户态</strong>到<strong>内核态</strong>的切换，类似的函数还有<code>printf()</code>，调用的是<code>wirte()</code>系统调用来输出字符串，等等。</p>
+<p><strong>何时切换？</strong><br>到底在什么情况下会发生从用户态到内核态的切换，一般存在以下三种情况：</p>
+<ol>
+<li><p>当然就是系统调用：原因如上的分析。</p>
+</li>
+<li><p>异常事件： 当CPU正在执行运行在用户态的程序时，突然发生某些预先不可知的异常事件，这个时候就会触发从当前用户态执行的进程转向内核态执行相关的异常事件，典型的如缺页异常。</p>
+</li>
+<li><p>外围设备的中断：当外围设备完成用户的请求操作后，会像CPU发出中断信号，此时，CPU就会暂停执行下一条即将要执行的指令，转而去执行中断信号对应的处理程序，如果先前执行的指令是在用户态下，则自然就发生从用户态到内核态的转换。</p>
+</li>
+</ol>
+<p>从触发方式和效果上来看，这三种切换方式是完全一样的，都相当于是执行了一个中断响应的过程。但是从触发的对象来看，系统调用是进程主动请求切换的，而异常和硬中断则是被动的。系统调用一般被称为软中断。</p>
+<p><img src="/images/process-from-csapp/1522851295053.jpg" alt=""></p>
+<p>上图中看出，这种模式切换不一定发生在两个不同的进程当中，极有可能在单个进程中切换，并没有涉及到进程的上下文切换。<strong>所以模式切换跟上下文切换有着本质的区别</strong>。</p>
+<p><strong>如何切换？</strong></p>
+<p>用户模式 ——&gt; 内核模式：中断/异常/系统调用 (正向模式切换)</p>
+<ul>
+<li>CPU模式转为内核模式</li>
+<li>保存当前进程的<a href="https://baike.baidu.com/item/%E7%A8%8B%E5%BA%8F%E7%8A%B6%E6%80%81%E5%AD%97/10121343?fr=aladdin" target="_blank" rel="noopener"><span style="color:red">PC/PSW</span></a>值到核心栈</li>
+<li>转向中断/异常/系统调用处理程程序。</li>
+<li>处理中断/异常</li>
+</ul>
+<p>内核模式 ——&gt; 用户模式：OS执行终端返回指令 (逆向模式切换)</p>
+<ul>
+<li>恢复被中断进程的现场信息。</li>
+<li>从待运行进程核心栈中弹出<a href="https://baike.baidu.com/item/%E7%A8%8B%E5%BA%8F%E7%8A%B6%E6%80%81%E5%AD%97/10121343?fr=aladdin" target="_blank" rel="noopener"><span style="color:red">PSW/PC</span></a>值。</li>
+<li>CPU模式转为用户模式。</li>
+</ul>
+<p>在正向模式切换，涉及到了用户空间的进程需要传递变量、参数等值给内核，内核态运行的时候也要保存用户进程的一些寄存器值、变量等，但是用户空间跟内核空间是两个地址环境完全不同的环境，也就是说，这些参数和变量都需要进行内存拷贝，那么这里就涉及到了部分开销。对于逆向模式也是反之亦然的道理。</p>
 
       
     </div>
@@ -473,7 +451,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unix-Linux/" rel="tag"># Unix/Linux</a>
+            <a href="/tags/笔记与理解/" rel="tag"># 笔记与理解</a>
           
         </div>
       
@@ -486,8 +464,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/02/grand-central-dispatch-introduction/" rel="next" title="深入浅出 GCD 线程使用">
-                <i class="fa fa-chevron-left"></i> 深入浅出 GCD 线程使用
+              <a href="/2018/04/03/virtual-memory-from-csapp/" rel="next" title="阅读CSAPP——虚拟内存篇">
+                <i class="fa fa-chevron-left"></i> 阅读CSAPP——虚拟内存篇
               </a>
             
           </div>
@@ -495,10 +473,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/03/posix-producer-consumer-problem/" rel="prev" title="Posix多线程之旅——生产者-消费者">
-                Posix多线程之旅——生产者-消费者 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -625,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#gnu套装工具"><span class="nav-number">1.</span> <span class="nav-text">gnu套装工具</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#gcc-编译器"><span class="nav-number">1.1.</span> <span class="nav-text">gcc 编译器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ld-链接器"><span class="nav-number">1.2.</span> <span class="nav-text">ld 链接器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cat-文本文件查看和连接工具"><span class="nav-number">2.</span> <span class="nav-text">cat (文本文件查看和连接工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ar-压缩工具——用于静态库"><span class="nav-number">3.</span> <span class="nav-text">ar (压缩工具——用于静态库)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#grep-文本搜索工具"><span class="nav-number">4.</span> <span class="nav-text">grep (文本搜索工具)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#netstat-内核中访问网络及相关信息的程序"><span class="nav-number">5.</span> <span class="nav-text">netstat (内核中访问网络及相关信息的程序)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arp"><span class="nav-number">6.</span> <span class="nav-text">arp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dns"><span class="nav-number">7.</span> <span class="nav-text">dns</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tcpdump"><span class="nav-number">8.</span> <span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lipo"><span class="nav-number">9.</span> <span class="nav-text">lipo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dwarfdump-用于查看-dSYM-符号集合文件"><span class="nav-number">10.</span> <span class="nav-text">dwarfdump (用于查看 dSYM 符号集合文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#symbolicatecrash-符号化-crash-文件"><span class="nav-number">11.</span> <span class="nav-text">symbolicatecrash 符号化 .crash 文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#objdump"><span class="nav-number">12.</span> <span class="nav-text">objdump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#file"><span class="nav-number">13.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lsof-一切皆文件"><span class="nav-number">14.</span> <span class="nav-text">lsof (一切皆文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ps-查看进程"><span class="nav-number">15.</span> <span class="nav-text">ps (查看进程)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#otool-Mac上的objdump"><span class="nav-number">16.</span> <span class="nav-text">otool (Mac上的objdump)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是进程"><span class="nav-number">1.</span> <span class="nav-text">什么是进程?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的地址空间"><span class="nav-number">2.</span> <span class="nav-text">进程的地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的上下文"><span class="nav-number">3.</span> <span class="nav-text">进程的上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的上下文切换"><span class="nav-number">4.</span> <span class="nav-text">进程的上下文切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户模式和内核模式"><span class="nav-number">5.</span> <span class="nav-text">用户模式和内核模式</span></a></li></ol></div>
             
 
           </div>
