@@ -498,8 +498,8 @@ code {
 code {
   padding: 2px 4px;
   word-wrap: break-word;
-  color: #555;
-  background: #eee;
+  color: #c82829;
+  background: #f9f2f4;
   border-radius: 3px;
   font-size: 12px;
 }
@@ -1266,6 +1266,9 @@ pre .javascript .function {
 .use-motion .collection-title {
   opacity: 0;
 }
+.post-body a {
+  color: #428bca;
+}
 .posts-expand {
   padding-top: 40px;
 }
@@ -1741,6 +1744,13 @@ pre .javascript .function {
   max-width: 96px;
   height: auto;
   border: 2px solid #333;
+/* start */
+  border-radius: 50%;
+  webkit-transition: 1.4s all;
+  moz-transition: 1.4s all;
+  ms-transition: 1.4s all;
+  transition: 1.4s all;
+/* end */
 }
 .site-author-name {
   margin: 5px 0 0;
@@ -1753,6 +1763,17 @@ pre .javascript .function {
   text-align: center;
   font-size: 14px;
   color: #999;
+}
+.site-author-image:hover {
+  background-color: #55dae1;
+  webkit-transform: rotate(360deg) scale(1.1);
+  moz-transform: rotate(360deg) scale(1.1);
+  ms-transform: rotate(360deg) scale(1.1);
+  -webkit-transform: rotate(360deg) scale(1.1);
+  -moz-transform: rotate(360deg) scale(1.1);
+  -ms-transform: rotate(360deg) scale(1.1);
+  -o-transform: rotate(360deg) scale(1.1);
+  transform: rotate(360deg) scale(1.1);
 }
 .site-state {
   overflow: hidden;
@@ -1822,7 +1843,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #8ce97e;
+  background: #fff;
 }
 .links-of-blogroll {
   font-size: 13px;

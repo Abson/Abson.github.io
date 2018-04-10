@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Monaco:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS高效图片IO 框架">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/index.html">
+<meta property="og:site_name" content="Simple Code Sky">
+<meta property="og:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/CSAPP_C1_P1.png">
+<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align01.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align02.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/fastImageCache2.png">
+<meta property="og:updated_time" content="2018-04-10T13:17:21.742Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS高效图片IO 框架">
+<meta name="twitter:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta name="twitter:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/"/>
+
+
+
+
+
+  <title>iOS高效图片IO 框架 | Simple Code Sky</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simple Code Sky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Any truth is better than indefinite doubt.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Abson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simple Code Sky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS高效图片IO 框架</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T18:39:04+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把<a href="https://simplecodesky.com/2018/04/03/process-from-csapp/">阅读CASPP——进程篇</a>和<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">阅读CSAPP——虚拟内存篇</a>这两篇文章学到的内容进行实战应用。</p>
+<a id="more"></a>
+<p>当我们使用以下 Object-C 代码从网络中获取图片并加载到 UIImageView 上<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURL</span>* url = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://img.alicdn.com/bao/uploaded/i2/2836521972/TB2cyksspXXXXanXpXXXXXXXXXX_!!0-paimai.jpg"</span>];</span><br><span class="line"> __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line"> <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:url]</span><br><span class="line">                                                              completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                                                  <span class="built_in">UIImage</span>* image = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                                                  <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                                      [weakSelf.imageView setImage:image];</span><br><span class="line">                                                                  &#125;);</span><br><span class="line">                                                              &#125;];</span><br><span class="line"> [task resume];</span><br></pre></td></tr></table></figure></p>
+<p>运行上面代码，通过 Instrument 的 TimeProfile 查看 CPU 消耗情况：<br><img src="/images/ios-efficient-image-io/1523343490248.jpg" alt="Alt text"></p>
+<p>上述图片中发现了两个问题：</p>
+<ol>
+<li>应用程序使用了 <code>CA::Render::copy_image</code>, 这是因为 Core Animation 在图像数据非字节对齐的情况下渲染前会先拷贝一份图像数据，当我们使用 <code>imageWithContentsOfFile</code> 也会发生这种情况。</li>
+<li>应用程序使用了 <code>CA::Render::create_image_from_provider</code>, 这个方法实际上是对图片进行解码，原因是 UIImage 在加载的时候实际上并没有对图片进行解码，而是延迟到图片被显示或者其他需要解码的时候。这种策略节约了内存，但是却会在显示的时候占用大量的主线程CPU时间进行解码，导致界面卡顿。</li>
+</ol>
+<p>那么如果解决上述两个问题，我们使用 <strong>FastImageCache</strong> 这个第三方库加载图片，官方Demo一开始的 <code>FICDPhoto</code> 加载图片的方法为使用 <code>imageWithContentsOfFile</code>, 这会导致 <code>CA::Render::copy_image</code> 的图像数据拷贝，所以更改为以下方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIImage</span> *)sourceImage &#123;</span><br><span class="line">    __block <span class="built_in">UIImage</span> *sourceImage = [<span class="built_in">UIImage</span> imageWithContentsOfFile:[_sourceImageURL path]];</span><br><span class="line">    <span class="keyword">if</span> (!sourceImage) &#123;</span><br><span class="line">        pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">        <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:_sourceImageURL]</span><br><span class="line">                                        completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                            sourceImage = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                            pthread_cond_signal(&amp;_signal);</span><br><span class="line">                                            pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">                                        &#125;];</span><br><span class="line">        [task resume];</span><br><span class="line">        pthread_cond_wait(&amp;_signal, &amp;_mutex);</span><br><span class="line">        pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sourceImage;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当图片被渲染到 ImageView 的时候，利用 Instrument 查看并没有发生 <code>CA::Render::copy_image</code> 和 <code>CA::Render::create_image_from_provider</code> 的情况。</p>
+<p><strong>FastImageCache是如何解决上述两个问题的？</strong></p>
+<p>先看第一个问题，为何  Core Animation 在渲染之前要拷贝一份数据呢？<br>在此之前，我们先看一些计算机系统的理论知识，等看完后再回头看看，答案便更加明朗了。<br>我们都知道，图片说白了就是一段字节数据所组成的文件数据而已，也就是说我们把图片显示到界面上，不过是把一堆字节加载到 CPU 的寄存器当中，然后通过 GPU 将字节变成红(R)、绿(G)、蓝(B)的三原色的数组，然后通过界面显示出来(也就是我们所说的渲染)。所以，我们先了解一下，字节数据是如何通过内存加载到 CPU 的。</p>
+<p>学过计算机操作系统的我们都知道，所有的字节数据都是通过总线来传送的，总线连接着 CPU 到主存，主存到磁盘等主要硬件设备的传输路线，而主要的传输单位就是<strong><a href="https://zh.wikipedia.org/wiki/%E5%AD%97_(%E8%AE%A1%E7%AE%97%E6%9C%BA" target="_blank" rel="noopener">字(word)</a>)</strong>，由于数字信号分为高频和低频，所以我们的计算机信号只有 0 和 1 两种来区分，所以我们采用了二进制的数据形式来表述数据，因此信号的量化精度一般以比特（bits）来衡量，这就是字节数据在总线中传输的本质。</p>
+<p><img src="/images/ios-efficient-image-io/CSAPP_C1_P1.png" alt="关于计算机硬件组成"></p>
+<p>而 64 位系统当中，<strong>字(word)</strong> 是 8 个字节的大小。<br>内存的存储单元被称为<a href="https://zh.wikipedia.org/wiki/%E5%9D%97_(%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8" target="_blank" rel="noopener">块(Chunk)</a>)，而块的大小因ying’j，大多数<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">文件系统</a>都是基于块设备，即存取规定数据块的硬件抽象层。<br>假如32位的文件系统中，<a href="https://zh.wikipedia.org/wiki/CPU%E7%BC%93%E5%AD%98" target="_blank" rel="noopener">高速缓存(Cache)</a>以4个字节的块大小为传送到 CPU 当中，下图说明了 CPU 如何以4字节内存访问粒度访问4字节的数据查找：</p>
+<p><img src="/images/ios-efficient-image-io/align01.jpg" alt="Alt text"></p>
+<p>如果我们们获取的数据为未对齐的4个字节，CPU 就会执行额外的工作去访问数据：加载两个字节块(Chunk)的数据，移出不需要的字节，然后将它们组合在一起。这个过程肯定会降低性能并浪费CPU周期，以便从内存中获取正确的数据。</p>
+<p><img src="/images/ios-efficient-image-io/align02.jpg" alt="Alt text"></p>
+<p>所以我们存储数据的时候，需要进行 <strong><a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AF%B9%E9%BD%90" target="_blank" rel="noopener">字节对齐(Byte Alignment)</a></strong> ，其实称为字节块对齐更为合适，也就是说我们所取的数据，都以上图第一种的形式在内存中读写，避免发生第二种情况，这样就能节省 CPU 周期，加快存取速度。</p>
+<p>再回头看看当我们从内存中读取图片数据的时候，也是一堆的字节块，如果图像字节并没有经过如何处理，那么，就会出现以下情况：</p>
+<p><img src="/images/ios-efficient-image-io/fastImageCache2.png" alt="Alt text"></p>
+<p>当我们数据传输的时候，由<strong>字</strong>来传输，存储设备中读取内存却以<strong>块</strong>为单位, 所以从内存读取到的图像数据势必会带上其他”杂质字节”。所以便发生了——“通常情况”，但是 GPU 所需要的数据，是理想状态下的数据，因为这些”杂质字节”会影响图像生成。所以 Core Animation 就需要把”杂质字节”去除，然后变成我们的——“理想状态”。其实，不是 Core Animation 规定这么做，是我们接粗到图像处理的时候，都必须这么做，不然图像数据就乱了，只不过 Core Animation 帮我们封装了底层处理而已。<br>通过我们学习到的知识，我们意识到，我们需要对图片的存入进行字节对齐。<br><strong>对于高速缓存(Cache)来说，存取都是以字节块的形式，而块的大小跟 CPU 的高速缓存存储器有关，ARMv7是 32 Byte，A9是 64 Byte，在 A9 下CoreAnimation 应该是按 64 Byte(也就是8个字，8Byte/字) 作为一块数据去读取、存储和渲染，让图像数据对齐64 Byte 就可以避免CoreAnimation再拷贝一份数据。能节约内存和进行copy的时间。(因为图片存入的时候已经对齐过了，获取的时候自然也是字节对齐的)，</strong></p>
+<p><strong>如何字节块对齐避免 Core Animation 进行图像数据复制？</strong><br>以下是代码形式进行实操：<br><strong>计算图像所需字节大小</strong><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** FICImageTable.m */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">CGSize</span> pixelSize = [_imageFormat pixelSize]; <span class="comment">// 想要展示的图片大小</span></span><br><span class="line"><span class="built_in">NSInteger</span> bytesPerPixel = [_imageFormat bytesPerPixel]; <span class="comment">// 该图像个是中的字节每像素, 例如 FICImageFormatStyle32BitBGRA 为32位4个字节</span></span><br><span class="line">_imageRowLength = (<span class="built_in">NSInteger</span>)FICByteAlignForCoreAnimation((size_t) (pixelSize.width * bytesPerPixel));</span><br><span class="line">_imageLength = _imageRowLength * (<span class="built_in">NSInteger</span>)pixelSize.height;</span><br></pre></td></tr></table></figure></p>
+<p>通过 <code>FICByteAlignForCoreAnimation</code> 函数对图片数据进行字节对齐然后计算， 得到 <code>_imageRowLength</code> 图像每行的字节数, <strong>图像所需字节 = 图像的高度 * _imageRowLength(字节块对齐的图像每行字节数)</strong>。 </p>
+<p><strong>通过实际图像每行所需的字节进行字节块对齐</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> size_t <span class="title">FICByteAlignForCoreAnimation</span><span class="params">(<span class="keyword">size_t</span> bytesPerRow)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FICByteAlign(bytesPerRow, <span class="number">64</span>); <span class="comment">// 跟 CPU 的高速缓存器有关</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>让为 width 成为 alignment 的倍数计算</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> size_t <span class="title">FICByteAlign</span><span class="params">(<span class="keyword">size_t</span> width, <span class="keyword">size_t</span> alignment)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((width + (alignment - <span class="number">1</span>)) / alignment) * alignment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>通过<code>_imageRowLength</code>来创建位图，由于图像字节块已经对齐, 避免 <code>CA::Render::copy_image</code> 图像数据的拷贝发生了.</strong><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 CGDataProviderRef 用于位图创建，提供图像数据和数据结构的 Release 函数</span></span><br><span class="line"><span class="built_in">CGDataProviderRef</span> dataProvider = <span class="built_in">CGDataProviderCreateWithData</span>((__bridge_retained <span class="keyword">void</span> *)entryData, [entryData bytes], [entryData imageLength], _FICReleaseImageData);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CGSize</span> pixelSize = [_imageFormat pixelSize]; <span class="comment">// 想要展示的图片大小</span></span><br><span class="line"><span class="built_in">CGBitmapInfo</span> bitmapInfo = [_imageFormat bitmapInfo]; <span class="comment">// 位图数据的信息，例如是大小端，计算位数等</span></span><br><span class="line"><span class="built_in">NSInteger</span> bitsPerComponent = [_imageFormat bitsPerComponent]; <span class="comment">// 每个组成的位数，32位RGBA、RGB和8位Gray都为8bit，而16位的RGB为5bit</span></span><br><span class="line"><span class="built_in">NSInteger</span> bitsPerPixel = [_imageFormat bytesPerPixel] * <span class="number">8</span>; <span class="comment">// bit每个像素</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> colorSpace = [_imageFormat isGrayscale] ? <span class="built_in">CGColorSpaceCreateDeviceGray</span>() : <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</span><br><span class="line"> </span><br><span class="line"><span class="built_in">CGImageRef</span> imageRef = <span class="built_in">CGImageCreate</span>((size_t) pixelSize.width, (size_t) pixelSize.height, (size_t) bitsPerComponent, (size_t) bitsPerPixel,(size_t) _imageRowLength, colorSpace, bitmapInfo, dataProvider, <span class="literal">NULL</span>, <span class="literal">false</span>, (<span class="built_in">CGColorRenderingIntent</span>)<span class="number">0</span>);</span><br><span class="line"><span class="built_in">CGDataProviderRelease</span>(dataProvider);</span><br><span class="line"><span class="built_in">CGColorSpaceRelease</span>(colorSpace);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/03/process-from-csapp/" rel="next" title="阅读CASPP——进程篇">
+                <i class="fa fa-chevron-left"></i> 阅读CASPP——进程篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/10/ios-fastimagecache-opensource-interpretation/" rel="prev" title="FastImageCache 架构分析">
+                FastImageCache 架构分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Abson" />
+            
+              <p class="site-author-name" itemprop="name">Abson</p>
+              <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
