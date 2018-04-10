@@ -114,7 +114,7 @@
 <meta name="description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS高效图片IO 框架">
+<meta property="og:title" content="iOS高效图片 IO 框架是如何炼成的">
 <meta property="og:url" content="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
@@ -124,9 +124,9 @@
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align01.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align02.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/fastImageCache2.png">
-<meta property="og:updated_time" content="2018-04-10T13:17:21.742Z">
+<meta property="og:updated_time" content="2018-04-10T15:10:13.866Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS高效图片IO 框架">
+<meta name="twitter:title" content="iOS高效图片 IO 框架是如何炼成的">
 <meta name="twitter:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta name="twitter:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
 
@@ -164,7 +164,7 @@
 
 
 
-  <title>iOS高效图片IO 框架 | Simple Code Sky</title>
+  <title>iOS高效图片 IO 框架是如何炼成的 | Simple Code Sky</title>
   
 
 
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS高效图片IO 框架</h1>
+          <h1 class="post-title" itemprop="name headline">iOS高效图片 IO 框架是如何炼成的</h1>
         
 
         <div class="post-meta">
@@ -407,7 +407,7 @@
       
         <p>当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把<a href="https://simplecodesky.com/2018/04/03/process-from-csapp/">阅读CASPP——进程篇</a>和<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">阅读CSAPP——虚拟内存篇</a>这两篇文章学到的内容进行实战应用。</p>
 <a id="more"></a>
-<p>当我们使用以下 Object-C 代码从网络中获取图片并加载到 UIImageView 上<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURL</span>* url = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://img.alicdn.com/bao/uploaded/i2/2836521972/TB2cyksspXXXXanXpXXXXXXXXXX_!!0-paimai.jpg"</span>];</span><br><span class="line"> __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line"> <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:url]</span><br><span class="line">                                                              completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                                                  <span class="built_in">UIImage</span>* image = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                                                  <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                                      [weakSelf.imageView setImage:image];</span><br><span class="line">                                                                  &#125;);</span><br><span class="line">                                                              &#125;];</span><br><span class="line"> [task resume];</span><br></pre></td></tr></table></figure></p>
+<h3 id="图像数据拷贝？"><a href="#图像数据拷贝？" class="headerlink" title="图像数据拷贝？"></a>图像数据拷贝？</h3><p>当我们使用以下 Object-C 代码从网络中获取图片并加载到 UIImageView 上<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURL</span>* url = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://img.alicdn.com/bao/uploaded/i2/2836521972/TB2cyksspXXXXanXpXXXXXXXXXX_!!0-paimai.jpg"</span>];</span><br><span class="line"> __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line"> <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:url]</span><br><span class="line">                                                              completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                                                  <span class="built_in">UIImage</span>* image = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                                                  <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                                      [weakSelf.imageView setImage:image];</span><br><span class="line">                                                                  &#125;);</span><br><span class="line">                                                              &#125;];</span><br><span class="line"> [task resume];</span><br></pre></td></tr></table></figure></p>
 <p>运行上面代码，通过 Instrument 的 TimeProfile 查看 CPU 消耗情况：<br><img src="/images/ios-efficient-image-io/1523343490248.jpg" alt="Alt text"></p>
 <p>上述图片中发现了两个问题：</p>
 <ol>
@@ -416,11 +416,10 @@
 </ol>
 <p>那么如果解决上述两个问题，我们使用 <strong>FastImageCache</strong> 这个第三方库加载图片，官方Demo一开始的 <code>FICDPhoto</code> 加载图片的方法为使用 <code>imageWithContentsOfFile</code>, 这会导致 <code>CA::Render::copy_image</code> 的图像数据拷贝，所以更改为以下方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIImage</span> *)sourceImage &#123;</span><br><span class="line">    __block <span class="built_in">UIImage</span> *sourceImage = [<span class="built_in">UIImage</span> imageWithContentsOfFile:[_sourceImageURL path]];</span><br><span class="line">    <span class="keyword">if</span> (!sourceImage) &#123;</span><br><span class="line">        pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">        <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:_sourceImageURL]</span><br><span class="line">                                        completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                            sourceImage = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                            pthread_cond_signal(&amp;_signal);</span><br><span class="line">                                            pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">                                        &#125;];</span><br><span class="line">        [task resume];</span><br><span class="line">        pthread_cond_wait(&amp;_signal, &amp;_mutex);</span><br><span class="line">        pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sourceImage;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>当图片被渲染到 ImageView 的时候，利用 Instrument 查看并没有发生 <code>CA::Render::copy_image</code> 和 <code>CA::Render::create_image_from_provider</code> 的情况。</p>
-<p><strong>FastImageCache是如何解决上述两个问题的？</strong></p>
-<p>先看第一个问题，为何  Core Animation 在渲染之前要拷贝一份数据呢？<br>在此之前，我们先看一些计算机系统的理论知识，等看完后再回头看看，答案便更加明朗了。<br>我们都知道，图片说白了就是一段字节数据所组成的文件数据而已，也就是说我们把图片显示到界面上，不过是把一堆字节加载到 CPU 的寄存器当中，然后通过 GPU 将字节变成红(R)、绿(G)、蓝(B)的三原色的数组，然后通过界面显示出来(也就是我们所说的渲染)。所以，我们先了解一下，字节数据是如何通过内存加载到 CPU 的。</p>
-<p>学过计算机操作系统的我们都知道，所有的字节数据都是通过总线来传送的，总线连接着 CPU 到主存，主存到磁盘等主要硬件设备的传输路线，而主要的传输单位就是<strong><a href="https://zh.wikipedia.org/wiki/%E5%AD%97_(%E8%AE%A1%E7%AE%97%E6%9C%BA" target="_blank" rel="noopener">字(word)</a>)</strong>，由于数字信号分为高频和低频，所以我们的计算机信号只有 0 和 1 两种来区分，所以我们采用了二进制的数据形式来表述数据，因此信号的量化精度一般以比特（bits）来衡量，这就是字节数据在总线中传输的本质。</p>
+<h3 id="如何解决？"><a href="#如何解决？" class="headerlink" title="如何解决？"></a>如何解决？</h3><p><strong>FastImageCache是如何解决上述两个问题的？</strong><br>先看第一个问题，为何  Core Animation 在渲染之前要拷贝一份数据呢？<br>在此之前，我们先看一些计算机系统的理论知识，等看完后再回头看看，答案便更加明朗了。<br>我们都知道，图片说白了就是一段字节数据所组成的文件数据而已，也就是说我们把图片显示到界面上，不过是把一堆字节加载到 CPU 的寄存器当中，然后通过 GPU 将字节变成红(R)、绿(G)、蓝(B)的三原色的数组，然后通过界面显示出来(也就是我们所说的渲染)。所以，我们先了解一下，字节数据是如何通过内存加载到 CPU 的。</p>
+<p>学过计算机操作系统的我们都知道，所有的字节数据都是通过总线来传送的，总线连接着 CPU 到主存，主存到磁盘等主要硬件设备的传输路线，而主要的传输单位就是<a href="https://zh.wikipedia.org/wiki/%E5%AD%97_(%E8%AE%A1%E7%AE%97%E6%9C%BA" target="_blank" rel="noopener">字(word)</a>)，由于数字信号分为高频和低频，所以我们的计算机信号只有 0 和 1 两种来区分，所以我们采用了二进制的数据形式来表述数据，因此信号的量化精度一般以比特（bits）来衡量，这就是字节数据在总线中传输的本质。</p>
 <p><img src="/images/ios-efficient-image-io/CSAPP_C1_P1.png" alt="关于计算机硬件组成"></p>
-<p>而 64 位系统当中，<strong>字(word)</strong> 是 8 个字节的大小。<br>内存的存储单元被称为<a href="https://zh.wikipedia.org/wiki/%E5%9D%97_(%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8" target="_blank" rel="noopener">块(Chunk)</a>)，而块的大小因ying’j，大多数<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">文件系统</a>都是基于块设备，即存取规定数据块的硬件抽象层。<br>假如32位的文件系统中，<a href="https://zh.wikipedia.org/wiki/CPU%E7%BC%93%E5%AD%98" target="_blank" rel="noopener">高速缓存(Cache)</a>以4个字节的块大小为传送到 CPU 当中，下图说明了 CPU 如何以4字节内存访问粒度访问4字节的数据查找：</p>
+<p>而 64 位系统当中，<strong>字(word)</strong> 是 8 个字节的大小。<br>内存的存储单元被称为<a href="https://zh.wikipedia.org/wiki/%E5%9D%97_(%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8" target="_blank" rel="noopener">块(Chunk)</a>)，而块的大小因硬件设备而定的，大多数<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">文件系统</a>都是基于块设备，即存取规定数据块的硬件抽象层。<br>假如32位的文件系统中，<a href="https://zh.wikipedia.org/wiki/CPU%E7%BC%93%E5%AD%98" target="_blank" rel="noopener">高速缓存(Cache)</a>以4个字节的块大小为传送到 CPU 当中，下图说明了 CPU 如何以4字节内存访问粒度访问4字节的数据查找：</p>
 <p><img src="/images/ios-efficient-image-io/align01.jpg" alt="Alt text"></p>
 <p>如果我们们获取的数据为未对齐的4个字节，CPU 就会执行额外的工作去访问数据：加载两个字节块(Chunk)的数据，移出不需要的字节，然后将它们组合在一起。这个过程肯定会降低性能并浪费CPU周期，以便从内存中获取正确的数据。</p>
 <p><img src="/images/ios-efficient-image-io/align02.jpg" alt="Alt text"></p>
@@ -433,7 +432,7 @@
 <p><strong>通过实际图像每行所需的字节进行字节块对齐</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> size_t <span class="title">FICByteAlignForCoreAnimation</span><span class="params">(<span class="keyword">size_t</span> bytesPerRow)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FICByteAlign(bytesPerRow, <span class="number">64</span>); <span class="comment">// 跟 CPU 的高速缓存器有关</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>让为 width 成为 alignment 的倍数计算</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> size_t <span class="title">FICByteAlign</span><span class="params">(<span class="keyword">size_t</span> width, <span class="keyword">size_t</span> alignment)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((width + (alignment - <span class="number">1</span>)) / alignment) * alignment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>通过<code>_imageRowLength</code>来创建位图，由于图像字节块已经对齐, 避免 <code>CA::Render::copy_image</code> 图像数据的拷贝发生了.</strong><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 CGDataProviderRef 用于位图创建，提供图像数据和数据结构的 Release 函数</span></span><br><span class="line"><span class="built_in">CGDataProviderRef</span> dataProvider = <span class="built_in">CGDataProviderCreateWithData</span>((__bridge_retained <span class="keyword">void</span> *)entryData, [entryData bytes], [entryData imageLength], _FICReleaseImageData);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CGSize</span> pixelSize = [_imageFormat pixelSize]; <span class="comment">// 想要展示的图片大小</span></span><br><span class="line"><span class="built_in">CGBitmapInfo</span> bitmapInfo = [_imageFormat bitmapInfo]; <span class="comment">// 位图数据的信息，例如是大小端，计算位数等</span></span><br><span class="line"><span class="built_in">NSInteger</span> bitsPerComponent = [_imageFormat bitsPerComponent]; <span class="comment">// 每个组成的位数，32位RGBA、RGB和8位Gray都为8bit，而16位的RGB为5bit</span></span><br><span class="line"><span class="built_in">NSInteger</span> bitsPerPixel = [_imageFormat bytesPerPixel] * <span class="number">8</span>; <span class="comment">// bit每个像素</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> colorSpace = [_imageFormat isGrayscale] ? <span class="built_in">CGColorSpaceCreateDeviceGray</span>() : <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</span><br><span class="line"> </span><br><span class="line"><span class="built_in">CGImageRef</span> imageRef = <span class="built_in">CGImageCreate</span>((size_t) pixelSize.width, (size_t) pixelSize.height, (size_t) bitsPerComponent, (size_t) bitsPerPixel,(size_t) _imageRowLength, colorSpace, bitmapInfo, dataProvider, <span class="literal">NULL</span>, <span class="literal">false</span>, (<span class="built_in">CGColorRenderingIntent</span>)<span class="number">0</span>);</span><br><span class="line"><span class="built_in">CGDataProviderRelease</span>(dataProvider);</span><br><span class="line"><span class="built_in">CGColorSpaceRelease</span>(colorSpace);</span><br></pre></td></tr></table></figure></p>
-
+<h3 id="内核态和用户态的切换？"><a href="#内核态和用户态的切换？" class="headerlink" title="内核态和用户态的切换？"></a>内核态和用户态的切换？</h3>
       
     </div>
     
@@ -527,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -592,6 +600,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像数据拷贝？"><span class="nav-number">1.</span> <span class="nav-text">图像数据拷贝？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何解决？"><span class="nav-number">2.</span> <span class="nav-text">如何解决？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核态和用户态的切换？"><span class="nav-number">3.</span> <span class="nav-text">内核态和用户态的切换？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
