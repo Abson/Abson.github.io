@@ -111,23 +111,23 @@
 
 
 
-<meta name="description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta name="description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS高效图片 IO 框架是如何炼成的">
 <meta property="og:url" content="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta property="og:description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/CSAPP_C1_P1.png">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align01.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align02.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/fastImageCache2.png">
-<meta property="og:updated_time" content="2018-04-10T15:10:13.866Z">
+<meta property="og:updated_time" content="2018-04-11T10:25:06.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS高效图片 IO 框架是如何炼成的">
-<meta name="twitter:description" content="当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
+<meta name="twitter:description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta name="twitter:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
 
 
@@ -447,7 +447,7 @@
       
 
       
-        <p>当我们使用图片存储的时候，难免会设计到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把<a href="https://simplecodesky.com/2018/04/03/process-from-csapp/">阅读CASPP——进程篇</a>和<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">阅读CSAPP——虚拟内存篇</a>这两篇文章学到的内容进行实战应用。</p>
+        <p>当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把<a href="https://simplecodesky.com/2018/04/03/process-from-csapp/">阅读CASPP——进程篇</a>和<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">阅读CSAPP——虚拟内存篇</a>这两篇文章学到的内容进行实战应用。</p>
 <a id="more"></a>
 <h3 id="图像数据拷贝？"><a href="#图像数据拷贝？" class="headerlink" title="图像数据拷贝？"></a>图像数据拷贝？</h3><p>当我们使用以下 Object-C 代码从网络中获取图片并加载到 UIImageView 上<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURL</span>* url = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://img.alicdn.com/bao/uploaded/i2/2836521972/TB2cyksspXXXXanXpXXXXXXXXXX_!!0-paimai.jpg"</span>];</span><br><span class="line"> __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line"> <span class="built_in">NSURLSessionDataTask</span> *task = [[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:[[<span class="built_in">NSURLRequest</span> alloc] initWithURL:url]</span><br><span class="line">                                                              completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                                                  <span class="built_in">UIImage</span>* image = [<span class="built_in">UIImage</span> imageWithData:data];</span><br><span class="line">                                                                  <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                                                      [weakSelf.imageView setImage:image];</span><br><span class="line">                                                                  &#125;);</span><br><span class="line">                                                              &#125;];</span><br><span class="line"> [task resume];</span><br></pre></td></tr></table></figure></p>
 <p>运行上面代码，通过 Instrument 的 TimeProfile 查看 CPU 消耗情况：<br><img src="/images/ios-efficient-image-io/1523343490248.jpg" alt="Alt text"></p>
