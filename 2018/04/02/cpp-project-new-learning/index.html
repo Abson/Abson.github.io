@@ -448,7 +448,7 @@
       <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
   <div></div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
+    <span>土豪专区</span>
   </button>
   <div id="QR" style="display: none;">
 
@@ -531,7 +531,9 @@
 
   
     <div class="comments" id="comments">
-      <div id="SOHUCS"></div>
+      
+        <div id="gitment-container"></div>
+      
     </div>
 
   
@@ -869,7 +871,7 @@
         var gitment = new Gitment({
             id: window.location.pathname, 
             owner: 'Abson',
-            repo: 'BlogGitment',
+            repo: 'Abson.github.io',
             
             oauth: {
             
