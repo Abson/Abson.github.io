@@ -925,13 +925,18 @@
 <!-- END LOCAL -->
 
     
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
 
     
       <script type="text/javascript">
       function renderGitment(){
         var gitment = new Gitmint({
             id: window.location.pathname, 
-            owner: 'Abson',
+            owner: '13198014',
             repo: 'abson.github.io',
             
             lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
@@ -939,9 +944,9 @@
             oauth: {
             
             
-                client_secret: '69b5f5a27c6b3add1fa503c8bfcbd07f7a2c01ec',
+                client_secret: 'a394bdb8e3d38bec51878e1ae0aa8771154f30e7',
             
-                client_id: '3cdffd04a4893e6b2358'
+                client_id: '8c419ec8e6b420c1405d'
             }});
         gitment.render('gitment-container');
       }
