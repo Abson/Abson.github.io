@@ -121,7 +121,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
-<meta property="og:updated_time" content="2018-04-13T08:51:31.999Z">
+<meta property="og:updated_time" content="2018-04-13T08:52:49.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastImageCache 架构分析">
 <meta name="twitter:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
@@ -461,9 +461,9 @@
 <p>上图中 ImageCache 是一个单例，用户管理整个图片框架系统。</p>
 <p>FastImageCache 为了更好的读存图片数据，将所有字节相同的图片都放在一起，也就是所有格式相同的图片都放在同一个文件系统当中，而在 FastImageCache 中，<code>imageFormat</code> 分为 4 种格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FICImageFormatStyle32BitBGRA,</span><br><span class="line">FICImageFormatStyle32BitBGR,</span><br><span class="line">FICImageFormatStyle16BitBGR,</span><br><span class="line">FICImageFormatStyle8BitGrayscale,</span><br></pre></td></tr></table></figure></p>
 <ul>
-<li>ImageTable：每一种格式都对应一个 <code>ImageTable</code> 结构体，一个 <code>ImageTable</code> 更是一个真实的文件，可以叫做一个真实的文件系统，命名为 <code>xxx.table</code> 文件放在沙盒的 Cache 文件夹当中。</li>
-<li>Chunk：<code>ImageTable</code>拥有多个 <code>Chunk</code>，而 <code>Chunk</code> 被设置为 2M 大小的内存块，存在于 ImageTable 文件系统中，获取的时候通过内存映射 <code>mmap</code> 作为共享内存映射到用户空间的虚拟内存当中。</li>
-<li>Entry： <code>Chunk</code>存在着多个<code>Entry</code>, 因为操作系统当中访问磁盘，都是以磁盘页和内存页的方式存在于磁盘和物理内存当中，在 64 位 Unix操作系统中，一般为 <strong>4KB</strong>，这个大小可以通过设置操作系统更改，所以 <code>Entry</code> 为了加快访问数据字节访问获取速度和节省由于页不对齐而导致的 CPU 周期增加的消耗，就采用页对齐的方式。<br><code>Entry</code> 中存储着一个图片的字节数组，和 <code>Meta(ImageCache用到的一些 UUID 的唯一图片标识)</code>，而 <code>ImageData</code> 为了避免发生 copy_images 的发生，更是采用了字节块对齐。</li>
+<li><strong>ImageTable</strong>：每一种格式都对应一个 <code>ImageTable</code> 结构体，一个 <code>ImageTable</code> 更是一个真实的文件，可以叫做一个真实的文件系统，命名为 <code>xxx.table</code> 文件放在沙盒的 Cache 文件夹当中。</li>
+<li><strong>Chunk</strong>：<code>ImageTable</code>拥有多个 <code>Chunk</code>，而 <code>Chunk</code> 被设置为 2M 大小的内存块，存在于 ImageTable 文件系统中，获取的时候通过内存映射 <code>mmap</code> 作为共享内存映射到用户空间的虚拟内存当中。</li>
+<li><strong>Entry</strong>： <code>Chunk</code>存在着多个<code>Entry</code>, 因为操作系统当中访问磁盘，都是以磁盘页和内存页的方式存在于磁盘和物理内存当中，在 64 位 Unix操作系统中，一般为 <strong>4KB</strong>，这个大小可以通过设置操作系统更改，所以 <code>Entry</code> 为了加快访问数据字节访问获取速度和节省由于页不对齐而导致的 CPU 周期增加的消耗，就采用页对齐的方式。<br><code>Entry</code> 中存储着一个图片的字节数组，和 <code>Meta(ImageCache用到的一些 UUID 的唯一图片标识)</code>，而 <code>ImageData</code> 为了避免发生 copy_images 的发生，更是采用了字节块对齐。</li>
 </ul>
 <p>而这些实现细节，可以查看<a href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/">iOS高效图片 IO 框架是如何炼成的</a>。</p>
 <p>文献参考：<br><a href="https://blog.cnbang.net/tech/2578/" target="_blank" rel="noopener">《iOS图片加载速度极限优化—FastImageCache解析》</a></p>
