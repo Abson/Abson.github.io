@@ -121,7 +121,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
-<meta property="og:updated_time" content="2018-04-13T08:46:05.342Z">
+<meta property="og:updated_time" content="2018-04-13T08:50:59.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastImageCache 架构分析">
 <meta name="twitter:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
@@ -445,7 +445,7 @@
 <li>CATransaction捕获到UIImageView layer树的变化</li>
 <li>主线程Runloop提交CATransaction，开始进行图像渲染<br> 6.1 如果数据没有字节对齐，Core Animation会再拷贝一份数据，进行字节块对齐。<br> 6.2 GPU处理位图数据，进行渲染。</li>
 </ol>
-<p>FastImageCache 分别优化了2,3,5,7.1三个步骤：</p>
+<p>FastImageCache 分别优化了 3,5,7.1三个步骤：</p>
 <ol>
 <li>使用<code>mmap</code>内存映射函数，省去了上述第2步数据从内核空间拷贝到用户空间和内核态的操作和用户态之间的切换消耗。</li>
 <li>缓存解码后的位图数据到磁盘，下次从磁盘读取时省去第4步解码的操作。</li>
