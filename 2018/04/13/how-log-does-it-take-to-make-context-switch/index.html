@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, SimpleCodeSky" />
+  <meta name="keywords" content="翻译,进程," />
 
 
 
@@ -111,17 +111,18 @@
 
 
 
-<meta name="description" content="iOS|C++|Unix|伪知识份子">
-<meta name="keywords" content="Abson">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Simple Code Sky">
-<meta property="og:url" content="http://simplecodesky.com/categories/源码分析/iOS/index.html">
+<meta name="description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
+<meta name="keywords" content="翻译,进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次进程的上下文切换需要多长时间">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/13/how-log-does-it-take-to-make-context-switch/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="iOS|C++|Unix|伪知识份子">
+<meta property="og:description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-13T08:40:13.264Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Simple Code Sky">
-<meta name="twitter:description" content="iOS|C++|Unix|伪知识份子">
+<meta name="twitter:title" content="一次进程的上下文切换需要多长时间">
+<meta name="twitter:description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
 
 
 
@@ -151,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/categories/源码分析/iOS/"/>
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/13/how-log-does-it-take-to-make-context-switch/"/>
 
 
 
 
 
-  <title>分类: iOS | Simple Code Sky</title>
+  <title>一次进程的上下文切换需要多长时间 | Simple Code Sky</title>
   
 
 
@@ -176,7 +177,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -304,55 +305,257 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>iOS<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/13/how-log-does-it-take-to-make-context-switch/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Abson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simple Code Sky">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/04/02/rac-source-analyze/" itemprop="url">
-              
-                <span itemprop="name">RAC 源码分析(一)</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">一次进程的上下文切换需要多长时间</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-04-02T15:26:25+08:00"
-              content="2018-04-02" >
-          04-02
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T15:22:52+08:00">
+                2018-04-13
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/并发/翻译/" itemprop="url" rel="index">
+                    <span itemprop="name">翻译</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/13/how-log-does-it-take-to-make-context-switch/" class="leancloud_visitors" data-flag-title="一次进程的上下文切换需要多长时间">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">原文</a></p>
+<p>对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)</p>
+<p>据我所知，所有的 CPU 都有一个恒定的时钟频率(定时器)。而所有的Linux内核都是由Ubuntu构建和发布的。</p>
+<h3 id="第一次尝试：利用系统调用-失败了"><a href="#第一次尝试：利用系统调用-失败了" class="headerlink" title="第一次尝试：利用系统调用(失败了)"></a>第一次尝试：利用系统调用(失败了)</h3><p>我的第一个想法就是连续的调用多次廉价的<code>系统调用(system call)</code>, 计算出所有系统调用花费的总时间和平均时间。Linux 上最廉价的系统调用的触发函数貌似就是<a href="http://man7.org/linux/man-pages/man2/gettid.2.html" target="_blank" rel="noopener">gettid</a>。但是，得到的结果却证明了我的想法是多么的天真！因为现在系统调用实际上不会导致完全的上下文切换，Linux内核可用通过”模式切换”(“从用户模式到内核模式，再回到用户模式”)来完成系统调用。这就是为什么当我运行我的第一个测试程序时，vmstat不会显示上下文切换次数的明显增加。但是这个测试也很有趣，尽管结果这不是我最初想要的。<br><strong>什么是 vmstat？</strong></p>
+<blockquote>
+<p>vmstat: 命令是最常见的Linux/Unix监控工具，可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率，内存使用，虚拟内存交换情况,IO读写情况。</p>
+</blockquote>
+<p>源代码：<a href="https://github.com/tsuna/contextswitch/blob/master/timesyscall.c" target="_blank" rel="noopener">timesyscall.c</a> 的结果：</p>
+<pre><code>* Intel 5150: 105ns/syscall
+* Intel E5440: 87ns/syscall
+* Intel E5520: 58ns/syscall
+* Intel X5550: 52ns/syscall
+* Intel L5630: 58ns/syscall
+* Intel E5-2620: 67ns/syscall
+</code></pre><p>很好，结果呈现，越是昂贵的 CPU 所表现的性能月好(但请注意，Sandy Bridge的成本略有增加)。但这并不是我们想要的结果。所以要测试上下文切换的成本    ，我们需要强制内核取消调度当前进程并调度另一个进程(进程切换)。为了对CPU进行基准测试，我们需要让内核在密集的循环中不做任何事情。你会如何做到这一点？</p>
+<h3 id="第二次尝试-使用futex"><a href="#第二次尝试-使用futex" class="headerlink" title="第二次尝试: 使用futex"></a>第二次尝试: 使用futex</h3><p>这一次我使用了滥用<a href="https://zh.wikipedia.org/wiki/Futex" target="_blank" rel="noopener">futex[RTFM]</a>的方式。futex是大多数线程库用于实现阻塞操作（例如等待抢占互斥锁，信号量，条件变量等）的底层的Linux特定基元。如果你想了解更多关于futex的知识，可以阅读Ulrich Drepper所著的<a href="https://www.akkadia.org/drepper/futex.pdf" target="_blank" rel="noopener">Futexes Are Tricky</a>。不管怎么样，利用futex来暂停和恢复进程是非常容易的。我的做法就是fork出一个子进程，然后让父进程和子进程轮流等待futex。当父进程在等待状态的时候，子进程将其唤醒，然后子进程进入等待状态等待futex，直到父进程将子进程唤醒，然后父进程进入等待状态。就像乒乓球一样，你唤醒我，我唤醒你。</p>
+<p>源代码：<a href="https://github.com/tsuna/contextswitch/blob/master/timectxsw.c" target="_blank" rel="noopener">timectxsw.c</a> 的结果：</p>
+<pre><code>* Intel 5150: ~4300ns/context switch
+* Intel E5440: ~3600ns/context switch
+* Intel E5520: ~4500ns/context switch
+* Intel X5550: ~3000ns/context switch
+* Intel L5630: ~3000ns/context switch
+* Intel E5-2620: ~3000ns/context switch
+</code></pre><p>注意：这些结果包含了futex系统调用的开销。</p>
+<p>现在，你必须对这个结果保留怀疑的态度。在现实当中，上下文切换是非常昂贵的，因为它与 CPU 缓存相关联(L1, L2, L3 (如果有的话), 还有 TLB!)。</p>
+<h3 id="CPU-亲和力"><a href="#CPU-亲和力" class="headerlink" title="CPU 亲和力"></a>CPU 亲和力</h3><p>在 SMP 的环境当中，这个测试是非常困难的，因为性能的表现对于一个任务(task)是否从一个核迁移到另外一个核的影响是非常大的(特别是如果迁移跨越了物理CPU)。</p>
+<p>未完待续…</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div align="center">
+      <p><span>
+      <b>本文地址：</b><a href="/2018/04/13/how-log-does-it-take-to-make-context-switch/" title="一次进程的上下文切换需要多长时间">http://simplecodesky.com/2018/04/13/how-log-does-it-take-to-make-context-switch/</a><br/><b>转载请注明出处，谢谢！</b>
+      </span></p> 
+      <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>土豪专区</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Abson 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/13/xcode-link-symbol-conflict/" rel="next" title="静态库中Class的分类问题和符号冲突问题 (Xcode other Link Flags)">
+                <i class="fa fa-chevron-left"></i> 静态库中Class的分类问题和符号冲突问题 (Xcode other Link Flags)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -360,6 +563,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -380,8 +594,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -479,6 +702,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次尝试：利用系统调用-失败了"><span class="nav-number">1.</span> <span class="nav-text">第一次尝试：利用系统调用(失败了)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次尝试-使用futex"><span class="nav-number">2.</span> <span class="nav-text">第二次尝试: 使用futex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-亲和力"><span class="nav-number">3.</span> <span class="nav-text">CPU 亲和力</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -612,6 +851,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -663,6 +906,28 @@
       </style>
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitment({
+            id: '<%= page.date %>',
+            owner: 'Abson',
+            repo: 'Abson.github.io',
+            
+            oauth: {
+            
+            
+                client_secret: 'a394bdb8e3d38bec51878e1ae0aa8771154f30e7',
+            
+                client_id: '8c419ec8e6b420c1405d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 
