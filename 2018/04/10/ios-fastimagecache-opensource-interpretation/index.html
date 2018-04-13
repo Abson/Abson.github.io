@@ -121,7 +121,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
-<meta property="og:updated_time" content="2018-04-13T08:52:49.659Z">
+<meta property="og:updated_time" content="2018-04-13T08:58:05.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastImageCache 架构分析">
 <meta name="twitter:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
@@ -458,8 +458,8 @@
 <h3 id="Data-Alignment-字节块对齐"><a href="#Data-Alignment-字节块对齐" class="headerlink" title="Data Alignment 字节块对齐"></a>Data Alignment 字节块对齐</h3><p><a href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/">iOS高效图片 IO 框架是如何炼成的</a> 中有讲到为何需要字节对齐，而且字节对齐的实现等等。</p>
 <h3 id="FastImageCache-架构实现"><a href="#FastImageCache-架构实现" class="headerlink" title="FastImageCache 架构实现"></a>FastImageCache 架构实现</h3><p>通过阅读 <a href="https://github.com/path/FastImageCache" target="_blank" rel="noopener">FastImageCache</a> 后，粗略的画出了以下这幅流程图，途中标识着这个框架的要获取图片的整体流程如何实现:<br><img src="/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg" alt=""></p>
 <p><strong>那么 <a href="https://github.com/path/FastImageCache" target="_blank" rel="noopener">FastImageCache</a> 是如何实现上述流程的呢？</strong><br>关于的总体结构如下图：<br><img src="/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png" alt=""></p>
-<p>上图中 ImageCache 是一个单例，用户管理整个图片框架系统。</p>
-<p>FastImageCache 为了更好的读存图片数据，将所有字节相同的图片都放在一起，也就是所有格式相同的图片都放在同一个文件系统当中，而在 FastImageCache 中，<code>imageFormat</code> 分为 4 种格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FICImageFormatStyle32BitBGRA,</span><br><span class="line">FICImageFormatStyle32BitBGR,</span><br><span class="line">FICImageFormatStyle16BitBGR,</span><br><span class="line">FICImageFormatStyle8BitGrayscale,</span><br></pre></td></tr></table></figure></p>
+<p>上图中 ImageCache 是一个<strong>单例</strong>，用作管理整个图片框架系统。</p>
+<p>FastImageCache 为了更好的读存图片数据，将所有图像字节大小相同的图片都放在一起，也就是所有格式相同的图片都放在同一个文件系统当中(这个后面会讲到)，而在 FastImageCache 中，<code>imageFormat</code> 分为 4 种格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FICImageFormatStyle32BitBGRA,</span><br><span class="line">FICImageFormatStyle32BitBGR,</span><br><span class="line">FICImageFormatStyle16BitBGR,</span><br><span class="line">FICImageFormatStyle8BitGrayscale,</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li><strong>ImageTable</strong>：每一种格式都对应一个 <code>ImageTable</code> 结构体，一个 <code>ImageTable</code> 更是一个真实的文件，可以叫做一个真实的文件系统，命名为 <code>xxx.table</code> 文件放在沙盒的 Cache 文件夹当中。</li>
 <li><strong>Chunk</strong>：<code>ImageTable</code>拥有多个 <code>Chunk</code>，而 <code>Chunk</code> 被设置为 2M 大小的内存块，存在于 ImageTable 文件系统中，获取的时候通过内存映射 <code>mmap</code> 作为共享内存映射到用户空间的虚拟内存当中。</li>
