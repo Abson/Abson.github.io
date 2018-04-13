@@ -121,7 +121,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
-<meta property="og:updated_time" content="2018-04-13T08:50:59.163Z">
+<meta property="og:updated_time" content="2018-04-13T08:51:31.999Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastImageCache 架构分析">
 <meta name="twitter:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
@@ -447,9 +447,9 @@
 </ol>
 <p>FastImageCache 分别优化了 3,5,7.1三个步骤：</p>
 <ol>
-<li>使用<code>mmap</code>内存映射函数，省去了上述第2步数据从内核空间拷贝到用户空间和内核态的操作和用户态之间的切换消耗。</li>
-<li>缓存解码后的位图数据到磁盘，下次从磁盘读取时省去第4步解码的操作。</li>
-<li>生成字节块对齐的数据，防止上述第6.1步CoreAnimation在渲染时再拷贝一份数据。</li>
+<li>使用<code>mmap</code>内存映射函数，省去了上述第3步数据从内核空间拷贝到用户空间和内核态的操作和用户态之间的切换消耗。</li>
+<li>缓存解码后的位图数据到磁盘，下次从磁盘读取时省去第5步解码的操作。</li>
+<li>生成字节块对齐的数据，防止上述第7.1步CoreAnimation在渲染时再拷贝一份数据。</li>
 </ol>
 <p>接下来具体介绍这三个优化点以及它的实现。</p>
 <h3 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h3><p>什么是用户态和内核态？<br><a href="https://simplecodesky.com/2018/04/03/process-from-csapp/###用户模式和内核模式">用户模式和内核模式</a><br>上面这篇博客讲解了用户态和用户态不过是为了防止用户恶意操作操作系统中的数据和硬件而建立的CPU模式机制。这样当用户应用程序想要访问硬件设备的时候，都要进入内核态(一个内存地址空间跟用户态完全不一样的环境，这里可能会发生进程切换，但大部分情况是不会的)。</p>
