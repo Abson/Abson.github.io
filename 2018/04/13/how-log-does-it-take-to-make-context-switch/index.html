@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
+<meta name="description" content="原文. 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)">
 <meta name="keywords" content="翻译,进程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一次进程的上下文切换需要多长时间">
 <meta property="og:url" content="http://simplecodesky.com/2018/04/13/how-log-does-it-take-to-make-context-switch/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
+<meta property="og:description" content="原文. 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-13T08:40:13.264Z">
+<meta property="og:updated_time" content="2018-04-13T08:41:42.417Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一次进程的上下文切换需要多长时间">
-<meta name="twitter:description" content="原文 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！) 据我所知，所有的 CPU 都有一个恒定">
+<meta name="twitter:description" content="原文. 对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)">
 
 
 
@@ -441,8 +441,8 @@
       
 
       
-        <p><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">原文</a></p>
-<p>对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)</p>
+        <p><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">原文</a>.</p>
+<p>对于这个标题的问题，我非常有兴致的去花费我的时间去弄明白。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)<br><a id="more"></a></p>
 <p>据我所知，所有的 CPU 都有一个恒定的时钟频率(定时器)。而所有的Linux内核都是由Ubuntu构建和发布的。</p>
 <h3 id="第一次尝试：利用系统调用-失败了"><a href="#第一次尝试：利用系统调用-失败了" class="headerlink" title="第一次尝试：利用系统调用(失败了)"></a>第一次尝试：利用系统调用(失败了)</h3><p>我的第一个想法就是连续的调用多次廉价的<code>系统调用(system call)</code>, 计算出所有系统调用花费的总时间和平均时间。Linux 上最廉价的系统调用的触发函数貌似就是<a href="http://man7.org/linux/man-pages/man2/gettid.2.html" target="_blank" rel="noopener">gettid</a>。但是，得到的结果却证明了我的想法是多么的天真！因为现在系统调用实际上不会导致完全的上下文切换，Linux内核可用通过”模式切换”(“从用户模式到内核模式，再回到用户模式”)来完成系统调用。这就是为什么当我运行我的第一个测试程序时，vmstat不会显示上下文切换次数的明显增加。但是这个测试也很有趣，尽管结果这不是我最初想要的。<br><strong>什么是 vmstat？</strong></p>
 <blockquote>
