@@ -129,7 +129,7 @@
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/15235197670131.gif">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/15235244516302.jpg">
 <meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/20160114201303391">
-<meta property="og:updated_time" content="2018-04-12T10:14:45.386Z">
+<meta property="og:updated_time" content="2018-04-14T02:40:12.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS高效图片 IO 框架是如何炼成的">
 <meta name="twitter:description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
@@ -512,7 +512,7 @@
 <h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><p>但是内存映射是不是就没有缺陷呢？<br>通过上文学习我们知道，内存映射是直接对应这虚拟内存区域的，也就是说是占用这我们虚拟内存的地址空间的，而且是一块常驻内存，那么当映射内存非常大的时候，甚至会影响我们程序的堆内存创建反而导致性能更差。所以 FastImageCahce 中甚至给<code>Entry</code>做了内存限制，一个<code>Entry</code>只能存储两M的数据.</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSInteger</span> goalChunkLength = <span class="number">2</span> * (<span class="number">1024</span> * <span class="number">1024</span>);</span><br><span class="line"><span class="built_in">NSInteger</span> goalEntriesPerChunk = goalChunkLength / _entryLength;</span><br><span class="line">_entriesPerChunk = (<span class="built_in">NSUInteger</span>) MAX(<span class="number">4</span>, goalEntriesPerChunk); <span class="comment">// 最少也要存在 4Entry/Chunk</span></span><br><span class="line">_chunkLength = (size_t)(_entryLength * _entriesPerChunk); <span class="comment">// Chunk 的内存字节大小</span></span><br></pre></td></tr></table></figure>
 <p>实际大小要跟着图像的大小改变，但是跟 2M 不会相差太多。</p>
-<p>未完待续…</p>
+<p>未完待续…(后续学到新方法，会持续更新)</p>
 <p>通过上述方法，就能有效的加快我们图片的文件IO，特别当前我们的女性用户，手机里面有几十G图图片，当我们要做一个图片相册的精美应用的时候，这些性能便不可忽视了。根据摩尔定律，计算机性能<strong>约每隔18-24个月便会增加一倍，性能也将提升一倍</strong>，但是用户的要求和使用方式也会随着时间不断提高的！所以，平常培养对计算机原理的深入理解，才能写出高性能的代码，才不会在面对高并发高内存的情况下素手无策。</p>
 <p>参考文献：<br><a href="https://blog.csdn.net/jsn_ze/article/details/53561010" target="_blank" rel="noopener">《Linux驱动mmap内存映射》</a></p>
 
