@@ -37,8 +37,8 @@
         <category>编译链接</category>
       </categories>
       <tags>
-        <tag>计算机基础</tag>
         <tag>iOS</tag>
+        <tag>计算机基础</tag>
         <tag>xcode</tag>
       </tags>
   </entry>
@@ -51,9 +51,9 @@
         <category>iOS</category>
       </categories>
       <tags>
+        <tag>iOS</tag>
         <tag>计算机基础</tag>
         <tag>思考</tag>
-        <tag>iOS</tag>
         <tag>Unix</tag>
       </tags>
   </entry>
