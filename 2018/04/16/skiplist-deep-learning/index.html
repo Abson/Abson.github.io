@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Monaco:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据结构,算法,存储结构,C/C++," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="跳表作为存储数据结构，在谷歌的数据库开源代码leveldb中被广泛使用，当然还有大名鼎鼎的redis。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表">
+<meta name="keywords" content="数据结构,算法,存储结构,C&#x2F;C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跳表的深入浅出——SkipList">
+<meta property="og:url" content="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/index.html">
+<meta property="og:site_name" content="Simple Code Sky">
+<meta property="og:description" content="跳表作为存储数据结构，在谷歌的数据库开源代码leveldb中被广泛使用，当然还有大名鼎鼎的redis。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847668860.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847796548.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847828950.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847868346.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847901635.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847980923.jpg">
+<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523848025458.jpg">
+<meta property="og:updated_time" content="2018-04-16T03:16:23.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跳表的深入浅出——SkipList">
+<meta name="twitter:description" content="跳表作为存储数据结构，在谷歌的数据库开源代码leveldb中被广泛使用，当然还有大名鼎鼎的redis。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表">
+<meta name="twitter:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/"/>
+
+
+
+
+
+  <title>跳表的深入浅出——SkipList | Simple Code Sky</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simple Code Sky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">As the word in the movie of《catch me if you can》—— "To the moon".</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Abson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simple Code Sky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">跳表的深入浅出——SkipList</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T10:55:50+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/16/skiplist-deep-learning/" class="leancloud_visitors" data-flag-title="跳表的深入浅出——SkipList">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>跳表作为存储数据结构，在谷歌的数据库开源代码<code>leveldb</code>中被广泛使用，当然还有大名鼎鼎的<code>redis</code>。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表的算法有同平衡树一样的渐进的预期时间边界，并且更简单、更快速和使用更少的空间。<br><a id="more"></a></p>
+<p>leveldb 存取数据，都在用 MemTable 这个结构体，而 MemTable 核心在于 level::MemTable::Table，也就是 <code>typedef SkipList&lt;const char*, KeyComparator&gt; level::MemTable::Table</code>。 SkipList 看名字就知道，<a href="https://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8" target="_blank" rel="noopener">跳表</a>，是一种数据结构，允许快速查询一个有序连续元素的数据链表。这是一种 <strong>“以空间换取时间”</strong> 的一种做法，值得注意的是，<strong>这些链表都是有序的</strong>。</p>
+<p><img src="/images/skiplist-deep-learning/1523847558707.jpg" alt="Alt text"></p>
+<p>关于这个跳表，我查了一下作者(William Pugh)给出的解析:</p>
+<blockquote>
+<p>Skip lists are a data structure that can be used in place of balanced trees. Skip lists use probabilistic balancing rather than strictly enforced balancing and as a result the algorithms for insertion and deletion in skip lists are much simpler and significantly faster than equivalent algorithms for balanced trees.</p>
+</blockquote>
+<blockquote>
+<p>跳表是平衡树的一种替代的数据结构，但是和红黑树不相同的是，跳表对于树的平衡的实现是基于一种随机化的算法的，这样也就是说跳表的   插入和删除的工作是比较简单的。</p>
+</blockquote>
+<p>也就是说核心在于随机算法，一个靠谱的随机算法对跳表是非常重要的。</p>
+<p>现在我们来一边用代码加图解来分析一下跳表魅力！</p>
+<h5 id="跳表数据存储模型"><a href="#跳表数据存储模型" class="headerlink" title="跳表数据存储模型"></a>跳表数据存储模型</h5><p>跳表数据结构如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SkipList</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Node</span>;</span> <span class="comment">// 声明节点结构体</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">SkipList</span><span class="params">()</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> level_;  <span class="comment">// 跳表层数</span></span><br><span class="line">  Node* head_; <span class="comment">// 跳表头部节点列表</span></span><br><span class="line">  <span class="keyword">unit32_t</span> rnd_; <span class="comment">// 随机数因子</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 生成节点方法</span></span><br><span class="line">  <span class="function">Node* <span class="title">NewNode</span><span class="params">(<span class="keyword">int</span> level, <span class="keyword">const</span> Key&amp; key,  <span class="keyword">const</span> Value&amp; value)</span></span>;</span><br><span class="line"> </span><br><span class="line">  <span class="function">Node* <span class="title">FindGreaterOrEqual</span><span class="params">(<span class="keyword">const</span> Key&amp; key, Node** prev)</span> <span class="keyword">const</span></span>;</span><br><span class="line">  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>节点数据结构：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SkipList</span>&lt;Key, Value&gt;:</span>:Node &#123;</span><br><span class="line"></span><br><span class="line">  explicit Node(const Key&amp; k, const Value&amp; v) : key(k), value(v) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  Key key;  </span><br><span class="line">  Value value;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetNext</span><span class="params">(<span class="keyword">int</span> i, Node* x)</span></span>;  </span><br><span class="line">  Node* Next(int i)；</span><br><span class="line">  </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">forward_</span>[1];</span> <span class="comment">// 节点数组列表，这个比较重要，后面会详细介绍，如果不理解这个变量，就很难理解跳表了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过图来看一下总体结构</p>
+<p><img src="/images/skiplist-deep-learning/1523847668860.jpg" alt="Alt text"></p>
+<p>ps:图中虚线链接表述数组关系，实现标识指针链表关系</p>
+<p>上图假设 level 为 4 等级的一个跳表图，，forward_ 变量是一个指针数组，一边指向下一个节点(黑色填充箭头)的链表，一边又是这些链表的数组(透明填充箭头)这样的一个数据结构形成了我们需要的一个链表。</p>
+<p>后面我们会称为图中竖向(dowm)节点为<code>节点数组</code>，横向(left)的节点为<code>节点链表</code></p>
+<h5 id="初始化跳表"><a href="#初始化跳表" class="headerlink" title="初始化跳表"></a>初始化跳表</h5><p>首先为了实现这个结构，我们来初始化跳表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">enum &#123;kMaxLevel = 12&#125;; // 这里初始化默认跳表最大层数高度为12</span><br><span class="line"></span><br><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">SkipList&lt;Key, Value&gt;::SkipList() : head_(NewNode( kMaxLevel, 0, 0)), rnd_(0xdeadbeef)</span><br><span class="line">&#123;</span><br><span class="line">  // 将 head 节点数组全部初始化</span><br><span class="line">  for (int i = 0; i &lt; kMaxLevel; ++i) &#123;</span><br><span class="line">    head_-&gt;SetNext(i, nullptr); // 设置第 i 层节点</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在我们的结构就实现了下图的样子了 </p>
+<p><img src="/images/skiplist-deep-learning/1523847796548.jpg" alt="Alt text"></p>
+<p>当然，这些节点都是空的就是了。<a href="#生成节点方法">NewNode 方法查看</a></p>
+<h5 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h5><p>插入操作分为两步：</p>
+<ol>
+<li>查找每层链表，知道找到该插入的位置（因为要保持有序的）</li>
+<li>更新节点指针和跳表高度</li>
+</ol>
+<p>第一步：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">typename SkipList&lt;Key, Value&gt;::Node*</span><br><span class="line">SkipList&lt;Key, Value&gt;::FindGreaterOrEqual(const Key&amp; key, Node** prev) const</span><br><span class="line">&#123;</span><br><span class="line">  Node* x = head_, *next = nullptr;</span><br><span class="line"></span><br><span class="line">  int level = level_ - 1;</span><br><span class="line">  </span><br><span class="line">  // 从最高层往下查找需要插入的位置</span><br><span class="line">  // 填充 prev，prev 为用来记录每 层（level）跳点的位置</span><br><span class="line">  for (int i = level; i &gt;= 0 ; --i) &#123;</span><br><span class="line">    while ( (next = x-&gt;Next(i)) &amp;&amp; next-&gt;key &lt; key) &#123;</span><br><span class="line">      x = next;</span><br><span class="line">    &#125;</span><br><span class="line">    if (NULL != prev) &#123;prev[i] = x;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return next;  // 返回第 level0 层最合适插入的节点位置</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>第一步操作如图3.1 所示， 往这一跳表中插入 key=17 的操作， 可以看出跳表不断寻找跳点，记录跳点 (红色框框住的点，我们以下称为跳点)，寻找该插入的位置，例如 图3.1中运行上面代码后，返回了 next 为 key=12 的节点，因为 key=17 大于 12 ，小于 19。</p>
+<p>图 3.1</p>
+<p><img src="/images/skiplist-deep-learning/1523847828950.jpg" alt="Alt text"></p>
+<p>第二步：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">bool SkipList&lt;Key, Value&gt;::Insert(const Key&amp; key, const Value&amp; value) &#123;</span><br><span class="line">  </span><br><span class="line">  /** 第一步实现*/  </span><br><span class="line">  // prev 为用来记录每 层（level）跳点的位置</span><br><span class="line">  Node* prev[kMaxLevel];</span><br><span class="line"></span><br><span class="line">  // 查找每层链表，知道找到该插入的位置（因为要保持有序的）</span><br><span class="line">  Node* next = FindGreaterOrEqual(key, prev);</span><br><span class="line">	</span><br><span class="line">  int level;	</span><br><span class="line">  </span><br><span class="line">  // 不能插入相同的key</span><br><span class="line">  if ( next &amp;&amp; next-&gt;key == key ) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  /** 第二部实现， 第二步实现后的代码如图 3.2*/</span><br><span class="line">  // 产生一个随机层数 k</span><br><span class="line">  level = randomLevel();</span><br><span class="line">  if (level &gt; level_) &#123;</span><br><span class="line">    for (int i = level_; i &lt; level; ++i) &#123;</span><br><span class="line">      prev[i] = head_; // 新增的层数初始化</span><br><span class="line">    &#125;</span><br><span class="line">    level_ = level;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // 新建一个待插入节点 next，</span><br><span class="line">  next = NewNode(level, key, value);</span><br><span class="line">  // 逐层更新节点的指针, 一层一层插入</span><br><span class="line">  for (int j = 0; j &lt; level; ++j) &#123;</span><br><span class="line">    next-&gt;SetNext(j, prev[j]-&gt;Next(j)); // 该节点第 levelJ 层的节点指向 prev （跳点位置）的 levelJ 层链表指向的节点</span><br><span class="line">    prev[j]-&gt;SetNext(j, next); // 将 pre 跳点第 levelJ 层链表指向了 Next 第 levelJ 层的链表节点</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码中 randomLevel() 生成的层数，就作为了跳表的总层数，同时，也代表了这个新增节点的层数，例如 图3.2 中，节点 key=3，高度为1，key=6，高度为4。</p>
+<p>图 3.2<br><img src="/images/skiplist-deep-learning/1523847868346.jpg" alt="Alt text"></p>
+<p><a href="#随机层数生成数方法实现">randomLevel 随机层数生成</a><br><a href="#有关节点结构体的方法实现">setNext 设置节点链表</a></p>
+<h5 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h5><p>插入操作中的第一步就是我们的查找操作了，就不做解析了，直接封装一层代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">Value</span><br><span class="line">SkipList&lt;Key, Value&gt;::Find(const Key &amp;key) &#123;</span><br><span class="line">  Node* node = FindGreaterOrEqual(key, NULL);</span><br><span class="line">  if (node) &#123;</span><br><span class="line">    return node-&gt;value;</span><br><span class="line">  &#125;</span><br><span class="line">  return NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h5><p>在 leveldeb 中，跳表 SkipList 是没有删除操作的，leveldb 的跳表只是用来增加节点个查询节点，如果要删除某个节点，只是将某个节点标记为删除，因为删除操作又得重新计算 level 层数，更新每层的节点链表，这样太耗费性能了。</p>
+<p>但是我们在这里还是实现一下跳表的删除操作，同样的，跳表删除和插入操作相同</p>
+<ol>
+<li>首先查找到需要删除的节点</li>
+<li>如果找到该节点，更新指针域，需要更新 level 的话，逐层更新每个链表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">bool</span><br><span class="line">SkipList&lt;Key, Value&gt;::Delete(const Key&amp;key)</span><br><span class="line">&#123;</span><br><span class="line">  Node* prev[kMaxLevel];</span><br><span class="line">  Node* next = FindGreaterOrEqual(key, prev);</span><br><span class="line"></span><br><span class="line">  int level = level_;</span><br><span class="line">  if (next &amp;&amp; next-&gt;key == key) &#123;</span><br><span class="line">    // 将每层跳点链表设置到 next 节点所指向的每层的链表</span><br><span class="line">    for (int i = 0; i &lt; level; ++i) &#123;</span><br><span class="line">      if (prev[i]-&gt;Next(i) &amp;&amp; prev[i]-&gt;Next(i)-&gt;key == next-&gt;key) &#123;</span><br><span class="line">        prev[i]-&gt;SetNext(i, next-&gt;Next(i));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 释放该节点数组的所有内存</span><br><span class="line">    free(next);</span><br><span class="line"></span><br><span class="line">    //如果删除的是最大层的节点，那么需要重新维护跳表的</span><br><span class="line">    for (int j = level_-1; j &gt;= 0 ; --j) &#123;</span><br><span class="line">      if (head_-&gt;Next(j) == NULL) &#123;</span><br><span class="line">        level_--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return false;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>图4.1<br><img src="/images/skiplist-deep-learning/1523847901635.jpg" alt="Alt text"></p>
+<p>如 图4.1所示，删除节点 key=17 时候的操作，先查找并返回 next 节点，检查 next 节点是否 key=17，如果是的是，则将逐层的跳点全部更新过来，并更新层数。</p>
+<h5 id="附属实现代码"><a href="#附属实现代码" class="headerlink" title="附属实现代码"></a>附属实现代码</h5><h6 id="生成节点方法"><a href="#生成节点方法" class="headerlink" title="生成节点方法"></a>生成节点方法</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">typename SkipList&lt;Key, Value&gt;::Node*</span><br><span class="line">SkipList&lt;Key, Value&gt;::NewNode(int level, const Key&amp; key,  const Value&amp; value)</span><br><span class="line">&#123;</span><br><span class="line">  size_t men = sizeof(Node) + level * sizeof(Node*);</span><br><span class="line">  Node* node = (Node*)malloc(men);</span><br><span class="line">  node-&gt;key = key;</span><br><span class="line">  node-&gt;value = value;</span><br><span class="line">  return node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中 sizeof(Node) 为本身结构体所需要的内存分配，level <em> sizeof(Node</em>) 是为 forward_ 数组分配内存，因为要配 level 个节点链表。 在 leveldb 中使用了字节对齐的方式来分配这块内存，我这边并没有写出来，有兴趣的可以浏览一下源码。</p>
+<p>我们假设 level = 4</p>
+<p>图 6.1</p>
+<p><img src="/images/skiplist-deep-learning/1523847980923.jpg" alt="Alt text"></p>
+<p>代码生成了图6.1的结构，level0 节点的 forward_ 数组大小为4，leve1 ~ level3 都为空节点，但是分配了 8 个字节的指针内存 (64位操作系统)。图中虚线为数组引用表达，并不是指针指向。</p>
+<h6 id="随机层数生成数方法实现"><a href="#随机层数生成数方法实现" class="headerlink" title="随机层数生成数方法实现"></a>随机层数生成数方法实现</h6><p>取自google开源项目leveldb的实现<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</span><br><span class="line"><span class="keyword">int</span> SkipList&lt;Key, Value&gt;::randomLevel() &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> kBranching = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">int</span> height = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (height &lt; kMaxLevel &amp;&amp; ((::Next(rnd_) % kBranching) == <span class="number">0</span>)) &#123;</span><br><span class="line">    height++;</span><br><span class="line">  &#125;</span><br><span class="line">  assert(height &gt; <span class="number">0</span>);</span><br><span class="line">  assert(height &lt;= kMaxLevel);</span><br><span class="line">  <span class="keyword">return</span> height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">uint32_t</span> Next( <span class="keyword">uint32_t</span>&amp; seed) &#123;</span><br><span class="line">  seed = seed &amp; <span class="number">0x7fffffff</span>u; <span class="comment">// 防止负数</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (seed == <span class="number">0</span> || seed == <span class="number">2147483647L</span>) &#123; </span><br><span class="line">    seed = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint32_t</span> M = <span class="number">2147483647L</span>;   <span class="comment">// 2^31-1</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">uint64_t</span> A = <span class="number">16807</span>;  <span class="comment">// bits 14, 8, 7, 5, 2, 1, 0</span></span><br><span class="line">  <span class="comment">// We are computing</span></span><br><span class="line">  <span class="comment">//       seed_ = (seed_ * A) % M,    where M = 2^31-1</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// seed_ must not be zero or M, or else all subsequent computed values</span></span><br><span class="line">  <span class="comment">// will be zero or M respectively.  For all other values, seed_ will end</span></span><br><span class="line">  <span class="comment">// up cycling through every number in [1,M-1]</span></span><br><span class="line">  <span class="keyword">uint64_t</span> product = seed * A;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Compute (product % M) using the fact that ((x &lt;&lt; 31) % M) == x.</span></span><br><span class="line">  seed = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;((product &gt;&gt; <span class="number">31</span>) + (product &amp; M));</span><br><span class="line">  <span class="comment">// The first reduction may overflow by 1 bit, so we may need to</span></span><br><span class="line">  <span class="comment">// repeat.  mod == M is not possible; using &gt; allows the faster</span></span><br><span class="line">  <span class="comment">// sign-bit-based test.</span></span><br><span class="line">  <span class="keyword">if</span> (seed &gt; M) &#123;</span><br><span class="line">    seed -= M;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> seed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>总体来说这个 level 层数的生成方法也不是随机的，根据 seed 不断被修改的次数来决定层数，换而言之就是 level0 节点数量来决定层数。</p>
+<h6 id="有关节点结构体的方法实现"><a href="#有关节点结构体的方法实现" class="headerlink" title="有关节点结构体的方法实现"></a>有关节点结构体的方法实现</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">void </span><br><span class="line">SkipList&lt;Key, Value&gt;::SetNext(int i, Node* x) &#123;</span><br><span class="line">	assert(i &gt;= 0);</span><br><span class="line">    forward_[i] = x; // 设置数组节点</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">void </span><br><span class="line">SkipList&lt;Key, Value&gt;::Node* Next(int i) &#123;</span><br><span class="line">	assert(i &gt;= 0);</span><br><span class="line">    return forward_[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SetNext(int i, Node* x) 方法是设置 forward_ 节点数组第 i 层(level)的链表引用。<br>例如图6.1 中，key=10 调用了 SetNext(4, Node where key = 20 and level = 4) 和 key=20 调用了 SetNext(4, Node where key = 40 and level = 4) 的表述。</p>
+<p>图 6.2<br><img src="/images/skiplist-deep-learning/1523848025458.jpg" alt="Alt text"></p>
+<p>Next(int i) 为取出某层节点链表的方法，这个应该不应解析了吧。</p>
+<h6 id="输出跳表结构"><a href="#输出跳表结构" class="headerlink" title="输出跳表结构"></a>输出跳表结构</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Key, typename Value&gt;</span><br><span class="line">void</span><br><span class="line">SkipList&lt;Key, Value&gt;::Print()</span><br><span class="line">&#123;</span><br><span class="line">  Node* next, *x = head_;</span><br><span class="line"></span><br><span class="line">  printf(&quot;--------\n&quot;);</span><br><span class="line">  for (int i = level_ - 1; i &gt;= 0; --i) &#123;</span><br><span class="line">    x = head_;</span><br><span class="line">    while ((next = x-&gt;Next(i))) &#123;</span><br><span class="line">      x = next;</span><br><span class="line">      std::cout &lt;&lt; &quot;key: &quot; &lt;&lt; next-&gt;key &lt;&lt; &quot; -&gt; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;\n&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  printf(&quot;--------\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Print 方法来输出查看当前跳表有哪些节点结构</p>
+<p>参考资料：<br><a href="http://www.cnblogs.com/xuqiang/archive/2011/05/22/2053516.html" target="_blank" rel="noopener">跳表SkipList</a><br><a href="http://dsqiu.iteye.com/blog/1705530" target="_blank" rel="noopener">Skip List（跳跃表）原理详解与实现</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div align="center">
+      <p><span>
+      <b>本文地址：</b><a href="/2018/04/16/skiplist-deep-learning/" title="跳表的深入浅出——SkipList">http://simplecodesky.com/2018/04/16/skiplist-deep-learning/</a><br/><b>转载请注明出处，谢谢！</b>
+      </span></p> 
+      <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>土豪专区</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Abson 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/存储结构/" rel="tag"># 存储结构</a>
+          
+            <a href="/tags/C-C/" rel="tag"># C/C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/13/how-log-does-it-take-to-make-context-switch/" rel="next" title="一次进程的上下文切换需要多长时间">
+                <i class="fa fa-chevron-left"></i> 一次进程的上下文切换需要多长时间
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Abson" />
+            
+              <p class="site-author-name" itemprop="name">Abson</p>
+              <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Abson" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:absonpro@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.4399.com/" title="曾供职于 4399Game" target="_blank">曾供职于 4399Game</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yy.com/" title="现供职于 YY.Inc" target="_blank">现供职于 YY.Inc</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#跳表数据存储模型"><span class="nav-number">1.</span> <span class="nav-text">跳表数据存储模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化跳表"><span class="nav-number">2.</span> <span class="nav-text">初始化跳表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#插入操作"><span class="nav-number">3.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找操作"><span class="nav-number">4.</span> <span class="nav-text">查找操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除操作"><span class="nav-number">5.</span> <span class="nav-text">删除操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#附属实现代码"><span class="nav-number">6.</span> <span class="nav-text">附属实现代码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#生成节点方法"><span class="nav-number">6.1.</span> <span class="nav-text">生成节点方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#随机层数生成数方法实现"><span class="nav-number">6.2.</span> <span class="nav-text">随机层数生成数方法实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#有关节点结构体的方法实现"><span class="nav-number">6.3.</span> <span class="nav-text">有关节点结构体的方法实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#输出跳表结构"><span class="nav-number">6.4.</span> <span class="nav-text">输出跳表结构</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Abson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+        <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitment({
+            id: '<%= page.date %>',
+            owner: 'Abson',
+            repo: 'Abson.github.io',
+            
+            oauth: {
+            
+            
+                client_secret: 'a394bdb8e3d38bec51878e1ae0aa8771154f30e7',
+            
+                client_id: '8c419ec8e6b420c1405d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("KTCKBOG9LklDLi3mSDSm32EF-gzGzoHsz", "AzNGG05938WnIU9NO0tfFT3z");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
