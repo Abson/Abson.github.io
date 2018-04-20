@@ -121,7 +121,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://simplecodesky.com/images/cpp-project-new-learning/1-1406291220161Z.jpeg">
 <meta property="og:image" content="http://simplecodesky.com/images/cpp-project-new-learning/dispatch_queue.jpeg">
-<meta property="og:updated_time" content="2018-04-02T12:20:55.207Z">
+<meta property="og:updated_time" content="2018-04-20T10:34:24.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出 GCD 线程使用">
 <meta name="twitter:image" content="http://simplecodesky.com/images/cpp-project-new-learning/1-1406291220161Z.jpeg">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,561
+                  3,098
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10
+                  12
                 </span>
               
             </div>
@@ -480,6 +480,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_sync(self.synchronizationQueue, ^()&#123;</span><br><span class="line">	NSLog(@&quot;2&quot;);</span><br><span class="line">    dispatch_sync(self.synchronizationQueue, ^()&#123;</span><br><span class="line">      NSLog(@&quot;3&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;4&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(self.synchronizationQueue, ^()&#123;</span><br><span class="line">	NSLog(@&quot;2&quot;);</span><br><span class="line">    dispatch_sync(self.synchronizationQueue, ^()&#123;</span><br><span class="line">      NSLog(@&quot;3&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;4&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>至于怎么分析，为什么会发生死锁，各位看官，这就留给你们的作业，看了这么多，相信大家也会明白，特别是第二个例子，我们刚讲过，希望大家能在这篇博客中学到东西。</p>
+<h3 id="线程与队列的区分"><a href="#线程与队列的区分" class="headerlink" title="线程与队列的区分"></a>线程与队列的区分</h3><p>说了这么多，大家都对队列和线程有了比较深刻的理解，这个时候有同学就会问，我们该怎么区分我们的<code>block</code>是在主线程中调用还是在子线程调用呢？这是什么意思？我们来看看代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">	NSThread* thread = [NSThread currentThread];</span><br><span class="line">	NSLog(@&quot;%@&quot;, thread);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>想象一下，<code>thread</code>是主线程还是子线程？答案当然是主线程了，为什么？<strong>因为<code>block</code>执行那个线程上，跟是在串行队列还是并行队列是没有关系的，线程队列的概念只是负责把<code>block</code>事件放在自己的缓冲区中排好队，然后判断是串行队列还是并行队列来把缓冲区的队列进行顺序执行还是一起执行。</strong><br>而代码中开启了一个同步线程，阻塞了主线程，所以<code>block</code>必须在主线程中执行，而且与此同时，全局并发队列中的所有事件也会一起执行(看上去是这样的，实际上还是有一定的顺序，只是通过时间片不断切换，看上去好像是并发).</p>
+<p>再看看另一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_queue_create(&quot;com.ser.yy&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">dispatch_async(queue, ^&#123;</span><br><span class="line">	NSThread* thread = [NSThread currentThread];</span><br><span class="line">	NSLog(@&quot;%@&quot;, thread);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>这里创建了一个异步线程，但却把<code>block</code>事件放在在串行队列中。所以<code>block</code>会放在一条子线程上面，并等待串行队列<code>queue</code>前面的事件执行完了，才会在子线程中执行。</p>
+<p>再看以下例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_queue_create(&quot;com.ser.yy&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">dispatch_async(queue, ^&#123;</span><br><span class="line">	dispatch_sync(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">		NSThread* thread = [NSThread currentThread];</span><br><span class="line">		NSLog(@&quot;%@&quot;, thread);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>例子中，把异步线程事件<code>block1</code>放在串行队列中，然后在事件<code>block1</code>中开启了一个同步线程事件<code>block2</code>放在主线程当中来执行.<br>很显然，<code>thread</code>就是子线程。</p>
+<p><strong>其实大家很快就发现一个规律，同步线程<code>dispatch_sync</code>的事件<code>block</code>，它的执行线程便是被阻塞的线程！而异步线程<code>dispatch_async</code>的事件<code>block</code>永远都会在子线程中执行！</strong></p>
 <hr>
 <p>写在最后：</p>
 <blockquote>
@@ -744,7 +751,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#串行与并行"><span class="nav-number">1.</span> <span class="nav-text">串行与并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步和异步"><span class="nav-number">2.</span> <span class="nav-text">同步和异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程问题"><span class="nav-number">3.</span> <span class="nav-text">线程问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#主线程中的死锁"><span class="nav-number">3.1.</span> <span class="nav-text">主线程中的死锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异步串行队列和同步串行队列"><span class="nav-number">3.2.</span> <span class="nav-text">异步串行队列和同步串行队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AFNetWorking-怎么使用同步线程"><span class="nav-number">3.3.</span> <span class="nav-text">AFNetWorking 怎么使用同步线程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#串行与并行"><span class="nav-number">1.</span> <span class="nav-text">串行与并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步和异步"><span class="nav-number">2.</span> <span class="nav-text">同步和异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程问题"><span class="nav-number">3.</span> <span class="nav-text">线程问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#主线程中的死锁"><span class="nav-number">3.1.</span> <span class="nav-text">主线程中的死锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异步串行队列和同步串行队列"><span class="nav-number">3.2.</span> <span class="nav-text">异步串行队列和同步串行队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AFNetWorking-怎么使用同步线程"><span class="nav-number">3.3.</span> <span class="nav-text">AFNetWorking 怎么使用同步线程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程与队列的区分"><span class="nav-number"></span> <span class="nav-text">线程与队列的区分</span></a></div>
             
 
           </div>
