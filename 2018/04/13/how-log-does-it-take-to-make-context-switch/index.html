@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="原文. 这个标题不自觉的挑起了我的兴致，我决定付出时间去找出答案。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-16T03:41:20.129Z">
+<meta property="og:updated_time" content="2018-04-16T09:49:41.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一次进程的上下文切换需要多长时间">
 <meta name="twitter:description" content="原文. 这个标题不自觉的挑起了我的兴致，我决定付出时间去找出答案。StumbleUpon公司的发布了这样一个假设，即随着Nehalem架构的所有改进(Nehalem架构被用在 i7 处理器上面)，上下文切换将会变得更快。对于这个假设，换做是你，将会如何设计一个测试并且根据你的经验来找到这个问题的答案？究竟一次上下文切换有多昂贵呢？(直接告诉你答案：非常昂贵！)">
@@ -437,7 +437,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,009
+                  1,057
                 </span>
               
 
@@ -488,7 +488,7 @@
 * Intel X5550: 52ns/syscall
 * Intel L5630: 58ns/syscall
 * Intel E5-2620: 67ns/syscall
-</code></pre><p>很好，结果呈现，越是昂贵的 CPU 所表现的性能月好(但请注意，Sandy Bridge的成本略有增加)。但这并不是我们想要的结果。所以要测试上下文切换的成本    ，我们需要强制内核取消调度当前进程并调度另一个进程(进程切换)。为了对CPU进行基准测试，我们需要让内核在密集的循环中不做任何事情。你会如何做到这一点？</p>
+</code></pre><p>很好，从结果中看到，越是昂贵的 CPU 所表现的性能月好(但请注意，Sandy Bridge的成本略有增加)。但这并不是我们想要的结果。要测试上下文切换的成本，我们必须强制内核取消调度当前进程，然后调度另一个进程(进程切换)。为了对CPU进行基准测试，我们需要让内核在密集的循环中不做任何事情。<strong>How would you do this?</strong></p>
 <h3 id="第二次尝试-使用futex"><a href="#第二次尝试-使用futex" class="headerlink" title="第二次尝试: 使用futex"></a>第二次尝试: 使用futex</h3><p>这一次我使用了滥用<a href="https://zh.wikipedia.org/wiki/Futex" target="_blank" rel="noopener">futex[RTFM]</a>的方式。futex是大多数线程库用于实现阻塞操作（例如等待抢占互斥锁，信号量，条件变量等）的底层的Linux特定基元。如果你想了解更多关于futex的知识，可以阅读Ulrich Drepper所著的<a href="https://www.akkadia.org/drepper/futex.pdf" target="_blank" rel="noopener">Futexes Are Tricky</a>。不管怎么样，利用futex来暂停和恢复进程是非常容易的。我的做法就是fork出一个子进程，然后让父进程和子进程轮流等待futex。当父进程在等待状态的时候，子进程将其唤醒，然后子进程进入等待状态等待futex，直到父进程将子进程唤醒，然后父进程进入等待状态。就像乒乓球一样，你唤醒我，我唤醒你。</p>
 <p>源代码：<a href="https://github.com/tsuna/contextswitch/blob/master/timectxsw.c" target="_blank" rel="noopener">timectxsw.c</a> 的结果：</p>
 <pre><code>* Intel 5150: ~4300ns/context switch
@@ -498,8 +498,9 @@
 * Intel L5630: ~3000ns/context switch
 * Intel E5-2620: ~3000ns/context switch
 </code></pre><p>注意：这些结果包含了futex系统调用的开销。</p>
-<p>现在，你必须对这个结果保留怀疑的态度。在现实当中，上下文切换是非常昂贵的，因为它与 CPU 缓存相关联(L1, L2, L3 (如果有的话), 还有 TLB!)。</p>
-<h3 id="CPU-亲和力"><a href="#CPU-亲和力" class="headerlink" title="CPU 亲和力"></a>CPU 亲和力</h3><p>在 SMP 的环境当中，这个测试是非常困难的，因为性能的表现对于一个任务(task)是否从一个核迁移到另外一个核的影响是非常大的(特别是如果迁移跨越了物理CPU)。</p>
+<p>上述结果并不准确！在现实中，上下文切换是非常昂贵的，因为它与 CPU 缓存相关联(L1, L2, L3 (如果有的话), 还有 TLB!)。(ps:这些都是高速缓存了，TLB 是页表缓存)</p>
+<h3 id="CPU-亲和力"><a href="#CPU-亲和力" class="headerlink" title="CPU 亲和力"></a>CPU 亲和力</h3><p>在 SMP 的环境当中，这个测试是非常困难的，因为性能的表现对于一个任务(task)是否从一个核迁移到另外一个核的影响是非常大的(特别是如果迁移跨越了物理CPU)。我再次运行基准测试，但这次我将进程/线程固定在单个内核（或“硬件线程”）上。让性能提速受限。</p>
+<p>源代码：<a href="https://github.com/tsuna/contextswitch/blob/master/cpubench.sh" target="_blank" rel="noopener">cpubench.sh</a> 结果：</p>
 <p>未完待续…</p>
 
       
@@ -660,7 +661,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -671,7 +672,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -682,7 +683,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
