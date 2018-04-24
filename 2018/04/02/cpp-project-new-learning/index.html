@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="浏览 C++ 项目中收集到的代码学习片段">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-02T10:47:15.911Z">
+<meta property="og:updated_time" content="2018-04-24T06:49:18.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++项目中遇到的一些方法归纳(持续更新)">
 <meta name="twitter:description" content="浏览 C++ 项目中收集到的代码学习片段">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  195
+                  266
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -433,37 +433,8 @@
         <p>浏览 C++ 项目中收集到的代码学习片段<br><a id="more"></a></p>
 <h3 id="将-string-类型，转换为模板类型"><a href="#将-string-类型，转换为模板类型" class="headerlink" title="将 string 类型，转换为模板类型"></a>将 string 类型，转换为模板类型</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> P0&gt;</span><br><span class="line"> <span class="function"><span class="keyword">bool</span> <span class="title">FromString</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s, P0* p)</span> </span>&#123;</span><br><span class="line">   <span class="built_in">std</span>::<span class="function"><span class="built_in">istringstream</span> <span class="title">iss</span><span class="params">(s)</span></span>;</span><br><span class="line">   iss &gt;&gt; <span class="built_in">std</span>::boolalpha &gt;&gt; *p;</span><br><span class="line">   <span class="keyword">return</span> !iss.fail();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="将模板类型-，转换为string-类型"><a href="#将模板类型-，转换为string-类型" class="headerlink" title="将模板类型 ，转换为string 类型"></a>将模板类型 ，转换为string 类型</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">static</span> <span class="title">bool</span> <span class="title">ToString</span>(<span class="title">const</span> <span class="title">T</span> &amp;<span class="title">t</span>, <span class="title">std</span>:</span>:<span class="built_in">string</span>* s) &#123;</span><br><span class="line">  RTC_DCHECK(s);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">ostringstream</span> oss;</span><br><span class="line">  oss &lt;&lt; <span class="built_in">std</span>::boolalpha &lt;&lt; t;</span><br><span class="line">  *s = oss.str();</span><br><span class="line">  <span class="keyword">return</span> !oss.fail();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Mach内核获得Cpu使用率百分比"><a href="#Mach内核获得Cpu使用率百分比" class="headerlink" title="Mach内核获得Cpu使用率百分比"></a>Mach内核获得Cpu使用率百分比</h3><pre><code class="cpp"><span class="function">NSInteger <span class="title">ARDGetCpuUsagePercentage</span><span class="params">()</span> </span>{
-  <span class="comment">// Create an array of thread ports for the current task.</span>
-  <span class="keyword">const</span> <span class="keyword">task_t</span> task = mach_task_self();
-  <span class="keyword">thread_act_array_t</span> thread_array;
-  <span class="keyword">mach_msg_type_number_t</span> thread_count;
-  <span class="keyword">if</span> (task_threads(task, &amp;thread_array, &amp;thread_count) != KERN_SUCCESS) {
-    <span class="keyword">return</span> <span class="number">-1</span>;
-  }
-
-  <span class="comment">// Sum cpu usage from all threads.</span>
-  <span class="keyword">float</span> cpu_usage_percentage = <span class="number">0</span>;
-  <span class="keyword">thread_basic_info_data_t</span> thread_info_data = {};
-  <span class="keyword">mach_msg_type_number_t</span> thread_info_count;
-  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; thread_count; ++i) {
-    thread_info_count = THREAD_BASIC_INFO_COUNT;
-    <span class="keyword">kern_return_t</span> ret = thread_info(thread_array[i],
-                                    THREAD_BASIC_INFO,
-                                    (<span class="keyword">thread_info_t</span>)&amp;thread_info_data,
-                                    &amp;thread_info_count);
-    <span class="keyword">if</span> (ret == KERN_SUCCESS) {
-      cpu_usage_percentage +=
-          <span class="number">100.f</span> * (<span class="keyword">float</span>)thread_info_data.cpu_usage / TH_USAGE_SCALE;
-    }
-  }
-
-  <span class="comment">// Dealloc the created array.</span>
-  vm_deallocate(task, (<span class="keyword">vm_address_t</span>)thread_array,
-                <span class="keyword">sizeof</span>(<span class="keyword">thread_act_t</span>) * thread_count);
-  <span class="keyword">return</span> lroundf(cpu_usage_percentage);
-
-</code></pre>
+<h3 id="Mach内核获得Cpu使用率百分比"><a href="#Mach内核获得Cpu使用率百分比" class="headerlink" title="Mach内核获得Cpu使用率百分比"></a>Mach内核获得Cpu使用率百分比</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NSInteger <span class="title">ARDGetCpuUsagePercentage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Create an array of thread ports for the current task.</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">task_t</span> task = mach_task_self();</span><br><span class="line">  <span class="keyword">thread_act_array_t</span> thread_array;</span><br><span class="line">  <span class="keyword">mach_msg_type_number_t</span> thread_count;</span><br><span class="line">  <span class="keyword">if</span> (task_threads(task, &amp;thread_array, &amp;thread_count) != KERN_SUCCESS) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Sum cpu usage from all threads.</span></span><br><span class="line">  <span class="keyword">float</span> cpu_usage_percentage = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">thread_basic_info_data_t</span> thread_info_data = &#123;&#125;;</span><br><span class="line">  <span class="keyword">mach_msg_type_number_t</span> thread_info_count;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; thread_count; ++i) &#123;</span><br><span class="line">    thread_info_count = THREAD_BASIC_INFO_COUNT;</span><br><span class="line">    <span class="keyword">kern_return_t</span> ret = thread_info(thread_array[i],</span><br><span class="line">                                    THREAD_BASIC_INFO,</span><br><span class="line">                                    (<span class="keyword">thread_info_t</span>)&amp;thread_info_data,</span><br><span class="line">                                    &amp;thread_info_count);</span><br><span class="line">    <span class="keyword">if</span> (ret == KERN_SUCCESS) &#123;</span><br><span class="line">      cpu_usage_percentage +=</span><br><span class="line">          <span class="number">100.f</span> * (<span class="keyword">float</span>)thread_info_data.cpu_usage / TH_USAGE_SCALE;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Dealloc the created array.</span></span><br><span class="line">  vm_deallocate(task, (<span class="keyword">vm_address_t</span>)thread_array,</span><br><span class="line">                <span class="keyword">sizeof</span>(<span class="keyword">thread_act_t</span>) * thread_count);</span><br><span class="line">  <span class="keyword">return</span> lroundf(cpu_usage_percentage);</span><br></pre></td></tr></table></figure>
+<h3 id="字节对齐"><a href="#字节对齐" class="headerlink" title="字节对齐"></a>字节对齐</h3><p><strong>8个字节对齐</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> WORD_MASK 7UL</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> uint32_t <span class="title">word_align</span><span class="params">(<span class="keyword">uint32_t</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;((x + WORD_MASK) &amp; ~WORD_MASK);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> size_t <span class="title">word_align</span><span class="params">(<span class="keyword">size_t</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (x + WORD_MASK) &amp; ~WORD_MASK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -723,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#将-string-类型，转换为模板类型"><span class="nav-number">1.</span> <span class="nav-text">将 string 类型，转换为模板类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将模板类型-，转换为string-类型"><span class="nav-number">2.</span> <span class="nav-text">将模板类型 ，转换为string 类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mach内核获得Cpu使用率百分比"><span class="nav-number">3.</span> <span class="nav-text">Mach内核获得Cpu使用率百分比</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#将-string-类型，转换为模板类型"><span class="nav-number">1.</span> <span class="nav-text">将 string 类型，转换为模板类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将模板类型-，转换为string-类型"><span class="nav-number">2.</span> <span class="nav-text">将模板类型 ，转换为string 类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mach内核获得Cpu使用率百分比"><span class="nav-number">3.</span> <span class="nav-text">Mach内核获得Cpu使用率百分比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节对齐"><span class="nav-number">4.</span> <span class="nav-text">字节对齐</span></a></li></ol></div>
             
 
           </div>
