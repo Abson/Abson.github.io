@@ -50,8 +50,8 @@
         <category>编译链接</category>
       </categories>
       <tags>
-        <tag>iOS</tag>
         <tag>计算机基础</tag>
+        <tag>iOS</tag>
         <tag>xcode</tag>
       </tags>
   </entry>
@@ -78,9 +78,9 @@
         <category>iOS</category>
       </categories>
       <tags>
-        <tag>iOS</tag>
         <tag>计算机基础</tag>
         <tag>思考</tag>
+        <tag>iOS</tag>
         <tag>Unix</tag>
       </tags>
   </entry>
@@ -172,7 +172,7 @@
   <entry>
     <title><![CDATA[C++项目中遇到的一些方法归纳(持续更新)]]></title>
     <url>%2F2018%2F04%2F02%2Fcpp-project-new-learning%2F</url>
-    <content type="text"><![CDATA[浏览 C++ 项目中收集到的代码学习片段 将 string 类型，转换为模板类型123456template &lt;typename P0&gt; bool FromString(const std::string&amp; s, P0* p) &#123; std::istringstream iss(s); iss &gt;&gt; std::boolalpha &gt;&gt; *p; return !iss.fail(); &#125; 将模板类型 ，转换为string 类型12345678template &lt;class T&gt;static bool ToString(const T &amp;t, std::string* s) &#123; RTC_DCHECK(s); std::ostringstream oss; oss &lt;&lt; std::boolalpha &lt;&lt; t; *s = oss.str(); return !oss.fail();&#125; Mach内核获得Cpu使用率百分比1234567891011121314151617181920212223242526272829NSInteger ARDGetCpuUsagePercentage() &#123; // Create an array of thread ports for the current task. const task_t task = mach_task_self(); thread_act_array_t thread_array; mach_msg_type_number_t thread_count; if (task_threads(task, &amp;thread_array, &amp;thread_count) != KERN_SUCCESS) &#123; return -1; &#125; // Sum cpu usage from all threads. float cpu_usage_percentage = 0; thread_basic_info_data_t thread_info_data = &#123;&#125;; mach_msg_type_number_t thread_info_count; for (size_t i = 0; i &lt; thread_count; ++i) &#123; thread_info_count = THREAD_BASIC_INFO_COUNT; kern_return_t ret = thread_info(thread_array[i], THREAD_BASIC_INFO, (thread_info_t)&amp;thread_info_data, &amp;thread_info_count); if (ret == KERN_SUCCESS) &#123; cpu_usage_percentage += 100.f * (float)thread_info_data.cpu_usage / TH_USAGE_SCALE; &#125; &#125; // Dealloc the created array. vm_deallocate(task, (vm_address_t)thread_array, sizeof(thread_act_t) * thread_count); return lroundf(cpu_usage_percentage); 字节对齐8个字节对齐1234567# define WORD_MASK 7ULstatic inline uint32_t word_align(uint32_t x) &#123; return static_cast&lt;uint32_t&gt;((x + WORD_MASK) &amp; ~WORD_MASK);&#125;static inline size_t word_align(size_t x) &#123; return (x + WORD_MASK) &amp; ~WORD_MASK;&#125;]]></content>
+    <content type="text"><![CDATA[浏览 C++ 项目中收集到的代码学习片段 将 string 类型，转换为模板类型123456template &lt;typename P0&gt; bool FromString(const std::string&amp; s, P0* p) &#123; std::istringstream iss(s); iss &gt;&gt; std::boolalpha &gt;&gt; *p; return !iss.fail(); &#125; 将模板类型 ，转换为string 类型12345678template &lt;class T&gt;static bool ToString(const T &amp;t, std::string* s) &#123; RTC_DCHECK(s); std::ostringstream oss; oss &lt;&lt; std::boolalpha &lt;&lt; t; *s = oss.str(); return !oss.fail();&#125; Mach内核获得Cpu使用率百分比1234567891011121314151617181920212223242526272829NSInteger ARDGetCpuUsagePercentage() &#123; // Create an array of thread ports for the current task. const task_t task = mach_task_self(); thread_act_array_t thread_array; mach_msg_type_number_t thread_count; if (task_threads(task, &amp;thread_array, &amp;thread_count) != KERN_SUCCESS) &#123; return -1; &#125; // Sum cpu usage from all threads. float cpu_usage_percentage = 0; thread_basic_info_data_t thread_info_data = &#123;&#125;; mach_msg_type_number_t thread_info_count; for (size_t i = 0; i &lt; thread_count; ++i) &#123; thread_info_count = THREAD_BASIC_INFO_COUNT; kern_return_t ret = thread_info(thread_array[i], THREAD_BASIC_INFO, (thread_info_t)&amp;thread_info_data, &amp;thread_info_count); if (ret == KERN_SUCCESS) &#123; cpu_usage_percentage += 100.f * (float)thread_info_data.cpu_usage / TH_USAGE_SCALE; &#125; &#125; // Dealloc the created array. vm_deallocate(task, (vm_address_t)thread_array, sizeof(thread_act_t) * thread_count); return lroundf(cpu_usage_percentage); 字节对齐8个字节对齐1234567# define WORD_MASK 7ULstatic inline uint32_t word_align(uint32_t x) &#123; return static_cast&lt;uint32_t&gt;((x + WORD_MASK) &amp; ~WORD_MASK);&#125;static inline size_t word_align(size_t x) &#123; return (x + WORD_MASK) &amp; ~WORD_MASK;&#125; 指针的二进制、十进制、八进制输出二进制12const void* pstd::cout &lt;&lt; std::bitset&lt;sizeof(int32_t)*8&gt;((uintptr_t)p) &lt;&lt; std::endl; 十进制12const void* pstd::cout &lt;&lt; (uintptr_t)p &lt;&lt; std::endl; 十六进制12const void* pstd::cout &lt;&lt; std::hex &lt;&lt; (uintptr_t)p &lt;&lt; std::endl; 八进制12const void* pstd::cout &lt;&lt; std::oct &lt;&lt; (uintptr_t)p &lt;&lt; std::endl;]]></content>
       <tags>
         <tag>C++, 代码片段</tag>
       </tags>
