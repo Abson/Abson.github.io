@@ -117,25 +117,25 @@
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS高效图片 IO 框架是如何炼成的">
-<meta property="og:url" content="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/index.html">
+<meta property="og:url" content="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/CSAPP_C1_P1.png">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align01.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/align02.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/fastImageCache2.png">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523520326722.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/virtual-memory-from-csapp/1522750928874.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/15235197670131.gif">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/15235244516302.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/ios-efficient-image-io/20160114201303391">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/CSAPP_C1_P1.png">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/align01.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/align02.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/fastImageCache2.png">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/1523520326722.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/virtual-memory-from-csapp/1522750928874.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/15235197670131.gif">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/15235244516302.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/ios-efficient-image-io/20160114201303391">
 <meta property="og:updated_time" content="2018-04-14T02:40:12.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS高效图片 IO 框架是如何炼成的">
 <meta name="twitter:description" content="当我们使用图片存储的时候，难免会涉及到文件IO，GPU渲染等问题，文章注重从计算机操作系统方面深入浅析地讲解如何优化图片IO的速度，提高 iOS 中 UIImageView 的渲染效率和内存优化，这对我们做多图片相册等应用会非常有帮助，而且让我们把阅读CASPP——进程篇和阅读CSAPP——虚拟内存篇这两篇文章学到的内容进行实战应用。">
-<meta name="twitter:image" content="http://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
+<meta name="twitter:image" content="https://simplecodesky.com/images/ios-efficient-image-io/1523343490248.jpg">
 
 
 
@@ -165,7 +165,7 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/"/>
+  <link rel="canonical" href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/"/>
 
 
 
@@ -332,10 +332,10 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/10/ios-efficient-image-io/">
+    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Abson">
+      <meta itemprop="name" content="何剑聪">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
@@ -560,7 +560,7 @@
     
       <div align="center">
       <p><span>
-      <b>本文地址：</b><a href="/2018/04/10/ios-efficient-image-io/" title="iOS高效图片 IO 框架是如何炼成的">http://simplecodesky.com/2018/04/10/ios-efficient-image-io/</a><br/><b>转载请注明出处，谢谢！</b>
+      <b>本文地址：</b><a href="/2018/04/10/ios-efficient-image-io/" title="iOS高效图片 IO 框架是如何炼成的">https://simplecodesky.com/2018/04/10/ios-efficient-image-io/</a><br/><b>转载请注明出处，谢谢！</b>
       </span></p> 
       <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
   <div></div>
@@ -571,7 +571,7 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Abson 微信支付"/>
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="何剑聪 微信支付"/>
         <p>微信支付</p>
       </div>
     
@@ -692,9 +692,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpeg"
-                alt="Abson" />
+                alt="何剑聪" />
             
-              <p class="site-author-name" itemprop="name">Abson</p>
+              <p class="site-author-name" itemprop="name">何剑聪</p>
               <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
           </div>
 
@@ -705,7 +705,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -831,7 +831,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Abson</span>
+  <span class="author" itemprop="copyrightHolder">何剑聪</span>
 
   
 </div>

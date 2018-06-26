@@ -117,23 +117,23 @@
 <meta name="keywords" content="存储结构,C&#x2F;C++,数据结构,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跳表的深入浅出——SkipList">
-<meta property="og:url" content="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/index.html">
+<meta property="og:url" content="https://simplecodesky.com/2018/04/16/skiplist-deep-learning/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="跳表作为存储数据结构，在谷歌的数据库开源代码leveldb中被广泛使用，当然还有大名鼎鼎的redis。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847668860.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847796548.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847828950.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847868346.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847901635.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847980923.jpg">
-<meta property="og:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523848025458.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847668860.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847796548.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847828950.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847868346.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847901635.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847980923.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523848025458.jpg">
 <meta property="og:updated_time" content="2018-04-16T03:24:12.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跳表的深入浅出——SkipList">
 <meta name="twitter:description" content="跳表作为存储数据结构，在谷歌的数据库开源代码leveldb中被广泛使用，当然还有大名鼎鼎的redis。跳表的原理相当简单，只要你能熟练操作链表，就能轻松实现一个 SkipList。从而摆脱了红黑树，或者AVL树之类的复杂写法，因为这类数据结构体都要要考虑很多细节，要参考一堆算法与数据结构之类的树，还要参考网上的代码，相当麻烦。跳表是在很多应用中有可能替代平衡树而作为实现方法的一种数据结构。跳跃列表">
-<meta name="twitter:image" content="http://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
+<meta name="twitter:image" content="https://simplecodesky.com/images/skiplist-deep-learning/1523847558707.jpg">
 
 
 
@@ -163,7 +163,7 @@
 
 
 
-  <link rel="canonical" href="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/"/>
+  <link rel="canonical" href="https://simplecodesky.com/2018/04/16/skiplist-deep-learning/"/>
 
 
 
@@ -330,10 +330,10 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://simplecodesky.com/2018/04/16/skiplist-deep-learning/">
+    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/16/skiplist-deep-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Abson">
+      <meta itemprop="name" content="何剑聪">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
@@ -535,7 +535,7 @@
     
       <div align="center">
       <p><span>
-      <b>本文地址：</b><a href="/2018/04/16/skiplist-deep-learning/" title="跳表的深入浅出——SkipList">http://simplecodesky.com/2018/04/16/skiplist-deep-learning/</a><br/><b>转载请注明出处，谢谢！</b>
+      <b>本文地址：</b><a href="/2018/04/16/skiplist-deep-learning/" title="跳表的深入浅出——SkipList">https://simplecodesky.com/2018/04/16/skiplist-deep-learning/</a><br/><b>转载请注明出处，谢谢！</b>
       </span></p> 
       <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
   <div></div>
@@ -546,7 +546,7 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Abson 微信支付"/>
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="何剑聪 微信支付"/>
         <p>微信支付</p>
       </div>
     
@@ -673,9 +673,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpeg"
-                alt="Abson" />
+                alt="何剑聪" />
             
-              <p class="site-author-name" itemprop="name">Abson</p>
+              <p class="site-author-name" itemprop="name">何剑聪</p>
               <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
           </div>
 
@@ -686,7 +686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -812,7 +812,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Abson</span>
+  <span class="author" itemprop="copyrightHolder">何剑聪</span>
 
   
 </div>
