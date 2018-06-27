@@ -113,18 +113,21 @@
 
 
 
-<meta name="description" content="iOS|C++|Unix|伪知识份子">
+<meta name="description" content="动态创建子线程来实现服务器有以下缺点：  动态创建进程（或线程）是比较耗费时间的，这将导致较慢的客户响应。 动态创建的子进程（或子线程）通常只用来为一个客户服务（除非我们做特殊的处理），这将导致系统上产生大量的细微进程（或线程）。进程（或线程）间的切换将消耗大量CPU时间。 动态创建的子进程是当前进程的完整映像。当前进程必须谨慎地管理其分配的文件描述符和堆内存等系统资源，否则子进程可能复制这些资源">
 <meta name="keywords" content="Abson">
 <meta property="og:type" content="article">
-<meta property="og:title" content="objc-runtime-deep-learning">
+<meta property="og:title" content="线程池">
 <meta property="og:url" content="https://simplecodesky.com/2018/04/24/objc-runtime-deep-learning/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="iOS|C++|Unix|伪知识份子">
+<meta property="og:description" content="动态创建子线程来实现服务器有以下缺点：  动态创建进程（或线程）是比较耗费时间的，这将导致较慢的客户响应。 动态创建的子进程（或子线程）通常只用来为一个客户服务（除非我们做特殊的处理），这将导致系统上产生大量的细微进程（或线程）。进程（或线程）间的切换将消耗大量CPU时间。 动态创建的子进程是当前进程的完整映像。当前进程必须谨慎地管理其分配的文件描述符和堆内存等系统资源，否则子进程可能复制这些资源">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T10:57:35.159Z">
+<meta property="og:image" content="https://simplecodesky.com/images/thread_pool/15300252206086.jpg">
+<meta property="og:image" content="https://simplecodesky.com/images/thread_pool/15300254931346.jpg">
+<meta property="og:updated_time" content="2018-06-26T15:05:05.839Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="objc-runtime-deep-learning">
-<meta name="twitter:description" content="iOS|C++|Unix|伪知识份子">
+<meta name="twitter:title" content="线程池">
+<meta name="twitter:description" content="动态创建子线程来实现服务器有以下缺点：  动态创建进程（或线程）是比较耗费时间的，这将导致较慢的客户响应。 动态创建的子进程（或子线程）通常只用来为一个客户服务（除非我们做特殊的处理），这将导致系统上产生大量的细微进程（或线程）。进程（或线程）间的切换将消耗大量CPU时间。 动态创建的子进程是当前进程的完整映像。当前进程必须谨慎地管理其分配的文件描述符和堆内存等系统资源，否则子进程可能复制这些资源">
+<meta name="twitter:image" content="https://simplecodesky.com/images/thread_pool/15300252206086.jpg">
 
 
 
@@ -160,7 +163,7 @@
 
 
 
-  <title>objc-runtime-deep-learning | Simple Code Sky</title>
+  <title>线程池 | Simple Code Sky</title>
   
 
 
@@ -324,7 +327,7 @@
     <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/24/objc-runtime-deep-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="何剑聪">
+      <meta itemprop="name" content="何劍聪">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
@@ -338,7 +341,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">objc-runtime-deep-learning</h1>
+          <h1 class="post-title" itemprop="name headline">线程池</h1>
         
 
         <div class="post-meta">
@@ -368,7 +371,7 @@
 
           
           
-             <span id="/2018/04/24/objc-runtime-deep-learning/" class="leancloud_visitors" data-flag-title="objc-runtime-deep-learning">
+             <span id="/2018/04/24/objc-runtime-deep-learning/" class="leancloud_visitors" data-flag-title="线程池">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -393,7 +396,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  517
                 </span>
               
 
@@ -409,7 +412,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -430,7 +433,21 @@
       
 
       
-        
+        <p>动态创建子线程来实现服务器有以下缺点：</p>
+<ul>
+<li>动态创建进程（或线程）是比较耗费时间的，这将导致较慢的客户响应。</li>
+<li>动态创建的子进程（或子线程）通常只用来为一个客户服务（除非我们做特殊的处理），这将导致系统上产生大量的细微进程（或线程）。进程（或线程）间的切换将消耗大量CPU时间。</li>
+<li>动态创建的子进程是当前进程的完整映像。当前进程必须谨慎地管理其分配的文件描述符和堆内存等系统资源，否则子进程可能复制这些资源，从而使系统的可用资源急剧下降，进而影响服务器的性能。</li>
+</ul>
+<p>至于主进程选择哪个子进程来为新任务服务，则有两种方式：</p>
+<ul>
+<li>主进程使用某种算法来主动选择子进程。最简单、最常用的算法是随机算法和Round Robin（轮流选取）算法，但更优秀、更智能的算法将使任务在各个工作进程中更均匀地分配，从而减轻服务器的整体压力。</li>
+<li>主进程和所有子进程通过一个共享的工作队列来同步，子进程都睡眠在该工作队列上。当有新的任务到来时，主进程将任务添加到工作队列中。这将唤醒正在等待任务的子进程，不过只有一个子进程将获得新任务的“接管权”，它可以从工作队列中取出任务并执行之，而其他子进程将继续睡眠在工作队列上。</li>
+</ul>
+<p><code>__thread</code> 是 <code>GCC</code> 内置的线程局部存储设施，存取效率可以和全局变量相比。<code>__thread</code> 变量每一个线程有一份独立实体，各个线程的值互不干扰。可以用来修饰那些带有全局性且值可能变，但是又不值得用全局变量保护的变量。</p>
+<p><img src="/images/thread_pool/15300252206086.jpg" alt=""></p>
+<p><img src="/images/thread_pool/15300254931346.jpg" alt=""></p>
+
       
     </div>
     
@@ -442,7 +459,7 @@
     
       <div align="center">
       <p><span>
-      <b>本文地址：</b><a href="/2018/04/24/objc-runtime-deep-learning/" title="objc-runtime-deep-learning">https://simplecodesky.com/2018/04/24/objc-runtime-deep-learning/</a><br/><b>转载请注明出处，谢谢！</b>
+      <b>本文地址：</b><a href="/2018/04/24/objc-runtime-deep-learning/" title="线程池">https://simplecodesky.com/2018/04/24/objc-runtime-deep-learning/</a><br/><b>转载请注明出处，谢谢！</b>
       </span></p> 
       <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
   <div></div>
@@ -453,7 +470,7 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="何剑聪 微信支付"/>
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="何劍聪 微信支付"/>
         <p>微信支付</p>
       </div>
     
@@ -555,9 +572,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpeg"
-                alt="何剑聪" />
+                alt="何劍聪" />
             
-              <p class="site-author-name" itemprop="name">何剑聪</p>
+              <p class="site-author-name" itemprop="name">何劍聪</p>
               <p class="site-description motion-element" itemprop="description">iOS|C++|Unix|伪知识份子</p>
           </div>
 
@@ -651,6 +668,10 @@
                     <a href="http://www.yy.com/" title="现供职于 YY Inc." target="_blank">现供职于 YY Inc.</a>
                   </li>
                 
+                  <li class="links-of-blogroll-item">
+                    <a href="https://absonpro@gmail.com" title="Contact Me" target="_blank">Contact Me</a>
+                  </li>
+                
               </ul>
             </div>
           
@@ -678,7 +699,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">何剑聪</span>
+  <span class="author" itemprop="copyrightHolder">何劍聪</span>
 
   
 </div>
