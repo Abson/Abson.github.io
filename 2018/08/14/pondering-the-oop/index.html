@@ -113,18 +113,20 @@
 
 
 
-<meta name="description" content="如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClass &amp;#123;&amp;#125;;class Interface">
+<meta name="description" content="设计模式说白了，就是接口编程与组合对象所延伸出来得变异。d 如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClas">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面向对象：设计中的思考">
 <meta property="og:url" content="https://simplecodesky.com/2018/08/14/pondering-the-oop/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClass &amp;#123;&amp;#125;;class Interface">
+<meta property="og:description" content="设计模式说白了，就是接口编程与组合对象所延伸出来得变异。d 如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClas">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-14T14:18:30.525Z">
+<meta property="og:image" content="https://simplecodesky.com/images/IMG_0319.jpg">
+<meta property="og:updated_time" content="2018-09-04T02:33:02.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面向对象：设计中的思考">
-<meta name="twitter:description" content="如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClass &amp;#123;&amp;#125;;class Interface">
+<meta name="twitter:description" content="设计模式说白了，就是接口编程与组合对象所延伸出来得变异。d 如何设计接口？学会针对接口编程，而不是针对实现编程设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。如下:比如我们现在需要设计一个 doSomething 接口，需要接受一个变量，去为我们做一些不确定的操作。123456789101112// 设计class ConcreteClas">
+<meta name="twitter:image" content="https://simplecodesky.com/images/IMG_0319.jpg">
 
 
 
@@ -393,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  742
+                  839
                 </span>
               
 
@@ -430,7 +432,8 @@
       
 
       
-        <h2 id="如何设计接口？"><a href="#如何设计接口？" class="headerlink" title="如何设计接口？"></a>如何设计接口？</h2><h3 id="学会针对接口编程，而不是针对实现编程"><a href="#学会针对接口编程，而不是针对实现编程" class="headerlink" title="学会针对接口编程，而不是针对实现编程"></a>学会针对接口编程，而不是针对实现编程</h3><p><strong>设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。</strong><br>如下:<br>比如我们现在需要设计一个 <code>doSomething</code> 接口，需要接受一个变量，去为我们做一些不确定的操作。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设计</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteClass</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceClass</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:	</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(ConcreteClass*)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">ConcreteClass instance = <span class="keyword">new</span> ConcreteClass;</span><br><span class="line">InterfaceClass::doSomething(instance);</span><br></pre></td></tr></table></figure></p>
+        <p>设计模式说白了，就是接口编程与组合对象所延伸出来得变异。d</p>
+<h2 id="如何设计接口？"><a href="#如何设计接口？" class="headerlink" title="如何设计接口？"></a>如何设计接口？</h2><h3 id="学会针对接口编程，而不是针对实现编程"><a href="#学会针对接口编程，而不是针对实现编程" class="headerlink" title="学会针对接口编程，而不是针对实现编程"></a>学会针对接口编程，而不是针对实现编程</h3><p><strong>设计接口需传入某类型变量的时候，不将变量声明为某个特定得具体类的实例对象，而是让它遵从抽象类所定义的接口。</strong><br>如下:<br>比如我们现在需要设计一个 <code>doSomething</code> 接口，需要接受一个变量，去为我们做一些不确定的操作。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设计</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteClass</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceClass</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:	</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(ConcreteClass*)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">ConcreteClass instance = <span class="keyword">new</span> ConcreteClass;</span><br><span class="line">InterfaceClass::doSomething(instance);</span><br></pre></td></tr></table></figure></p>
 <p>以上设计具有局限性，首先，对于 <code>doSomething</code> 我们并不知道内部如何实现，因为面向对象的思想就是封装，意思就是具有封闭性，当我们传入具体对象 <code>ConcreteClass</code> 的时候就绑定了该接口，以后只能在 <code>ConcreteClass</code> 进行拓展开发，我们无法传入其他类对象实例。也就是说，我们只能使针对 <code>ConcreteClass</code> 的实现进行编程的。</p>
 <p>那么，针对接口编程又是什么意思？<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AbstractClass</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">abstractFeature</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteClass</span> :</span> <span class="keyword">public</span> AbstractClass &#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceClass</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(AbstractClass*)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">ConcreteClass instance = <span class="keyword">new</span> ConcreteClass;</span><br><span class="line">InterfaceClass::doSomething(instance);</span><br></pre></td></tr></table></figure></p>
 <p>以上这段代码，我们改动了小许，通过一个抽象基类，也就是一个接口类来为我们提供接口，我们设计的 <code>doSomething</code> 接口所做的操作，就是依赖于这个接口类中的接口去操作。<br>这样写，虽然有了小许面向接口编程的概念，但是从中我们还是依赖于必须实例化 <code>ConcreteClass</code> 对象，当客户操作时，必须投入精力去理解 <code>ConcreteClass</code> 的”真正含义”，还会存在由于用户操作不当破坏 <code>instance</code> 的结构性的可能。</p>
@@ -445,7 +448,9 @@
 <blockquote>
 <p>针对接口编程，而不是针对实现编程</p>
 </blockquote>
-
+<h2 id="如何选择设计模式？"><a href="#如何选择设计模式？" class="headerlink" title="如何选择设计模式？"></a>如何选择设计模式？</h2><h3 id="考虑设计模式是怎么解决设计问题的"><a href="#考虑设计模式是怎么解决设计问题的" class="headerlink" title="考虑设计模式是怎么解决设计问题的"></a>考虑设计模式是怎么解决设计问题的</h3><h3 id="浏览模式的意图部分"><a href="#浏览模式的意图部分" class="headerlink" title="浏览模式的意图部分"></a>浏览模式的意图部分</h3><h3 id="研究模式怎样相互关联"><a href="#研究模式怎样相互关联" class="headerlink" title="研究模式怎样相互关联"></a>研究模式怎样相互关联</h3><p>设计模式之间的关系：</p>
+<p><img src="/images/IMG_0319.jpg" alt="IMG_0319"></p>
+<h3 id="研究目的相似的模式"><a href="#研究目的相似的模式" class="headerlink" title="研究目的相似的模式"></a>研究目的相似的模式</h3><h3 id="检查重新设计的原因"><a href="#检查重新设计的原因" class="headerlink" title="检查重新设计的原因"></a>检查重新设计的原因</h3>
       
     </div>
     
@@ -704,7 +709,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何设计接口？"><span class="nav-number">1.</span> <span class="nav-text">如何设计接口？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学会针对接口编程，而不是针对实现编程"><span class="nav-number">1.1.</span> <span class="nav-text">学会针对接口编程，而不是针对实现编程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何设计接口？"><span class="nav-number">1.</span> <span class="nav-text">如何设计接口？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学会针对接口编程，而不是针对实现编程"><span class="nav-number">1.1.</span> <span class="nav-text">学会针对接口编程，而不是针对实现编程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择设计模式？"><span class="nav-number">2.</span> <span class="nav-text">如何选择设计模式？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#考虑设计模式是怎么解决设计问题的"><span class="nav-number">2.1.</span> <span class="nav-text">考虑设计模式是怎么解决设计问题的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览模式的意图部分"><span class="nav-number">2.2.</span> <span class="nav-text">浏览模式的意图部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#研究模式怎样相互关联"><span class="nav-number">2.3.</span> <span class="nav-text">研究模式怎样相互关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#研究目的相似的模式"><span class="nav-number">2.4.</span> <span class="nav-text">研究目的相似的模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查重新设计的原因"><span class="nav-number">2.5.</span> <span class="nav-text">检查重新设计的原因</span></a></li></ol></li></ol></div>
             
 
           </div>
