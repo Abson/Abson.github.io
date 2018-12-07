@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  226
+                  350
                 </span>
               
 
@@ -434,12 +434,8 @@
       
         
           
-          reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&gt; newState
-永远不要在 reducer 里做这些操作：
-
-修改传入参数；
-执行有副作用的操作，如 API 请求和路由跳转；
-调用非纯函数，如
+          Action 就是一个描述“发生了什么”的普通对象。比如：1&#123; type: 'LIKE_ARTICLE', articleId: 42 &#125;
+reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action)
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -568,7 +564,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  424
+                  833
                 </span>
               
 
@@ -584,7 +580,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>

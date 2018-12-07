@@ -113,18 +113,18 @@
 
 
 
-<meta name="description" content="reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有副作用的操作，如 API 请求和路由跳转； 调用非纯函数，如 Date.now() 或 Math.random()。  也就是说，请求是放在 Action 里面">
+<meta name="description" content="Action 就是一个描述“发生了什么”的普通对象。比如：1&amp;#123; type: &apos;LIKE_ARTICLE&apos;, articleId: 42 &amp;#125; reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有">
 <meta name="keywords" content="Abson">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redux 学习笔记">
 <meta property="og:url" content="https://simplecodesky.com/2018/12/05/js-redux-note/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有副作用的操作，如 API 请求和路由跳转； 调用非纯函数，如 Date.now() 或 Math.random()。  也就是说，请求是放在 Action 里面">
+<meta property="og:description" content="Action 就是一个描述“发生了什么”的普通对象。比如：1&amp;#123; type: &apos;LIKE_ARTICLE&apos;, articleId: 42 &amp;#125; reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-05T04:19:08.060Z">
+<meta property="og:updated_time" content="2018-12-05T08:44:30.431Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redux 学习笔记">
-<meta name="twitter:description" content="reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有副作用的操作，如 API 请求和路由跳转； 调用非纯函数，如 Date.now() 或 Math.random()。  也就是说，请求是放在 Action 里面">
+<meta name="twitter:description" content="Action 就是一个描述“发生了什么”的普通对象。比如：1&amp;#123; type: &apos;LIKE_ARTICLE&apos;, articleId: 42 &amp;#125; reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。1(previousState, action) =&amp;gt; newState 永远不要在 reducer 里做这些操作：  修改传入参数； 执行有">
 
 
 
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  226
+                  350
                 </span>
               
 
@@ -430,7 +430,8 @@
       
 
       
-        <p>reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(previousState, action) =&gt; newState</span><br></pre></td></tr></table></figure></p>
+        <p><code>Action</code> 就是一个描述“发生了什么”的普通对象。比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">type</span>: <span class="string">'LIKE_ARTICLE'</span>, <span class="attr">articleId</span>: <span class="number">42</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(previousState, action) =&gt; newState</span><br></pre></td></tr></table></figure></p>
 <p>永远不要在 reducer 里做这些操作：</p>
 <ul>
 <li>修改传入参数；</li>
@@ -439,7 +440,12 @@
 </ul>
 <p>也就是说，请求是放在 <code>Action</code> 里面进行的，当 <code>Action</code> 内部进行玩异步请求完成后，可通过 <code>dispatch</code> 发送完成请求的 <code>Action</code>，让 <code>reducer</code> 收到，而 reducer 的作用就是返回新的带上了请求返回数据的 <code>state</code>，从而达到通知绑定该<code>state</code> 的组件</p>
 <p><code>combineReducers()</code> 所做的只是生成一个函数，这个函数来调用你的一系列 reducer，每个 reducer 根据它们的 key 来筛选出 state 中的一部分数据并处理，然后这个生成的函数再将所有 reducer 的结果合并成一个大的对象。</p>
-
+<p>Redux 应用中数据的生命周期遵循下面 4 个步骤：</p>
+<pre><code>1. 调用 `store.dispatch(action)`。
+2. Redux store 调用传入的 `reducer` 函数。`Store` 会把两个参数传入 `reducer`： 当前的 state 树和 `action`。
+3. 根 reducer 应该把多个子 reducer 输出合并成一个单一的 state 树。Redux 原生提供 `combineReducers()` 辅助函数
+4. Redux store 保存了根 reducer 返回的完整 state 树。 
+</code></pre>
       
     </div>
     

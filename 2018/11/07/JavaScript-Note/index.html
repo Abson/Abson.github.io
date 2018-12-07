@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="JavaScript 是一门基于原型的语言，不存在类与实例的区别，因为它只有对象。基于原型的语言具有所谓原型对象的概念。原型对象可以作为一个模板，新对象可以从中获得原始的属性。任何对象都可以指定其自身的属性，既可以是创建时也可以在运行时创建。而且，任何对象都可以作为另一个对象的原型，从而允许后者共享前者的属性。 JavaScript 的属性查找机制首先在对象自身的属性中查找，如果指定的属性名称没有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-09T03:14:54.096Z">
+<meta property="og:updated_time" content="2018-12-07T03:07:25.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript学习笔记">
 <meta name="twitter:description" content="JavaScript 是一门基于原型的语言，不存在类与实例的区别，因为它只有对象。基于原型的语言具有所谓原型对象的概念。原型对象可以作为一个模板，新对象可以从中获得原始的属性。任何对象都可以指定其自身的属性，既可以是创建时也可以在运行时创建。而且，任何对象都可以作为另一个对象的原型，从而允许后者共享前者的属性。 JavaScript 的属性查找机制首先在对象自身的属性中查找，如果指定的属性名称没有">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  424
+                  833
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -437,6 +437,12 @@
 <h3 id="setTimeout"><a href="#setTimeout" class="headerlink" title="setTimeout"></a>setTimeout</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'three'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'one'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// one</span></span><br><span class="line"><span class="comment">// three</span></span><br></pre></td></tr></table></figure>
 <p>上面代码中，setTimeout(fn, 0)在下一轮“事件循环”开始时执行.</p>
 <h3 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h3><p>yield 感觉像协程。每次遇到 yield，函数暂停执行，下一次再从该位置继续向后执行。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">yield</span>  <span class="number">123</span> + <span class="number">456</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="obj-null-amp-amp-obj-undefined"><a href="#obj-null-amp-amp-obj-undefined" class="headerlink" title="obj != null &amp;&amp; obj != undefined"></a>obj != null &amp;&amp; obj != undefined</h3><p>快速判断方法<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNullOrUndefined</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> !!obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Object-defineProperty-exports-“-esModule”-value-true"><a href="#Object-defineProperty-exports-“-esModule”-value-true" class="headerlink" title="Object.defineProperty(exports, “__esModule”, { value: true });"></a>Object.defineProperty(exports, “__esModule”, { value: true });</h4><p>在一些第三方库中经常看到这样的代码<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(exports, <span class="string">"__esModule"</span>, &#123;</span><br><span class="line">  value: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>给模块的输出对象增加 <strong>esModule 是为了将不符合 Babel 要求的 CommonJS 模块转换成符合要求的模块，这一点在 require 的时候体现出来。如果加载模块之后，发现加载的模块带着一个 </strong>esModule 属性，Babel 就知道这个模块肯定是它转换过的，这样 Babel 就可以放心地从加载的模块中调用 exports.default 这个导出的对象，也就是 ES6 规定的默认导出对象，所以这个模块既符合 CommonJS 标准，又符合 Babel 对 ES6 模块化的需求。然而如果 <strong>esModule 不存在，也没关系，Babel 在加载了一个检测不到 </strong>esModule 的模块时，它就知道这个模块虽然符合 CommonJS 标准，但可能是一个第三方的模块，Babel 没有转换过它，如果以后直接调用 exports.default 是会出错的，所以现在就给它补上一个 default 属性，就干脆让 default 属性指向它自己就好了，这样以后就不会出错了。<br>什么是 <a href="https://zhaoda.net/webpack-handbook/commonjs.html" target="_blank" rel="noopener">CommonJS</a></p>
+<blockquote>
+<p>CommonJS 规范是为了解决 JavaScript 的作用域问题而定义的模块形式，可以使每个模块它自身的命名空间中执行。该规范的主要内容是，模块必须通过 module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中。</p>
+</blockquote>
 
       
     </div>
@@ -694,7 +700,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发方法笔记"><span class="nav-number">1.</span> <span class="nav-text">开发方法笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#观察者模式-Proxy-和-Reflect-应用"><span class="nav-number">1.1.</span> <span class="nav-text">观察者模式 Proxy 和 Reflect 应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setTimeout"><span class="nav-number">2.</span> <span class="nav-text">setTimeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield"><span class="nav-number">3.</span> <span class="nav-text">yield</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发方法笔记"><span class="nav-number">1.</span> <span class="nav-text">开发方法笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#观察者模式-Proxy-和-Reflect-应用"><span class="nav-number">1.1.</span> <span class="nav-text">观察者模式 Proxy 和 Reflect 应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setTimeout"><span class="nav-number">2.</span> <span class="nav-text">setTimeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield"><span class="nav-number">3.</span> <span class="nav-text">yield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-null-amp-amp-obj-undefined"><span class="nav-number">4.</span> <span class="nav-text">obj != null &amp;&amp; obj != undefined</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-defineProperty-exports-“-esModule”-value-true"><span class="nav-number">4.1.</span> <span class="nav-text">Object.defineProperty(exports, “__esModule”, { value: true });</span></a></li></ol></li></ol></div>
             
 
           </div>
