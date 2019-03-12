@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="问题描述： Given an array of integers, return indices of the two numbers such that they add up to a specific target.You may assume that each input would have exactly one solution, and you may not use the s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-12T07:39:13.918Z">
+<meta property="og:updated_time" content="2019-03-12T08:10:07.364Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Two Sum —— leet code 每天一练">
 <meta name="twitter:description" content="问题描述： Given an array of integers, return indices of the two numbers such that they add up to a specific target.You may assume that each input would have exactly one solution, and you may not use the s">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  421
+                  556
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -433,6 +433,7 @@
         <p>问题描述：</p>
 <p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.<br>You may assume that each input would have exactly one solution, and you may not use the sameelement twice.</p>
 <p><strong>Example:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [2, 7, 11, 15], target = 9,</span><br><span class="line"></span><br><span class="line">Because nums[0] + nums[1] = 2 + 7 = 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure></p>
+<hr>
 <p>第一种解法，使用 Recursion：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// typescript</span></span><br><span class="line"><span class="keyword">var</span> twoSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums: <span class="built_in">number</span>[], target: <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> result: <span class="built_in">number</span>[] = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; ++i) &#123;</span><br><span class="line">      <span class="keyword">const</span> diff = target - nums[i];</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = nums.length; j &gt; i; --j) &#123;</span><br><span class="line">        <span class="keyword">if</span> (diff === nums[j]) &#123;</span><br><span class="line">          result.push(i);</span><br><span class="line">          result.push(j);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p><strong>运行情况:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime: 328 ms, faster than 5.07% of JavaScript online submissions for Two Sum.</span><br><span class="line">Memory Usage: 34.8 MB, less than 44.49% of JavaScript online submissions for Two Sum.</span><br></pre></td></tr></table></figure></p>
 <p>复杂度分析：</p>
@@ -442,6 +443,7 @@
 <li><p>空间复杂度：O(1).</p>
 </li>
 </ul>
+<hr>
 <p>第二种解法，使用 HashTable</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// typescript</span></span><br><span class="line"><span class="keyword">var</span> twoSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums: <span class="built_in">number</span>[], target: <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> map: &#123;[key: <span class="built_in">number</span>]: <span class="built_in">number</span>&#125; = &#123;&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (map[target - nums[i]] !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> [map[target - nums[i]], i];</span><br><span class="line">    &#125;</span><br><span class="line">    map[nums[i]] = i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><strong>运行情况:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime: 60 ms, faster than 91.05% of JavaScript online submissions for Two Sum.</span><br><span class="line">Memory Usage: 34.4 MB, less than 83.16% of JavaScript online submissions for Two Sum.</span><br></pre></td></tr></table></figure></p>
@@ -452,6 +454,11 @@
 <li><p>空间复杂度：O(n). 额外空间得大小需要依赖于元素的存储数量，最大存储量为 n 个元素，最小为 1.</p>
 </li>
 </ul>
+<hr>
+<p>额外提供 C++ 解法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">C++</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; twoSum(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums, <span class="keyword">int</span> target)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">auto</span> table = <span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">auto</span> iterator = (*table).find(target - nums[i]);</span><br><span class="line">      <span class="keyword">if</span> (iterator != table-&gt;end())</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;(*table)[target - nums[i]], i&#125;;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      (*table)[nums[i]] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>运行情况:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime: 16 ms, faster than 58.40% of C++ online submissions for Two Sum.</span><br><span class="line">Memory Usage: 10 MB, less than 56.09% of C++ online submissions for Two Sum.</span><br></pre></td></tr></table></figure></p>
+<p>计算型果然还是 C++ 比较快，看上去比 JS 快了 6~7 倍…</p>
 
       
     </div>
