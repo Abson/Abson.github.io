@@ -113,18 +113,18 @@
 
 
 
-<meta name="description" content="第一种解法滑动窗口12345678910111213141516function lengthOfLongestSubstring(s: string) &amp;#123;  // const hashMap: &amp;#123; [key: string]: number &amp;#125; = &amp;#123;&amp;#125;;  let max = 0;  let first = &quot;&quot;;  s.split(&apos;&apos;).f">
+<meta name="description" content="问题描述Given a string, find the length of the longest substring without repeating characters. Example 1:123Input: &amp;quot;abcabcbb&amp;quot;Output: 3 Explanation: The answer is &amp;quot;abc&amp;quot;, with the length">
 <meta name="keywords" content="Abson">
 <meta property="og:type" content="article">
 <meta property="og:title" content=" Longest Substring Without Repeating Characters —— leet code 每天一练">
 <meta property="og:url" content="https://simplecodesky.com/2019/03/15/leet-code-practice-everyday-longest-substring-without-repeating-characters/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
-<meta property="og:description" content="第一种解法滑动窗口12345678910111213141516function lengthOfLongestSubstring(s: string) &amp;#123;  // const hashMap: &amp;#123; [key: string]: number &amp;#125; = &amp;#123;&amp;#125;;  let max = 0;  let first = &quot;&quot;;  s.split(&apos;&apos;).f">
+<meta property="og:description" content="问题描述Given a string, find the length of the longest substring without repeating characters. Example 1:123Input: &amp;quot;abcabcbb&amp;quot;Output: 3 Explanation: The answer is &amp;quot;abc&amp;quot;, with the length">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-15T04:48:29.285Z">
+<meta property="og:updated_time" content="2019-03-15T04:54:55.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content=" Longest Substring Without Repeating Characters —— leet code 每天一练">
-<meta name="twitter:description" content="第一种解法滑动窗口12345678910111213141516function lengthOfLongestSubstring(s: string) &amp;#123;  // const hashMap: &amp;#123; [key: string]: number &amp;#125; = &amp;#123;&amp;#125;;  let max = 0;  let first = &quot;&quot;;  s.split(&apos;&apos;).f">
+<meta name="twitter:description" content="问题描述Given a string, find the length of the longest substring without repeating characters. Example 1:123Input: &amp;quot;abcabcbb&amp;quot;Output: 3 Explanation: The answer is &amp;quot;abc&amp;quot;, with the length">
 
 
 
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  612
+                  733
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -430,7 +430,12 @@
       
 
       
-        <h3 id="第一种解法"><a href="#第一种解法" class="headerlink" title="第一种解法"></a>第一种解法</h3><p>滑动窗口<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s: string</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// const hashMap: &#123; [key: string]: number &#125; = &#123;&#125;;</span></span><br><span class="line">  <span class="keyword">let</span> max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> first = <span class="string">""</span>;</span><br><span class="line">  s.split(<span class="string">''</span>).forEach(<span class="function">(<span class="params">value: string</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> indxe = first.indexOf(value);</span><br><span class="line">    <span class="keyword">if</span> (indxe === <span class="number">-1</span>) &#123;</span><br><span class="line">      first += value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      max = first.length &gt; max ? first.length : max;</span><br><span class="line">      first = first.substr(indxe + <span class="number">1</span>) + value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  max = first.length &gt; max ? first.length : max;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>Given a string, find the length of the longest substring without repeating characters.</p>
+<p>Example 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;abcabcbb&quot;</span><br><span class="line">Output: 3 </span><br><span class="line">Explanation: The answer is &quot;abc&quot;, with the length of 3.</span><br></pre></td></tr></table></figure></p>
+<p>Example 2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;bbbbb&quot;</span><br><span class="line">Output: 1</span><br><span class="line">Explanation: The answer is &quot;b&quot;, with the length of 1.</span><br></pre></td></tr></table></figure></p>
+<p>Example 3:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;pwwkew&quot;</span><br><span class="line">Output: 3</span><br><span class="line">Explanation: The answer is &quot;wke&quot;, with the length of 3. </span><br><span class="line">             Note that the answer must be a substring, &quot;pwke&quot; is a subsequence and not a substring.</span><br></pre></td></tr></table></figure></p>
+<p>问题很简单，就是找出目标字符串中，不含有重复字符的子字符串的长度！！！</p>
+<h3 id="第一种解法"><a href="#第一种解法" class="headerlink" title="第一种解法"></a>第一种解法</h3><p>滑动窗口<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s: string</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// const hashMap: &#123; [key: string]: number &#125; = &#123;&#125;;</span></span><br><span class="line">  <span class="keyword">let</span> max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> first = <span class="string">""</span>;</span><br><span class="line">  s.split(<span class="string">''</span>).forEach(<span class="function">(<span class="params">value: string</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> indxe = first.indexOf(value);</span><br><span class="line">    <span class="keyword">if</span> (indxe === <span class="number">-1</span>) &#123;</span><br><span class="line">      first += value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      max = first.length &gt; max ? first.length : max;</span><br><span class="line">      first = first.substr(indxe + <span class="number">1</span>) + value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  max = first.length &gt; max ? first.length : max;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>运行情况:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime: 88 ms, faster than 95.16% of JavaScript online submissions forLongest Substring Without Repeating Characters.</span><br><span class="line">Memory Usage: 40 MB, less than 66.18% of JavaScript online submissions forLongest Substring Without Repeating Characters.</span><br></pre></td></tr></table></figure>
 <p>上面的算法利用了类似于滑动窗口的动作，获取到相同字符的位置，然后得到该子字符串。</p>
@@ -711,7 +716,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种解法"><span class="nav-number">1.</span> <span class="nav-text">第一种解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种解法"><span class="nav-number">2.</span> <span class="nav-text">第二种解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">3.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种解法"><span class="nav-number">2.</span> <span class="nav-text">第一种解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种解法"><span class="nav-number">3.</span> <span class="nav-text">第二种解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
             
 
           </div>
