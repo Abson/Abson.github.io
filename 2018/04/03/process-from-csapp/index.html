@@ -134,19 +134,19 @@
 <meta name="keywords" content="笔记与理解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="阅读CASPP——进程篇">
-<meta property="og:url" content="https://simplecodesky.com/2018/04/03/process-from-csapp/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/04/03/process-from-csapp/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。 未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://simplecodesky.com/images/process-from-csapp/1438747148_9194.png">
-<meta property="og:image" content="https://simplecodesky.com/images/process-from-csapp/431521-20160523181544475-414696764.jpg">
-<meta property="og:image" content="https://simplecodesky.com/images/process-from-csapp/Linux_kernel_System_Call_Interface_and_glibc.png">
-<meta property="og:image" content="https://simplecodesky.com/images/process-from-csapp/1522851295053.jpg">
-<meta property="og:updated_time" content="2018-04-10T14:02:59.220Z">
+<meta property="og:image" content="http://yoursite.com/images/process-from-csapp/1438747148_9194.png">
+<meta property="og:image" content="http://yoursite.com/images/process-from-csapp/431521-20160523181544475-414696764.jpg">
+<meta property="og:image" content="http://yoursite.com/images/process-from-csapp/Linux_kernel_System_Call_Interface_and_glibc.png">
+<meta property="og:image" content="http://yoursite.com/images/process-from-csapp/1522851295053.jpg">
+<meta property="og:updated_time" content="2019-07-02T02:32:58.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阅读CASPP——进程篇">
 <meta name="twitter:description" content="在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序是系统中当前运行的唯一的程序一样。我们的程序好像是独立地使用处理器和内存。处理器就好像是系统中当前运行的唯一程序一样。我们的程序就好像是独占地使用处理器和内存。处理器就好像是无间断地一条一条地执行我们程序中的指令。最后，我们程序中的代码和数据好像是系统内存唯一对象。而这些假象都是通过进程的概念提供给我们的。 未完待续…">
-<meta name="twitter:image" content="https://simplecodesky.com/images/process-from-csapp/1438747148_9194.png">
+<meta name="twitter:image" content="http://yoursite.com/images/process-from-csapp/1438747148_9194.png">
 
 
 
@@ -155,7 +155,7 @@
 
 
 
-  <link rel="canonical" href="https://simplecodesky.com/2018/04/03/process-from-csapp/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/03/process-from-csapp/"/>
 
 
 
@@ -365,7 +365,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/03/process-from-csapp/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/03/process-from-csapp/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="何劍聪"/>
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-04-10 22:02:59" itemprop="dateModified" datetime="2018-04-10T22:02:59+08:00">2018-04-10</time>
+                <time title="Modified: 2019-07-02 10:32:58" itemprop="dateModified" datetime="2019-07-02T10:32:58+08:00">2019-07-02</time>
               
             
           </span>
@@ -511,7 +511,7 @@
 <h3 id="什么是进程"><a href="#什么是进程" class="headerlink" title="什么是进程?"></a>什么是进程?</h3><p>进程的经典定义就是一个执行中程序的实例。当我们使用 shell 输入命令行 ‘./helloWorld.out’ 以运行 helloWorld 可执行文件的时候，shell 就会创建一个新的进程，然后再这个新进程的上下文中运行这个可执行文件。<br>也可以说进程、线程、异常处理程序等是一个逻辑。</p>
 <h3 id="进程的地址空间"><a href="#进程的地址空间" class="headerlink" title="进程的地址空间"></a>进程的地址空间</h3><p>进程为每个程序提供给它自己的私有空间，这就制造了进程独占地使用系统地址空间。<br><img src="/images/process-from-csapp/1438747148_9194.png" alt="进程地址空间"><br>可以看出一个程序的内存空间分了<strong>内核空间</strong>和<strong>用户空间</strong>，而用户空间是无法访问内核空间的地址的。如果一个用户进程必须通过系统调用接口(例如read，write 函数)间接地访问内核代码和数据。<br><strong>虚拟地址基址</strong><br>通过一下命令查看一下 Mac 系统的程序入口：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">➜  abson_blog git:(master) ✗ xcrun size -x -l -m ~/Desktop/learnCpp/main.out</span><br><span class="line">Segment __PAGEZERO: <span class="number">0x100000000</span> (vmaddr <span class="number">0x0</span> fileoff <span class="number">0</span>)</span><br><span class="line">Segment __TEXT: <span class="number">0x1000</span> (vmaddr <span class="number">0x100000000</span> fileoff <span class="number">0</span>)</span><br><span class="line">	Section __text: <span class="number">0x34</span> (addr <span class="number">0x100000f50</span> offset <span class="number">3920</span>)</span><br><span class="line">	Section __stubs: <span class="number">0x6</span> (addr <span class="number">0x100000f84</span> offset <span class="number">3972</span>)</span><br><span class="line">	Section __stub_helper: <span class="number">0x1a</span> (addr <span class="number">0x100000f8c</span> offset <span class="number">3980</span>)</span><br><span class="line">	Section __cstring: <span class="number">0x4</span> (addr <span class="number">0x100000fa6</span> offset <span class="number">4006</span>)</span><br><span class="line">	Section __unwind_info: <span class="number">0x48</span> (addr <span class="number">0x100000fac</span> offset <span class="number">4012</span>)</span><br><span class="line">	total <span class="number">0xa0</span></span><br><span class="line">Segment __DATA: <span class="number">0x1000</span> (vmaddr <span class="number">0x100001000</span> fileoff <span class="number">4096</span>)</span><br><span class="line">	Section __nl_symbol_ptr: <span class="number">0x10</span> (addr <span class="number">0x100001000</span> offset <span class="number">4096</span>)</span><br><span class="line">	Section __la_symbol_ptr: <span class="number">0x8</span> (addr <span class="number">0x100001010</span> offset <span class="number">4112</span>)</span><br><span class="line">	total <span class="number">0x18</span></span><br><span class="line">Segment __LINKEDIT: <span class="number">0x1000</span> (vmaddr <span class="number">0x100002000</span> fileoff <span class="number">8192</span>)</span><br><span class="line">total <span class="number">0x100003000</span>i</span><br></pre></td></tr></table></figure></p>
 <p>可以看到 Mac 的程序入口, 也就是说程序加载器把可执行文件加载到内存的虚拟地址基址是 0x100000000。</p>
-<p>上图展示了程序的地址空间分配图，在 Linux 下，一个进程的地址空间一般为4GB(内核地址空间1G，用户地址空间3GB)，这里所说的地址空间都为虚拟内存地址(关于什么是虚拟内存，查看<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/"><span style="color:red">阅读CSAPP——虚拟内存篇</span></a>)。</p>
+<p>上图展示了程序的地址空间分配图，在 Linux 下，一个进程的地址空间一般为4GB(内核地址空间1G，用户地址空间3GB)，这里所说的地址空间都为虚拟内存地址(关于什么是虚拟内存，查看<a href="https://abson.github.io.com/2018/04/03/virtual-memory-from-csapp/" target="_blank" rel="noopener"><span style="color:red">阅读CSAPP——虚拟内存篇</span></a>)。</p>
 <p><strong>系统调用</strong><br>系统调用在类Unix系统中指的是活跃的进程对内核所提供的服务进行请求。例如输入/输出(I/O和进程创建)。</p>
 <p><strong>I/O 操作</strong><br>I/O 可以被定义为任何信息流入或流出 CPU 与主内存（RAM）。也就是说，一台电脑的 CPU和内存与该电脑的用户（通过键盘或鼠标）、存储设备（硬盘或磁盘驱动）还有其他电脑的任何交流都是 I/O。</p>
 <h3 id="进程的上下文"><a href="#进程的上下文" class="headerlink" title="进程的上下文"></a>进程的上下文</h3><p>内核为每个进程维持着一个上下文，上下文由一些对象的值组成，这些对象包括通用目的的寄存器，浮点寄存器，程序计数器、用户栈、状态寄存器、内核栈和各种内核数据结构(比如描述地址空间的页表，包含有关当前进程信息进程表，以及包含进程已打开文件的信息的文件表)。<br>简而言之，进程的上下文就是保存了进程的状态和堆栈内存的数据结构等等。</p>

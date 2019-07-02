@@ -134,17 +134,17 @@
 <meta name="keywords" content="第三方框架">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FastImageCache 架构分析">
-<meta property="og:url" content="https://simplecodesky.com/2018/04/10/ios-fastimagecache-opensource-interpretation/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/ios-fastimagecache-opensource-interpretation/index.html">
 <meta property="og:site_name" content="Simple Code Sky">
 <meta property="og:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
-<meta property="og:image" content="https://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
-<meta property="og:updated_time" content="2018-04-13T08:58:05.862Z">
+<meta property="og:image" content="http://yoursite.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png">
+<meta property="og:updated_time" content="2019-07-02T02:32:59.223Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastImageCache 架构分析">
 <meta name="twitter:description" content="文章介绍本文章注重分析 FastImageCache 这个 Github 第三方图片IO库的架构和部分分析等等。">
-<meta name="twitter:image" content="https://simplecodesky.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
+<meta name="twitter:image" content="http://yoursite.com/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg">
 
 
 
@@ -153,7 +153,7 @@
 
 
 
-  <link rel="canonical" href="https://simplecodesky.com/2018/04/10/ios-fastimagecache-opensource-interpretation/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/10/ios-fastimagecache-opensource-interpretation/"/>
 
 
 
@@ -363,7 +363,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/10/ios-fastimagecache-opensource-interpretation/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/10/ios-fastimagecache-opensource-interpretation/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="何劍聪"/>
@@ -423,7 +423,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-04-13 16:58:05" itemprop="dateModified" datetime="2018-04-13T16:58:05+08:00">2018-04-13</time>
+                <time title="Modified: 2019-07-02 10:32:59" itemprop="dateModified" datetime="2019-07-02T10:32:59+08:00">2019-07-02</time>
               
             
           </span>
@@ -498,7 +498,7 @@
 <h3 id="加载图片过程"><a href="#加载图片过程" class="headerlink" title="加载图片过程"></a>加载图片过程</h3><p>iOS从磁盘加载一张图片，使用UIImageVIew显示在屏幕上，需要经过以下步骤：</p>
 <ol>
 <li>用户应用程序调用 read() 函数尝试从物理内存/高速缓存中读取图像数据</li>
-<li>CPU 模式切换为内核模式，内核应用程序尝试从物理内存/高速缓存中读取图像数据，如果存在则走步骤 3，如果不存在则引起缺页异常，由内核中的缺页异常处理程序确定物理内存中的牺牲页，将磁盘页作为新页调入到物理内存中，更新内存中的页表条目PTE，缺页异常处理程序返回用户应用程序，重新走第 1 步。(关于这部分知识可查看<a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">阅读CSAPP——虚拟内存篇</a>)</li>
+<li>CPU 模式切换为内核模式，内核应用程序尝试从物理内存/高速缓存中读取图像数据，如果存在则走步骤 3，如果不存在则引起缺页异常，由内核中的缺页异常处理程序确定物理内存中的牺牲页，将磁盘页作为新页调入到物理内存中，更新内存中的页表条目PTE，缺页异常处理程序返回用户应用程序，重新走第 1 步。(关于这部分知识可查看<a href="https://abson.github.io.com/2018/04/03/virtual-memory-from-csapp/" target="_blank" rel="noopener">阅读CSAPP——虚拟内存篇</a>)</li>
 <li>内核应用程序将图片数据放在内核缓冲区，从内核缓冲区复制数据到用户空间。(关于内核态和用户态的知识，可查看<a href="">阅读CASPP——进程篇</a>)</li>
 <li>创建 UIImageView，把图像数据赋值给 UIImageView</li>
 <li>如果图像数据为未解码的PNG/JPG，解码为位图数据</li>
@@ -512,10 +512,10 @@
 <li>生成字节块对齐的数据，防止上述第7.1步CoreAnimation在渲染时再拷贝一份数据。</li>
 </ol>
 <p>接下来具体介绍这三个优化点以及它的实现。</p>
-<h3 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h3><p>什么是用户态和内核态？<br><a href="https://simplecodesky.com/2018/04/03/process-from-csapp/###用户模式和内核模式">用户模式和内核模式</a><br>上面这篇博客讲解了用户态和用户态不过是为了防止用户恶意操作操作系统中的数据和硬件而建立的CPU模式机制。这样当用户应用程序想要访问硬件设备的时候，都要进入内核态(一个内存地址空间跟用户态完全不一样的环境，这里可能会发生进程切换，但大部分情况是不会的)。</p>
-<p>那么使用了 <code>mmap</code> 函数后会优化了什么？<br><a href="https://simplecodesky.com/2018/04/03/virtual-memory-from-csapp/">关于mmap, 内存映射</a><br>说白了 <code>mmap</code> 就是将磁盘内存地址跟应用程序的虚拟地址一一对应的操作，在真正使用到这些数据前却不会消耗物理内存，也不会有读写磁盘的操作,只有真正使用这些数据时，也就是图像准备渲染在屏幕上时，虚拟内存管理系统VMS才根据缺页加载的机制从磁盘加载对应的数据块到物理内存，再进行渲染，让我们对文件的读写都可以直接在用户态进行，省去了用户态和内核态的切换和缓冲区之间的内存拷贝。(在 Linux 中通常用于多进程访问同一数据的时候进行共享内存的创建，这样就不用多次拷贝内核缓冲区字节到不同的应用程序当中，而且写入数据都能同步到不同的进程)</p>
+<h3 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h3><p>什么是用户态和内核态？<br><a href="https://abson.github.io.com/2018/04/03/process-from-csapp/###用户模式和内核模式" target="_blank" rel="noopener">用户模式和内核模式</a><br>上面这篇博客讲解了用户态和用户态不过是为了防止用户恶意操作操作系统中的数据和硬件而建立的CPU模式机制。这样当用户应用程序想要访问硬件设备的时候，都要进入内核态(一个内存地址空间跟用户态完全不一样的环境，这里可能会发生进程切换，但大部分情况是不会的)。</p>
+<p>那么使用了 <code>mmap</code> 函数后会优化了什么？<br><a href="https://abson.github.io.com/2018/04/03/virtual-memory-from-csapp/" target="_blank" rel="noopener">关于mmap, 内存映射</a><br>说白了 <code>mmap</code> 就是将磁盘内存地址跟应用程序的虚拟地址一一对应的操作，在真正使用到这些数据前却不会消耗物理内存，也不会有读写磁盘的操作,只有真正使用这些数据时，也就是图像准备渲染在屏幕上时，虚拟内存管理系统VMS才根据缺页加载的机制从磁盘加载对应的数据块到物理内存，再进行渲染，让我们对文件的读写都可以直接在用户态进行，省去了用户态和内核态的切换和缓冲区之间的内存拷贝。(在 Linux 中通常用于多进程访问同一数据的时候进行共享内存的创建，这样就不用多次拷贝内核缓冲区字节到不同的应用程序当中，而且写入数据都能同步到不同的进程)</p>
 <h3 id="解码图像"><a href="#解码图像" class="headerlink" title="解码图像"></a>解码图像</h3><p>一般我们使用的图像是JPG/PNG，这些图像数据不是位图，而是是经过编码压缩后的数据，使用它渲染到屏幕之前需要进行解码转成位图数据，这个解码操作是比较耗时的，并且没有GPU硬解码，只能通过CPU，iOS默认会在主线程对图像进行解码。很多库都解决了图像解码的问题，不过由于解码后的图像太大，一般不会缓存到磁盘，SDWebImage的做法是把解码操作从主线程移到子线程，让耗时的解码操作不占用主线程的时间。<br>FastImageCache也是在子线程解码图像，不同的是它会缓存解码后的图像到磁盘。因为解码后的图像体积很大，FastImageCache对这些图像数据做了系列缓存管理，详见下文实现部分。另外缓存的图像体积大也是使用内存映射读取文件的原因，小文件使用内存映射无优势，内存拷贝的量少，拷贝后占用用户内存也不高，文件越大内存映射优势越大。</p>
-<h3 id="Data-Alignment-字节块对齐"><a href="#Data-Alignment-字节块对齐" class="headerlink" title="Data Alignment 字节块对齐"></a>Data Alignment 字节块对齐</h3><p><a href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/">iOS高效图片 IO 框架是如何炼成的</a> 中有讲到为何需要字节对齐，而且字节对齐的实现等等。</p>
+<h3 id="Data-Alignment-字节块对齐"><a href="#Data-Alignment-字节块对齐" class="headerlink" title="Data Alignment 字节块对齐"></a>Data Alignment 字节块对齐</h3><p><a href="https://abson.github.io.com/2018/04/10/ios-efficient-image-io/" target="_blank" rel="noopener">iOS高效图片 IO 框架是如何炼成的</a> 中有讲到为何需要字节对齐，而且字节对齐的实现等等。</p>
 <h3 id="FastImageCache-架构实现"><a href="#FastImageCache-架构实现" class="headerlink" title="FastImageCache 架构实现"></a>FastImageCache 架构实现</h3><p>通过阅读 <a href="https://github.com/path/FastImageCache" target="_blank" rel="noopener">FastImageCache</a> 后，粗略的画出了以下这幅流程图，途中标识着这个框架的要获取图片的整体流程如何实现:<br><img src="/images/ios-fastimagecache-opensource-interpretation/1523356546052.jpg" alt=""></p>
 <p><strong>那么 <a href="https://github.com/path/FastImageCache" target="_blank" rel="noopener">FastImageCache</a> 是如何实现上述流程的呢？</strong><br>关于的总体结构如下图：<br><img src="/images/ios-fastimagecache-opensource-interpretation/fastImageCache3.png" alt=""></p>
 <p>上图中 ImageCache 是一个<strong>单例</strong>，用作管理整个图片框架系统。</p>
@@ -525,7 +525,7 @@
 <li><strong>Chunk</strong>：<code>ImageTable</code>拥有多个 <code>Chunk</code>，而 <code>Chunk</code> 被设置为 2M 大小的内存块，存在于 ImageTable 文件系统中，获取的时候通过内存映射 <code>mmap</code> 作为共享内存映射到用户空间的虚拟内存当中。</li>
 <li><strong>Entry</strong>： <code>Chunk</code>存在着多个<code>Entry</code>, 因为操作系统当中访问磁盘，都是以磁盘页和内存页的方式存在于磁盘和物理内存当中，在 64 位 Unix操作系统中，一般为 <strong>4KB</strong>，这个大小可以通过设置操作系统更改，所以 <code>Entry</code> 为了加快访问数据字节访问获取速度和节省由于页不对齐而导致的 CPU 周期增加的消耗，就采用页对齐的方式。<br><code>Entry</code> 中存储着一个图片的字节数组，和 <code>Meta(ImageCache用到的一些 UUID 的唯一图片标识)</code>，而 <code>ImageData</code> 为了避免发生 copy_images 的发生，更是采用了字节块对齐。</li>
 </ul>
-<p>而这些实现细节，可以查看<a href="https://simplecodesky.com/2018/04/10/ios-efficient-image-io/">iOS高效图片 IO 框架是如何炼成的</a>。</p>
+<p>而这些实现细节，可以查看<a href="https://abson.github.io.com/2018/04/10/ios-efficient-image-io/" target="_blank" rel="noopener">iOS高效图片 IO 框架是如何炼成的</a>。</p>
 <p>文献参考：<br><a href="https://blog.cnbang.net/tech/2578/" target="_blank" rel="noopener">《iOS图片加载速度极限优化—FastImageCache解析》</a></p>
 
       
