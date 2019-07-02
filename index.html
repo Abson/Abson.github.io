@@ -360,6 +360,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2019/07/02/go-opensource-chan/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="何劍聪"/>
+      <meta itemprop="description" content="iOS|C++|Unix|伪知识份子"/>
+      <meta itemprop="image" content="/images/avatar.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simple Code Sky"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/02/go-opensource-chan/" class="post-title-link" itemprop="url">Golang 源码导读 —— channel</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-07-02 10:19:12 / Modified: 10:23:13" itemprop="dateCreated datePublished" datetime="2019-07-02T10:19:12+08:00">2019-07-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/2019/07/02/go-opensource-chan/" class="leancloud_visitors" data-flag-title="Golang 源码导读 —— channel">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              01.chan 的数据结构：golang 中 chan 的源码在 src/runtime/chan.go 文件中，hchan 则为 chan 的结构体hchan: 
+type hchan struct { 
+qcount uint // 当前缓存数据的总量 
+dataqsiz uint // 缓存数
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/02/go-opensource-chan/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2019/03/18/learn-english/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -422,7 +589,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-20 11:43:55" itemprop="dateModified" datetime="2019-03-20T11:43:55+08:00">2019-03-20</time>
+                <time title="Modified: 2019-03-21 11:37:05" itemprop="dateModified" datetime="2019-03-21T11:37:05+08:00">2019-03-21</time>
               
             
           </span>
@@ -1891,196 +2058,6 @@ reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://simplecodesky.com/2018/04/19/decorator-pattern-deep-learning/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="何劍聪"/>
-      <meta itemprop="description" content="iOS|C++|Unix|伪知识份子"/>
-      <meta itemprop="image" content="/images/avatar.jpeg"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simple Code Sky"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/04/19/decorator-pattern-deep-learning/" class="post-title-link" itemprop="url">设计模式系列——装饰者模式(DecoratorPattern)</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-04-19 19:06:22" itemprop="dateCreated datePublished" datetime="2018-04-19T19:06:22+08:00">2018-04-19</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-04-23 11:53:47" itemprop="dateModified" datetime="2018-04-23T11:53:47+08:00">2018-04-23</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-            <span id="/2018/04/19/decorator-pattern-deep-learning/" class="leancloud_visitors" data-flag-title="设计模式系列——装饰者模式(DecoratorPattern)">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>所谓的设计模式，其实是对面向对象编程思想中的一个转变，是在繁重需求任务中做到可扩展，高度灵活，并且适应业务开发而产生的一种思想。<br>今天我们说的修饰者模式，是一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/04/19/decorator-pattern-deep-learning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2131,7 +2108,7 @@ reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state�
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">27</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2227,7 +2204,9 @@ reducer 是一个纯函数，接收旧的 state 和 action，返回新的 state�
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
+                      
+                    
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>

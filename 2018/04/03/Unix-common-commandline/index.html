@@ -140,7 +140,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://simplecodesky.com/images/Unix-common-commandline/1280px-Unix_history-simple.png">
 <meta property="og:image" content="https://simplecodesky.com/2018/04/03/Unix-common-commandline/1497953914890.png">
-<meta property="og:updated_time" content="2018-04-03T04:08:26.519Z">
+<meta property="og:updated_time" content="2019-05-08T05:21:46.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unix 常用工具命令笔记">
 <meta name="twitter:description" content="一些Unix/Linux 和 Mac/iOS 的命令行工具，用于学习、测试 iOS 开发和后端开发的常用命令，持续更新中…">
@@ -406,12 +406,24 @@
                 
               
 
-              <time title="Created: 2018-04-03 12:04:19 / Modified: 12:08:26" itemprop="dateCreated datePublished" datetime="2018-04-03T12:04:19+08:00">2018-04-03</time>
+              <time title="Created: 2018-04-03 12:04:19" itemprop="dateCreated datePublished" datetime="2018-04-03T12:04:19+08:00">2018-04-03</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-08 13:21:46" itemprop="dateModified" datetime="2019-05-08T13:21:46+08:00">2019-05-08</time>
               
             
           </span>
@@ -539,7 +551,8 @@
 </blockquote>
 <h5 id="ps-查看进程"><a href="#ps-查看进程" class="headerlink" title="ps (查看进程)"></a>ps (查看进程)</h5><p><strong>显示所有进程信息</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A</span><br></pre></td></tr></table></figure></p>
 <p><strong>ps 与grep 组合使用，查找特定进程</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep ssh</span><br></pre></td></tr></table></figure></p>
-<p><strong>列出目前所有的正在内存中的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br></pre></td></tr></table></figure></p>
+<p><strong>列出目前所有的正在内存中的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | egrep &apos;(nginx|PID)&apos;</span><br></pre></td></tr></table></figure></p>
+<p><strong>查找进程详细信息</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ps axw -o pid,ppid,user,%cpu,vsz,wchan,command | egrep &apos;(nginx|PID)&apos;</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h5 id="otool-Mac上的objdump"><a href="#otool-Mac上的objdump" class="headerlink" title="otool (Mac上的objdump)"></a>otool (Mac上的objdump)</h5><p>反汇编 mach-o 目标文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otool -tV main.out</span><br></pre></td></tr></table></figure></p>
 <hr>
@@ -671,7 +684,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">27</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -767,7 +780,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
+                      
+                    
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
